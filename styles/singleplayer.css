@@ -3,6 +3,25 @@
     box-sizing: border-box;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    gap: 24px;
+    padding: 50px;
+}
+
+.players {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 24px;
+    /* Consider using padding for vertical spacing */
+    padding: 24px 0;
+}
+
 .header {
     /* Removed the height property */
     /* Consider using padding instead to maintain the layout */
@@ -39,14 +58,6 @@
 
 .menu-button {
     width: 200px;
-    /* Removed the height property */
-    /* Adjust the button's size with padding as needed */
-    padding: 10px;
-}
-
-.menu-button-05 {
-    margin: 0;
-    width: 88px;
     /* Removed the height property */
     /* Adjust the button's size with padding as needed */
     padding: 10px;
