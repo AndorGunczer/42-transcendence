@@ -1,15 +1,17 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/singleplayer.css">
+    <link rel="stylesheet" href="{% static 'css/singleplayer.css' %}">
     <title>transcendence</title>
 </head>
 <body>
     <div class="header">
         <p>logged in as PLACEHOLDER</p>
-        <a href="play_menu.html"><button class="menu-button">BACK</button></a>
+        <a href="{% url 'play' %}"><button class="menu-button">BACK</button></a>
     </div>
     <div class="container">
         <div class="players">
