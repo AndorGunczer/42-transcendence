@@ -10,7 +10,7 @@
 <body>
     {% csrf_token %}
     <div class="container">
-        <form action="{% url login_check %}" method="POST">
+        <form action="{% url 'login_check' %}" method="POST">
             <div>
                 <label for="username">username: </label>
                 <input type="text" id="username">
@@ -19,7 +19,7 @@
                 <label for="password">password: </label>
                 <input type="password" id="password">
             </div>
-            <button>Login</button>
+            <input type="submit">
         </form>
     </div>
 </body>

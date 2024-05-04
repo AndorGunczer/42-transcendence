@@ -26,4 +26,8 @@ urlpatterns = [
     path('game_single', views.game_single, name="game_single"),
     path('local', views.local, name="local"),
     path('game_local', views.game_local, name="game_local"),
+    path('login', views.login, name="login"),
+    path('register', views.register, name="register"),
+    path('login_check', views.login_check, name="login_check"),
+    path('registration_check', views.registration_check, name="registration_check"),
 ]

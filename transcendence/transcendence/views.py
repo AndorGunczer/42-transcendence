@@ -18,5 +18,17 @@ def local(request):
 def game_local(request):
     return render(request, 'game_views/game_local.html', {})
 
+def login(request):
+    return render(request, 'menu_auth/login.html', {})
+
+def register(request):
+    return render(request,  'menu_auth/register.html', {})
+
+def registration_check(request):
+    pass
+
+def login_check(request):
+    pass
+
 # def index(request):
 #     return render(request, "/", {})
