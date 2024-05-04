@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password, check_password
 from django.db import models
 from django.utils import timezone
 import datetime
@@ -19,3 +20,9 @@ class Users(models.Model):
 
     def __str__(self):
         return self.username
+    
+    def make_password(self, password):
+        self.password = make_password(password)
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)
