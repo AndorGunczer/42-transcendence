@@ -54,10 +54,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'transcendence.urls'
 
-# TEMPLATE_DIRS = (
-#     os.path.join(SETTINGS_PATH, '/transcendence/templates'),
-# )
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]

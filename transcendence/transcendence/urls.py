@@ -23,4 +23,7 @@ urlpatterns = [
     path('', views.index, name="index"),
     path('play', views.play, name="play"),
     path('singleplayer', views.singleplayer, name="singleplayer"),
+    path('game_single', views.game_single, name="game_single"),
+    path('local', views.local, name="local"),
+    path('game_local', views.game_local, name="game_local"),
 ]
