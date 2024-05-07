@@ -28,6 +28,7 @@ urlpatterns = [
     path('game_local', views.game_local, name="game_local"),
     path('login', views.login, name="login"),
     path('register', views.register, name="register"),
+    path('register/<str:warning>/', views.register, name="register"),
     path('login_check', views.login_check, name="login_check"),
     path('registration_check', views.registration_check, name="registration_check"),
 ]
