@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from . import models
 
 def index(request):
     return render(request, 'menu_general/index.html', {})
@@ -25,7 +26,8 @@ def register(request):
     return render(request,  'menu_auth/register.html', {})
 
 def registration_check(request):
-    pass
+    models.Users()
+    print(request.POST["username"])
 
 def login_check(request):
     pass
