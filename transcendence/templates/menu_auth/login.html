@@ -8,19 +8,21 @@
     <title>Document</title>
 </head>
 <body>
-    <!-- {% csrf_token %} later implementation -->
-    <div class="container">
-        <form action="{% url 'login_check' %}" method="POST">
-            <div>
-                <label for="username">username: </label>
-                <input type="text" id="username">
-            </div>
-            <div>
-                <label for="password">password: </label>
-                <input type="password" id="password">
-            </div>
-            <input type="submit">
-        </form>
+    <div class="root-container" id="container">
+        <!-- {% csrf_token %} later implementation -->
+        <div class="container">
+            <form action="{% url 'login_check' %}" method="POST">
+                <div>
+                    <label for="username">username: </label>
+                    <input type="text" id="username">
+                </div>
+                <div>
+                    <label for="password">password: </label>
+                    <input type="password" id="password">
+                </div>
+                <input type="submit">
+            </form>
+        </div>
     </div>
 </body>
 </html>

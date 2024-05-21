@@ -18,7 +18,7 @@
             <h1>PONG</h1>
         </div>
         <div>
-            <a href="{% url 'play' %}"><button class="menu-button">PLAY</button></a>
+            <button class="menu-button" id="button-play">PLAY</button>
         </div>
         <div>
             <button class="menu-button">TOURNAMENT</button>
@@ -27,9 +27,11 @@
             <button class="menu-button">LEADERBOARD</button>
         </div>
         <div class="button-container">
-            <a href="{% url 'login' %}"><button class="menu-button-05">LOGIN</button></a>
-            <a href="{% url 'register' %}"><button class="menu-button-05">REGISTER</button></a>
+            <a href="{% url 'login' %}"><button class="menu-button-05" id="button-login">LOGIN</button></a>
+            <a href="{% url 'register' %}"><button class="menu-button-05" id="button-register">REGISTER</button></a>
         </div>
     </div>
+    <script src="{% static 'js/menu_general/index.js' %}">
+    </script>
 </body>
 </html>

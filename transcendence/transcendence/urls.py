@@ -21,6 +21,7 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name="index"),
+    path('indexPost', views.indexPost, name="indexPost"),
     path('play', views.play, name="play"),
     path('singleplayer', views.singleplayer, name="singleplayer"),
     path('game_single', views.game_single, name="game_single"),
