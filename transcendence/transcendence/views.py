@@ -34,8 +34,19 @@ def singleplayer_menu(request, menu_type='singleplayer_menu'):
 def game_single(request):
     return render(request, 'game_views/game_single.html', {})
 
-def local(request):
-    return render(request, 'menu_general/local.html', {})
+def local_menu(request, menu_type='local_menu'):
+    menu = MENU_DATA.get(menu_type)
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+def online_menu(request, menu_type='online_menu'):
+    menu = MENU_DATA.get(menu_type)
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
 
 def game_local(request):
     return render(request, 'game_views/game_local.html', {})

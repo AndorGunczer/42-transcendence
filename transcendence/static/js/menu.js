@@ -164,9 +164,45 @@ function single_pregame() {
 }
 
 function local_pregame() {
-  console.log("local pregame called");
+  let url = "/local_menu";
+
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) console.log("yeaah");
+      else return response.json();
+    })
+    .then((json) => {
+      deleteHeader();
+      deleteMain();
+      headerLoad(json);
+      let parent = document.getElementsByClassName("container")[0];
+      json.menuItems.forEach((item) => {
+        let element = document.createElement("div");
+        elementCustomize(element, item);
+        divLoader(element, item.content);
+        parent.appendChild(element);
+      });
+    });
 }
 
 function online_pregame() {
-  console.log("online pregame called");
+  let url = "/online_menu";
+
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) console.log("yeaah");
+      else return response.json();
+    })
+    .then((json) => {
+      deleteHeader();
+      deleteMain();
+      headerLoad(json);
+      let parent = document.getElementsByClassName("container")[0];
+      json.menuItems.forEach((item) => {
+        let element = document.createElement("div");
+        elementCustomize(element, item);
+        divLoader(element, item.content);
+        parent.appendChild(element);
+      });
+    });
 }
