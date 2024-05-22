@@ -206,3 +206,47 @@ function online_pregame() {
       });
     });
 }
+
+function load_register() {
+  let url = "/register";
+
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) console.log("yeaah");
+      else return response.json();
+    })
+    .then((json) => {
+      deleteHeader();
+      deleteMain();
+      headerLoad(json);
+      let parent = document.getElementsByClassName("container")[0];
+      json.menuItems.forEach((item) => {
+        let element = document.createElement("div");
+        elementCustomize(element, item);
+        divLoader(element, item.content);
+        parent.appendChild(element);
+      });
+    });
+}
+
+function load_login() {
+  let url = "/register";
+
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) console.log("yeaah");
+      else return response.json();
+    })
+    .then((json) => {
+      deleteHeader();
+      deleteMain();
+      headerLoad(json);
+      let parent = document.getElementsByClassName("container")[0];
+      json.menuItems.forEach((item) => {
+        let element = document.createElement("div");
+        elementCustomize(element, item);
+        divLoader(element, item.content);
+        parent.appendChild(element);
+      });
+    });
+}

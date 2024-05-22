@@ -478,4 +478,138 @@ MENU_DATA = {
             },
         ]
     },
+    'register': {
+        'menuTitle': 'Local Menu Buttons',
+        'headerItems': [
+            {
+                'id': 1,
+                'type': 'p',
+                'label': 'logged in as PLACEHOLDER'
+            },
+            {
+                'id': 2,
+                'type': 'button',
+                'label': 'BACK',
+                'action': 'load_main()'
+            }
+        ],
+        'menuItems': [
+            {
+                'type': 'div',
+                'class': 'container',
+                'content': [
+                    {
+                        'type': 'form',
+                        'action': '',
+                        'method': 'POST',
+                        'content': [
+                            {
+                                'type': 'div',
+                                'content': [
+                                    {
+                                        'type': 'label',
+                                        'for': 'username',
+                                        'text': 'username: '
+                                    },
+                                    {
+                                        'type': 'input',
+                                        'inputType': 'text',
+                                        'identifier': 'username',
+                                        'name': 'username'
+                                    }
+                                ]
+                            },
+                            {
+                                'type': 'div',
+                                'content': [
+                                    {
+                                        'type': 'label',
+                                        'for': 'password',
+                                        'text': 'password: '
+                                    },
+                                    {
+                                        'type': 'input',
+                                        'inputType': 'password',
+                                        'identifier': 'password',
+                                        'name': 'password'
+                                    }
+                                ]
+                            },
+                            {
+                                'type': 'input',
+                                'inputType': 'submit'
+                            }
+                        ]
+                    }
+                ]
+            },
+        ]
+    },
+    'login': {
+        'menuTitle': 'Local Menu Buttons',
+        'headerItems': [
+            {
+                'id': 1,
+                'type': 'p',
+                'label': 'logged in as PLACEHOLDER'
+            },
+            {
+                'id': 2,
+                'type': 'button',
+                'label': 'BACK',
+                'action': 'load_playMenu()'
+            }
+        ],
+        'menuItems': [
+            {
+            'type': 'div',
+                'class': 'container',
+                'content': [
+                    {
+                        'type': 'form',
+                        'action': '',
+                        'method': 'POST',
+                        'content': [
+                            {
+                                'type': 'div',
+                                'content': [
+                                    {
+                                        'type': 'label',
+                                        'for': 'username',
+                                        'text': 'username: '
+                                    },
+                                    {
+                                        'type': 'input',
+                                        'inputType': 'text',
+                                        'identifier': 'username',
+                                        'name': 'username'
+                                    }
+                                ]
+                            },
+                            {
+                                'type': 'div',
+                                'content': [
+                                    {
+                                        'type': 'label',
+                                        'for': 'password',
+                                        'text': 'password: '
+                                    },
+                                    {
+                                        'type': 'input',
+                                        'inputType': 'password',
+                                        'identifier': 'password',
+                                        'name': 'password'
+                                    }
+                                ]
+                            },
+                            {
+                                'type': 'input',
+                                'inputType': 'submit'
+                            }
+                        ]
+                    }
+                ]
+            },
+        ]
+    }
 }

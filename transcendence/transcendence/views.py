@@ -51,11 +51,19 @@ def online_menu(request, menu_type='online_menu'):
 def game_local(request):
     return render(request, 'game_views/game_local.html', {})
 
-def login(request):
-    return render(request, 'menu_auth/login.html', {})
+def login(request, warning: str = None, menu_type='login'):
+    menu = MENU_DATA.get(menu_type)
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
 
-def register(request, warning: str = None):
-    return render(request,  'menu_auth/register.html', {})
+def register(request, warning: str = None, menu_type='register'):
+    menu = MENU_DATA.get(menu_type)
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
 
 def registration_check(request):
     if request.method == "POST":
