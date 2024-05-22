@@ -24,8 +24,12 @@ def play(request, menu_type='play_menu'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
-def singleplayer(request):
-    return render(request, 'menu_general/singleplayer.html', {})
+def singleplayer_menu(request, menu_type='singleplayer_menu'):
+    menu = MENU_DATA.get(menu_type)
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
 
 def game_single(request):
     return render(request, 'game_views/game_single.html', {})
