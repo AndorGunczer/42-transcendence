@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
+// document.addEventListener("DOMContentLoaded", () => {
+
+function startSingleGame() {
   // Get the canvas element and its 2D rendering context
   const canvas = document.getElementById("pongCanvas");
   const ctx = canvas.getContext("2d");
@@ -34,8 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Game state
   let leftPaddleUp = false;
   let leftPaddleDown = false;
-  let rightPaddleUp = false;
-  let rightPaddleDown = false;
 
   // Add event listeners for key presses
   document.addEventListener("keydown", (event) => {
@@ -46,12 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
       case "s":
         leftPaddleDown = true;
         break;
-      case "ArrowUp":
-        rightPaddleUp = true;
-        break;
-      case "ArrowDown":
-        rightPaddleDown = true;
-        break;
     }
   });
 
@@ -60,16 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
     switch (event.key) {
       case "w":
         leftPaddleUp = false;
-        console.log("W");
         break;
       case "s":
         leftPaddleDown = false;
-        break;
-      case "ArrowUp":
-        rightPaddleUp = false;
-        break;
-      case "ArrowDown":
-        rightPaddleDown = false;
         break;
     }
   });
@@ -77,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Game loop
   function gameLoop() {
     update();
-    console.log("WTF");
     draw();
     requestAnimationFrame(gameLoop);
   }
@@ -90,11 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
     else leftPaddle.dy = 0;
     leftPaddle.y += leftPaddle.dy;
 
-    // Move right paddle
-    if (rightPaddleUp) rightPaddle.dy = -4;
-    else if (rightPaddleDown) rightPaddle.dy = 4;
-    else rightPaddle.dy = 0;
-    rightPaddle.y += rightPaddle.dy;
+    // Move left paddle
+    botMove();
 
     // Keep paddles within canvas
     leftPaddle.y = Math.max(
@@ -156,6 +139,20 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.fillRect(ball.x, ball.y, ball.size, ball.size);
   }
 
+  function botMove() {
+    console.log(ball.y);
+    console.log(rightPaddle.y);
+    if (ball.y < rightPaddle.y) {
+      rightPaddle.dy = -4;
+    } else if (ball.y > rightPaddle.y) {
+      rightPaddle.dy = 4;
+    } else {
+      rightPaddle.dy = 0;
+    }
+    rightPaddle.y += rightPaddle.dy;
+  }
+
   // Start the game loop
   gameLoop();
-});
+  // });
+}

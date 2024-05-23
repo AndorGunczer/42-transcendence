@@ -1,13 +1,5 @@
 // JAVASCRIPT CODE FOR MAIN MENU
 
-playButton = document.getElementById("button-play");
-
-// DYNAMIC PAGE LOAD WITH JSON
-
-playButton.addEventListener("click", function () {
-  load_playMenu();
-});
-
 function deleteHeader() {
   let header = document.getElementsByClassName("header")[0];
 
@@ -249,4 +241,8 @@ function load_login() {
         parent.appendChild(element);
       });
     });
+}
+
+function load_singleGame() {
+  let url = "/single";
 }
