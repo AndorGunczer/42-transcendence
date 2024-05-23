@@ -24,6 +24,8 @@ function elementCustomize(element, item) {
     element.setAttribute("action", item.action);
   if (item.onclick && item.onclick != "")
     element.setAttribute("onclick", item.onclick);
+  if (item.width) element.setAttribute("width", item.width);
+  if (item.height) element.setAttribute("height", item.height);
 }
 
 function divLoader(parent, itemList) {
@@ -244,5 +246,70 @@ function load_login() {
 }
 
 function load_singleGame() {
-  let url = "/single";
+  let url = "/singleplayer_game";
+
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) console.log("yeaah");
+      else return response.json();
+    })
+    .then((json) => {
+      console.log(json);
+      deleteHeader();
+      deleteMain();
+      headerLoad(json);
+      let parent = document.getElementsByClassName("container")[0];
+      json.menuItems.forEach((item) => {
+        let element = document.createElement(item.type);
+        elementCustomize(element, item);
+        parent.appendChild(element);
+      });
+      startSingleGame();
+    });
+}
+
+function load_localGame() {
+  let url = "/local_game";
+
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) console.log("yeaah");
+      else return response.json();
+    })
+    .then((json) => {
+      console.log(json);
+      deleteHeader();
+      deleteMain();
+      headerLoad(json);
+      let parent = document.getElementsByClassName("container")[0];
+      json.menuItems.forEach((item) => {
+        let element = document.createElement(item.type);
+        elementCustomize(element, item);
+        parent.appendChild(element);
+      });
+      startLocalGame();
+    });
+}
+
+function load_onlineGame() {
+  let url = "/online_game";
+
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) console.log("yeaah");
+      else return response.json();
+    })
+    .then((json) => {
+      console.log(json);
+      deleteHeader();
+      deleteMain();
+      headerLoad(json);
+      let parent = document.getElementsByClassName("container")[0];
+      json.menuItems.forEach((item) => {
+        let element = document.createElement(item.type);
+        elementCustomize(element, item);
+        parent.appendChild(element);
+      });
+      startOnlineGame();
+    });
 }

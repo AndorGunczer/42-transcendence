@@ -52,8 +52,12 @@ def online_menu(request, menu_type='online_menu'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
-def game_local(request):
-    return render(request, 'game_views/game_local.html', {})
+def local_game(request, menu_type='local_game'):
+    menu = MENU_DATA.get(menu_type)
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
 
 def login(request, warning: str = None, menu_type='login'):
     menu = MENU_DATA.get(menu_type)

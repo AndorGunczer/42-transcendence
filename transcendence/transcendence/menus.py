@@ -235,6 +235,12 @@ MENU_DATA = {
                                 ]
                             }
                         ]
+                    },
+                    {
+                        'type': 'button',
+                        'class': 'menu-button',
+                        'text': 'play',
+                        'onclick': 'load_singleGame()'
                     }
                 ]
             },
@@ -354,6 +360,12 @@ MENU_DATA = {
                                 ]
                             }
                         ]
+                    },
+                    {
+                        'type': 'button',
+                        'class': 'menu-button',
+                        'text': 'play',
+                        'onclick': 'load_onlineGame()'
                     }
                 ]
             },
@@ -473,6 +485,12 @@ MENU_DATA = {
                                 ]
                             }
                         ]
+                    },
+                    {
+                        'type': 'button',
+                        'class': 'menu-button',
+                        'text': 'play',
+                        'onclick': 'load_localGame()'
                     }
                 ]
             },
@@ -610,6 +628,51 @@ MENU_DATA = {
                     }
                 ]
             },
+        ]
+    },
+    'singleplayer_game': {
+        'menuTitle': 'Singleplayer Game Window',
+        'headerItems': [
+
+        ],
+        'menuItems': [
+            {
+                'id': 1,
+                'type': 'canvas',
+                'identifier': 'pongCanvas',
+                'width': 800,
+                'height': 400
+            }
+        ]
+    },
+    'local_game': {
+        'menuTitle': 'Local Game Window',
+        'headerItems': [
+
+        ],
+        'menuItems': [
+            {
+                'id': 1,
+                'type': 'canvas',
+                'identifier': 'pongCanvas',
+                'width': 800,
+                'height': 400
+            }
+        ]
+    },
+    'online_game': {
+        'menuTitle': 'Online Game Window',
+        'headerItems': [
+
+        ],
+        'menuItems': [
+            {
+                'id': 1,
+                'type': 'canvas',
+                'identifier': 'pongCanvas',
+                'width': 800,
+                'height': 400
+            }
         ]
     }
 }
