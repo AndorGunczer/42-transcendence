@@ -518,8 +518,9 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'form',
-                        'action': '',
-                        'method': 'POST',
+                        # 'action': '/registration_check',
+                        # 'method': 'POST',
+                        'identifier': 'registration_form',
                         'content': [
                             {
                                 'type': 'div',
@@ -555,7 +556,9 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'input',
-                                'inputType': 'submit'
+                                'inputType': 'submit',
+                                'form': 'registration_form'
+                                # 'onclick': 'registration_check()'
                             }
                         ]
                     }
