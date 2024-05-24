@@ -4,6 +4,8 @@ from . import models
 from transcendence.models import Users
 from django.urls import reverse
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 # from rest_framework.decorators import api_view
 from .menus import MENU_DATA
 
@@ -73,21 +75,27 @@ def register(request, warning: str = None, menu_type='register'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
+@csrf_exempt
 def registration_check(request):
     if request.method == "POST":
         try:
+            print(request.POST)
             username = request.POST["username"]
             if username == '': raise Exception("username_not_specified")
             password = request.POST["password"]
             if password == '': raise Exception("password_not_specified")
-            Users.objects.create(username=username, password=password, score=0, games=None)
-            return HttpResponseRedirect(reverse("index"))
+            new_user = Users(username=username, wins=0, losses=0)
+            new_user.set_password(password)
+            new_user.save()
+            # Users.objects.create(username=username, password=Users.make_password(password), wins=0, losses=0, games=None)
+            return JsonResponse(MENU_DATA.get('main'))
         except Exception as e:
             warning = e
-            return HttpResponseRedirect(reverse("register", args=(warning,)))
+            print(warning)
+            return JsonResponse(MENU_DATA.get('register'))
 
     else:
-        return HttpResponseRedirect(reverse("register"))
+        return JsonResponse(MENU_DATA.get('register'))
 
 def login_check(request):
     pass
