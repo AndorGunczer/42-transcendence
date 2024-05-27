@@ -588,8 +588,9 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'form',
-                        'action': '',
-                        'method': 'POST',
+                        # 'action': '',
+                        # 'method': 'POST',
+                        'identifier': 'login_form',
                         'content': [
                             {
                                 'type': 'div',
@@ -625,7 +626,8 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'input',
-                                'inputType': 'submit'
+                                'inputType': 'submit',
+                                'form': 'login_form'
                             }
                         ]
                     }

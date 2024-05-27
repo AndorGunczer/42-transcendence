@@ -29,8 +29,8 @@ function startSingleGame() {
     x: canvas.width / 2,
     y: canvas.height / 2,
     size: ballSize,
-    dx: 2,
-    dy: 2,
+    dx: 8,
+    dy: 8,
   };
 
   // Game state
@@ -119,8 +119,8 @@ function startSingleGame() {
     if (ball.x <= 0 || ball.x >= canvas.width) {
       ball.x = canvas.width / 2;
       ball.y = canvas.height / 2;
-      ball.dx = 2;
-      ball.dy = 2;
+      ball.dx = 8;
+      ball.dy = 8;
     }
   }
 
@@ -157,6 +157,13 @@ function startSingleGame() {
   // });
 }
 
+// function getRandomInt(max) {
+//   let num = Math.floor(Math.random() * 20);
+
+//   if (num <= 10) return num;
+//   else return Math.floor(num / 2) * -1;
+// }
+
 function startLocalGame() {
   // Get the canvas element and its 2D rendering context
   const canvas = document.getElementById("pongCanvas");
@@ -186,8 +193,8 @@ function startLocalGame() {
     x: canvas.width / 2,
     y: canvas.height / 2,
     size: ballSize,
-    dx: 2,
-    dy: 2,
+    dx: 8,
+    dy: 8,
   };
 
   // Game state
@@ -266,8 +273,14 @@ function startLocalGame() {
     );
 
     // Move ball
+    // let speedChange = getRandomInt();
+    // ball.dx = speedChange;
+    // speedChange = getRandomInt();
+    // ball.dy = speedChange;
     ball.x += ball.dx;
     ball.y += ball.dy;
+
+    console.log(ball.x);
 
     // Check ball collisions with top and bottom walls
     if (ball.y <= 0 || ball.y + ball.size >= canvas.height) {
@@ -295,8 +308,8 @@ function startLocalGame() {
     if (ball.x <= 0 || ball.x >= canvas.width) {
       ball.x = canvas.width / 2;
       ball.y = canvas.height / 2;
-      ball.dx = 2;
-      ball.dy = 2;
+      ball.dx = 8;
+      ball.dy = 8;
     }
   }
 

@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from . import models
-from transcendence.models import Users
+from transcendence.models import Users2
 from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import make_password, check_password
 
 # from rest_framework.decorators import api_view
 from .menus import MENU_DATA
@@ -84,7 +86,7 @@ def registration_check(request):
             if username == '': raise Exception("username_not_specified")
             password = request.POST["password"]
             if password == '': raise Exception("password_not_specified")
-            new_user = Users(username=username, wins=0, losses=0)
+            new_user = Users2(username=username, wins=0, losses=0)
             new_user.set_password(password)
             new_user.save()
             # Users.objects.create(username=username, password=Users.make_password(password), wins=0, losses=0, games=None)
@@ -97,8 +99,26 @@ def registration_check(request):
     else:
         return JsonResponse(MENU_DATA.get('register'))
 
+@csrf_exempt
 def login_check(request):
-    pass
+    if request.method == "POST":
+        try:
+            check_if_user_exists = Users2.objects.filter(username=request.POST["username"]).exists()
+            if check_if_user_exists:
+                print("WHATSAPP")
+                user = authenticate(request, username=request.POST["username"], password=request.POST["password"])
+                print(user)
+                if user is not None:
+                    # this user is valid, do what you want to do
+                    pass
+                else:
+                    pass
+                    # this user is not valid, he provided wrong password, show some error message
+        except Exception as e:
+            pass
+    else:
+        # there is no such entry with this username in the table
+        pass
 
 # def index(request):
 #     return render(request, "/", {})
