@@ -251,7 +251,7 @@ function load_login() {
       });
       document
         .getElementById("login_form")
-        .addEventListener("submit", submit_login_form);
+        .addEventListener("submit", jwt_kriegen);
     });
 }
 
