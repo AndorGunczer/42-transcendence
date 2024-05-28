@@ -21,6 +21,33 @@ def validate_token(token):
         return True
     except (InvalidToken, TokenError):
         return False
+
+def get_user_from_token(token):
+    token = AccessToken(token)
+    user_id = token.payload['user_id']
+    user = Users2.objects.get(id=user_id)
+
+    return user
+
+def get_token_from_header(request):
+    auth_header = request.headers.get('Authorization')
+    if auth_header and auth_header.startswith('Bearer '):
+        return auth_header.split(' ')[1]  # Get the token part after 'Bearer'
+    else:
+        return None
+    
+def modify_json_menu(menu_type, token):
+    menu = MENU_DATA.get(menu_type)
+    user = get_user_from_token(token)
+
+    print(menu['headerItems'][0]['content'][1]['text'] )
+
+    menu['headerItems'][0]['content'][1]['text'] = f'LOGGED IN AS {user}'
+    menu['headerItems'][0]['content'][2]['text'] = f'wins: {user.wins}'
+    menu['headerItems'][0]['content'][3]['text'] = f'losses: {user.losses}'
+    
+
+    return menu
     
 # VIEW FUNCTIONS
 
@@ -28,40 +55,39 @@ def index(request):
     return render(request, 'menu_general/index.html', {})
 
 def indexPost(request, menu_type='main'):
-    # print(request)
-    # print("request.headers: %s", request.headers)
-    auth_header = request.headers.get('Authorization')
-    if auth_header and auth_header.startswith('Bearer '):
-        token = auth_header.split(' ')[1]  # Get the token part after 'Bearer'
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        menu = MENU_DATA.get(menu_type)
     else:
-        print("first")
-        return JsonResponse({'error': 'Unauthorized'}, status=401)
+        menu = modify_json_menu(menu_type, token)
 
-    # Validate the token
-    if not validate_token(token):
-        print("second")
-        return JsonResponse({'error': 'Unauthorized'}, status=401)
-
-    menu = MENU_DATA.get(menu_type)
-    menu['headerItems'][0]['label'] = 'LOGGED IN AS bitchslap'
-    token = AccessToken(token)
-    user_id = token.payload['user_id']
-    user = Users2.objects.get(id=user_id)
-    print(user)
+    # # Validate the token
+    # if not validate_token(token):
+    #     return JsonResponse({'error': 'Unauthorized'}, status=401)
+    
     if menu is not None:
         return JsonResponse(menu)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
 def play(request, menu_type='play_menu'):
-    menu = MENU_DATA.get(menu_type)
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        menu = MENU_DATA.get(menu_type)
+    else:
+        menu = modify_json_menu(menu_type, token)
     if menu is not None:
         return JsonResponse(menu)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
 def singleplayer_menu(request, menu_type='singleplayer_menu'):
-    menu = MENU_DATA.get(menu_type)
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        menu = MENU_DATA.get(menu_type)
+    else:
+        menu = modify_json_menu(menu_type, token)
+
     if menu is not None:
         return JsonResponse(menu)
     else:
@@ -75,14 +101,24 @@ def singleplayer_game(request, menu_type='singleplayer_game'):
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
 def local_menu(request, menu_type='local_menu'):
-    menu = MENU_DATA.get(menu_type)
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        menu = MENU_DATA.get(menu_type)
+    else:
+        menu = modify_json_menu(menu_type, token)
+
     if menu is not None:
         return JsonResponse(menu)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
 def online_menu(request, menu_type='online_menu'):
-    menu = MENU_DATA.get(menu_type)
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        menu = MENU_DATA.get(menu_type)
+    else:
+        menu = modify_json_menu(menu_type, token)
+
     if menu is not None:
         return JsonResponse(menu)
     else:
@@ -96,14 +132,24 @@ def local_game(request, menu_type='local_game'):
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
 def login(request, warning: str = None, menu_type='login'):
-    menu = MENU_DATA.get(menu_type)
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        menu = MENU_DATA.get(menu_type)
+    else:
+        menu = modify_json_menu(menu_type, token)
+
     if menu is not None:
         return JsonResponse(menu)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
 def register(request, warning: str = None, menu_type='register'):
-    menu = MENU_DATA.get(menu_type)
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        menu = MENU_DATA.get(menu_type)
+    else:
+        menu = modify_json_menu(menu_type, token)
+
     if menu is not None:
         return JsonResponse(menu)
     else:

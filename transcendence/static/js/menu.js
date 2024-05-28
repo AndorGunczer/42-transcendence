@@ -40,7 +40,8 @@ function divLoader(parent, itemList) {
     if (item.type == "div" || item.type == "form") {
       let subElement = document.createElement(item.type);
       elementCustomize(subElement, item);
-      divLoader(subElement, item.content);
+      if (item.content && item.content != "")
+        divLoader(subElement, item.content);
       parent.appendChild(subElement);
     } else {
       let subElement = document.createElement(item.type);
@@ -56,21 +57,26 @@ function divLoader(parent, itemList) {
   // parent.appendChild(currentElement);
 }
 
+// if (item.type == "div" || item.type == "form") {
+//   let subElement = document.createElement(item.type);
+//   elementCustomize(subElement, item);
+//   divLoader(subElement, item.content);
+//   parent.appendChild(subElement);
+// } else {
+//   let subElement = document.createElement(item.type);
+//   elementCustomize(subElement, item);
+//   parent.appendChild(subElement);
+// }
+
 function headerLoad(json) {
   json.headerItems.forEach((item) => {
+    console.log(item.type);
     let parent = document.getElementsByClassName("header")[0];
     let element = document.createElement(item.type);
-    if (item.type == "p") element.innerHTML = item.label;
-    if (item.type == "div") {
-      element.setAttribute("class", "menu-button");
-    }
-    if (item.type == "button") {
-      let div = document.createElement("div");
-      parent.appendChild(div);
-      element.innerHTML = item.label;
-      element.setAttribute("class", "menu-button");
-      element.setAttribute("onclick", item.action);
-    }
+    if (item.type == "div" || item.type == "form")
+      if (item.content && item.content != "") divLoader(element, item.content);
+
+    elementCustomize(element, item);
     parent.appendChild(element);
   });
 }
@@ -84,8 +90,6 @@ function load_main() {
   if (accessToken) {
     headers.append("Authorization", "Bearer " + accessToken);
   }
-  console.log(accessToken);
-  console.log(headers);
 
   fetch(url, {
     method: "GET", // or 'POST', depending on your needs
@@ -119,8 +123,18 @@ function load_main() {
 
 function load_playMenu() {
   let url = "/play";
+  let accessToken = localStorage.getItem("access_token"); // or sessionStorage, or document.cookie
 
-  fetch(url)
+  // Create headers object and conditionally add the Authorization header
+  let headers = new Headers();
+  if (accessToken) {
+    headers.append("Authorization", "Bearer " + accessToken);
+  }
+
+  fetch(url, {
+    method: "GET", // or 'POST', depending on your needs
+    headers: headers,
+  })
     .then((response) => {
       if (!response.ok) console.log("yeaah");
       else return response.json();
@@ -152,7 +166,18 @@ function load_playMenu() {
 function single_pregame() {
   let url = "/singleplayer_menu";
 
-  fetch(url)
+  let accessToken = localStorage.getItem("access_token"); // or sessionStorage, or document.cookie
+
+  // Create headers object and conditionally add the Authorization header
+  let headers = new Headers();
+  if (accessToken) {
+    headers.append("Authorization", "Bearer " + accessToken);
+  }
+
+  fetch(url, {
+    method: "GET", // or 'POST', depending on your needs
+    headers: headers,
+  })
     .then((response) => {
       if (!response.ok) console.log("yeaah");
       else return response.json();
@@ -176,7 +201,18 @@ function single_pregame() {
 function local_pregame() {
   let url = "/local_menu";
 
-  fetch(url)
+  let accessToken = localStorage.getItem("access_token"); // or sessionStorage, or document.cookie
+
+  // Create headers object and conditionally add the Authorization header
+  let headers = new Headers();
+  if (accessToken) {
+    headers.append("Authorization", "Bearer " + accessToken);
+  }
+
+  fetch(url, {
+    method: "GET", // or 'POST', depending on your needs
+    headers: headers,
+  })
     .then((response) => {
       if (!response.ok) console.log("yeaah");
       else return response.json();
@@ -198,7 +234,18 @@ function local_pregame() {
 function online_pregame() {
   let url = "/online_menu";
 
-  fetch(url)
+  let accessToken = localStorage.getItem("access_token"); // or sessionStorage, or document.cookie
+
+  // Create headers object and conditionally add the Authorization header
+  let headers = new Headers();
+  if (accessToken) {
+    headers.append("Authorization", "Bearer " + accessToken);
+  }
+
+  fetch(url, {
+    method: "GET", // or 'POST', depending on your needs
+    headers: headers,
+  })
     .then((response) => {
       if (!response.ok) console.log("yeaah");
       else return response.json();
@@ -220,7 +267,18 @@ function online_pregame() {
 function load_register() {
   let url = "/register";
 
-  fetch(url)
+  let accessToken = localStorage.getItem("access_token"); // or sessionStorage, or document.cookie
+
+  // Create headers object and conditionally add the Authorization header
+  let headers = new Headers();
+  if (accessToken) {
+    headers.append("Authorization", "Bearer " + accessToken);
+  }
+
+  fetch(url, {
+    method: "GET", // or 'POST', depending on your needs
+    headers: headers,
+  })
     .then((response) => {
       if (!response.ok) console.log("yeaah");
       else return response.json();
@@ -245,7 +303,18 @@ function load_register() {
 function load_login() {
   let url = "/login";
 
-  fetch(url)
+  let accessToken = localStorage.getItem("access_token"); // or sessionStorage, or document.cookie
+
+  // Create headers object and conditionally add the Authorization header
+  let headers = new Headers();
+  if (accessToken) {
+    headers.append("Authorization", "Bearer " + accessToken);
+  }
+
+  fetch(url, {
+    method: "GET", // or 'POST', depending on your needs
+    headers: headers,
+  })
     .then((response) => {
       if (!response.ok) console.log("yeaah");
       else return response.json();
