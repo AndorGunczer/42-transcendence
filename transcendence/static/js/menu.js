@@ -77,8 +77,20 @@ function headerLoad(json) {
 
 function load_main() {
   let url = "/indexPost";
+  let accessToken = localStorage.getItem("access_token"); // or sessionStorage, or document.cookie
 
-  fetch(url)
+  // Create headers object and conditionally add the Authorization header
+  let headers = new Headers();
+  if (accessToken) {
+    headers.append("Authorization", "Bearer " + accessToken);
+  }
+  console.log(accessToken);
+  console.log(headers);
+
+  fetch(url, {
+    method: "GET", // or 'POST', depending on your needs
+    headers: headers,
+  })
     .then((response) => {
       if (!response.ok) console.log("yeaah");
       else return response.json();

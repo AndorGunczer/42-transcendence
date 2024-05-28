@@ -7,15 +7,47 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password, check_password
+from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
 # from rest_framework.decorators import api_view
 from .menus import MENU_DATA
+
+# HELPER FUNCTIONS
+
+def validate_token(token):
+    try:
+        AccessToken(token)  # This will validate the token
+        return True
+    except (InvalidToken, TokenError):
+        return False
+    
+# VIEW FUNCTIONS
 
 def index(request):
     return render(request, 'menu_general/index.html', {})
 
 def indexPost(request, menu_type='main'):
+    # print(request)
+    # print("request.headers: %s", request.headers)
+    auth_header = request.headers.get('Authorization')
+    if auth_header and auth_header.startswith('Bearer '):
+        token = auth_header.split(' ')[1]  # Get the token part after 'Bearer'
+    else:
+        print("first")
+        return JsonResponse({'error': 'Unauthorized'}, status=401)
+
+    # Validate the token
+    if not validate_token(token):
+        print("second")
+        return JsonResponse({'error': 'Unauthorized'}, status=401)
+
     menu = MENU_DATA.get(menu_type)
+    menu['headerItems'][0]['label'] = 'LOGGED IN AS bitchslap'
+    token = AccessToken(token)
+    user_id = token.payload['user_id']
+    user = Users2.objects.get(id=user_id)
+    print(user)
     if menu is not None:
         return JsonResponse(menu)
     else:
