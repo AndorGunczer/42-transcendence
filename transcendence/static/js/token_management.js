@@ -16,8 +16,14 @@ function parseJwt(token) {
 
 // Function to check if the token is about to expire
 function isTokenExpiring(token, bufferTimeInSeconds) {
+  console.log("ISTOKENEXPIRING()");
   const tokenPayload = parseJwt(token);
   const currentTime = Math.floor(Date.now() / 1000);
+  console.log("currentTIme: " + currentTime);
+  console.log("tokenPayload: " + tokenPayload.exp);
+  console.log(
+    "tokenPayload - currentTime: " + (tokenPayload.exp - currentTime)
+  );
   return tokenPayload.exp - currentTime < bufferTimeInSeconds;
 }
 
