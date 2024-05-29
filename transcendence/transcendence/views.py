@@ -49,6 +49,10 @@ def modify_json_menu(menu_type, token):
     menu['headerItems'][0]['content'][1]['text'] = f'LOGGED IN AS {user}'
     menu['headerItems'][0]['content'][2]['text'] = f'wins: {user.wins}'
     menu['headerItems'][0]['content'][3]['text'] = f'losses: {user.losses}'
+
+    if token and menu['menuTitle'] == 'Main Menu Buttons':
+        del menu['menuItems'][4]['content'][0]
+        menu['menuItems'][4]['content'][0]['class'] = 'menu-button'
     
 
     return menu
