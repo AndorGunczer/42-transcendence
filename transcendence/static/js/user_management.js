@@ -71,37 +71,37 @@ function submit_login_form(event) {
 }
 
 function jwt_kriegen(event) {
-  event.preventDefault();
+  event.preventDefault(); // Prevent default form submission behavior
 
   let username = document.getElementById("username").value;
   let password = document.getElementById("password").value;
 
   console.log("Starting fetch request...");
 
-  fetch("http://localhost:8000/api/token/", {
+  fetch("https://localhost:8000/api/token/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Accept: "application/json",
     },
     body: JSON.stringify({ username, password }),
   })
     .then((response) => {
-      console.log("Full response:", response);
+      console.log("response from Javascript Token process: " + response.ok);
+      console.log("response from Javascript Token process: " + response.status);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
+      console.log("Got to response");
       return response.json();
     })
     .then((data) => {
       console.log("Response data:", data);
-      if (data.access && data.refresh) {
-        localStorage.setItem("access_token", data.access);
-        localStorage.setItem("refresh_token", data.refresh);
-        startTokenRefreshCheck();
+      if (data.message === "Token created") {
+        console.log("Tokens stored successfully in cookies.");
         load_main();
-        console.log("Tokens stored successfully.");
       } else {
-        console.error("Response does not contain tokens:", data);
+        console.error("Unexpected response:", data);
       }
     })
     .catch((error) => {
