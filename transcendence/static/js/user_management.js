@@ -98,6 +98,7 @@ function jwt_kriegen(event) {
         localStorage.setItem("access_token", data.access);
         localStorage.setItem("refresh_token", data.refresh);
         startTokenRefreshCheck();
+        load_main();
         console.log("Tokens stored successfully.");
       } else {
         console.error("Response does not contain tokens:", data);
