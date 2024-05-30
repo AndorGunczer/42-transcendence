@@ -69,3 +69,42 @@ function submit_login_form(event) {
       console.error("Error submitting registration form:", error)
     );
 }
+
+function jwt_kriegen(event) {
+  event.preventDefault();
+
+  let username = document.getElementById("username").value;
+  let password = document.getElementById("password").value;
+
+  console.log("Starting fetch request...");
+
+  fetch("http://localhost:8000/api/token/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, password }),
+  })
+    .then((response) => {
+      console.log("Full response:", response);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Response data:", data);
+      if (data.access && data.refresh) {
+        localStorage.setItem("access_token", data.access);
+        localStorage.setItem("refresh_token", data.refresh);
+        startTokenRefreshCheck();
+        load_main();
+        console.log("Tokens stored successfully.");
+      } else {
+        console.error("Response does not contain tokens:", data);
+      }
+    })
+    .catch((error) => {
+      console.error("There was an error:", error);
+    });
+}

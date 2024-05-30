@@ -4,12 +4,31 @@ MENU_DATA = {
         'headerItems': [
             {
                 'id': 1,
-                'type': 'p',
-                'label': 'logged in as PLACEHOLDER'
+                'type': 'div',
+                'class': 'player-info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'logged in as PLACEHOLDER'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'losses'
+                    }
+                ]
             },
             {
                 'id': 2,
-                'type': 'div'
+                'type': 'div',
+                'class': 'menu-button'
             }
         ],
         'menuItems': [
@@ -74,15 +93,33 @@ MENU_DATA = {
         'headerItems': [
             {
                 'id': 1,
-                'type': 'p',
-                'label': 'logged in as PLACEHOLDER'
+                'type': 'div',
+                'class': 'player-info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'logged in as PLACEHOLDER'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'losses'
+                    }
+                ]
             },
             {
                 'id': 2,
                 'type': 'button',
                 'class': 'menu-button',
-                'label': 'BACK',
-                'action': 'load_main()'
+                'text': 'BACK',
+                'onclick': 'load_main()'
             }
         ],
         'menuItems': [
@@ -126,14 +163,33 @@ MENU_DATA = {
         'headerItems': [
             {
                 'id': 1,
-                'type': 'p',
-                'label': 'logged in as PLACEHOLDER'
+                'type': 'div',
+                'class': 'player-info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'logged in as PLACEHOLDER'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'losses'
+                    }
+                ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'label': 'BACK',
-                'action': 'load_playMenu()'
+                'class': 'menu-button',
+                'text': 'BACK',
+                'onclick': 'load_playMenu()'
             }
         ],
         'menuItems': [
@@ -251,14 +307,33 @@ MENU_DATA = {
         'headerItems': [
             {
                 'id': 1,
-                'type': 'p',
-                'label': 'logged in as PLACEHOLDER'
+                'type': 'div',
+                'class': 'player-info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'logged in as PLACEHOLDER'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'losses'
+                    }
+                ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'label': 'BACK',
-                'action': 'load_playMenu()'
+                'class': 'menu-button',
+                'text': 'BACK',
+                'onclick': 'load_playMenu()'
             }
         ],
         'menuItems': [
@@ -376,14 +451,33 @@ MENU_DATA = {
         'headerItems': [
             {
                 'id': 1,
-                'type': 'p',
-                'label': 'logged in as PLACEHOLDER'
+                'type': 'div',
+                'class': 'player-info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'logged in as PLACEHOLDER'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'losses'
+                    }
+                ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'label': 'BACK',
-                'action': 'load_playMenu()'
+                'class': 'menu-button',
+                'text': 'BACK',
+                'onclick': 'load_playMenu()'
             }
         ],
         'menuItems': [
@@ -501,14 +595,33 @@ MENU_DATA = {
         'headerItems': [
             {
                 'id': 1,
-                'type': 'p',
-                'label': 'logged in as PLACEHOLDER'
+                'type': 'div',
+                'class': 'player-info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'logged in as PLACEHOLDER'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'losses'
+                    }
+                ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'label': 'BACK',
-                'action': 'load_main()'
+                'class': 'menu-button',
+                'text': 'BACK',
+                'onclick': 'load_main()'
             }
         ],
         'menuItems': [
@@ -571,14 +684,33 @@ MENU_DATA = {
         'headerItems': [
             {
                 'id': 1,
-                'type': 'p',
-                'label': 'logged in as PLACEHOLDER'
+                'type': 'div',
+                'class': 'player-info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'logged in as PLACEHOLDER'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'losses'
+                    }
+                ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'label': 'BACK',
-                'action': 'load_playMenu()'
+                'class': 'menu-button',
+                'text': 'BACK',
+                'onclick': 'load_main()'
             }
         ],
         'menuItems': [
