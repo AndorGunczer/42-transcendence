@@ -97,7 +97,24 @@ def modify_json_menu(menu_type, token):
 # VIEW FUNCTIONS
 
 def index(request):
-    return render(request, 'menu_general/index.html', {})
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        obj = {
+            'username': 'Guest',
+            'wins': 'None',
+            'losses': 'None',
+        }
+        return render(request, 'menu_general/index.html', obj)
+    else:
+        user = get_user_from_token(token)
+        obj = {
+            'username': user.username,
+            'wins': user.wins,
+            'losses': user.losses,
+        }
+        print(obj)
+        return render(request, 'menu_general/index.html', obj)
+
 
 def indexPost(request, menu_type='main'):
     token = get_token_from_header(request)
