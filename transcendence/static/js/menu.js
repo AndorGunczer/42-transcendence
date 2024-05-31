@@ -33,9 +33,6 @@ function elementCustomize(element, item) {
 }
 
 function divLoader(parent, itemList) {
-  // let currentElement = document.createElement(item.type);
-  // if (item.class) currentElement.class = item.class;
-
   itemList.forEach((item) => {
     if (item.type == "div" || item.type == "form") {
       let subElement = document.createElement(item.type);
@@ -49,24 +46,7 @@ function divLoader(parent, itemList) {
       parent.appendChild(subElement);
     }
   });
-
-  // function autoLoader(parent, fullList) {
-  //   fullList.for
-  // }
-
-  // parent.appendChild(currentElement);
 }
-
-// if (item.type == "div" || item.type == "form") {
-//   let subElement = document.createElement(item.type);
-//   elementCustomize(subElement, item);
-//   divLoader(subElement, item.content);
-//   parent.appendChild(subElement);
-// } else {
-//   let subElement = document.createElement(item.type);
-//   elementCustomize(subElement, item);
-//   parent.appendChild(subElement);
-// }
 
 function headerLoad(json) {
   json.headerItems.forEach((item) => {
@@ -83,19 +63,8 @@ function headerLoad(json) {
 
 function load_main() {
   let url = "/indexPost";
-  let accessToken = localStorage.getItem("access_token"); // or sessionStorage, or document.cookie
-  console.log(accessToken);
 
-  // Create headers object and conditionally add the Authorization header
-  let headers = new Headers();
-  if (accessToken) {
-    headers.append("Authorization", "Bearer " + accessToken);
-  }
-
-  fetch(url, {
-    method: "GET", // or 'POST', depending on your needs
-    headers: headers,
-  })
+  fetch(url)
     .then((response) => {
       if (!response.ok) console.log("yeaah");
       else return response.json();
@@ -124,18 +93,8 @@ function load_main() {
 
 function load_playMenu() {
   let url = "/play";
-  let accessToken = localStorage.getItem("access_token"); // or sessionStorage, or document.cookie
 
-  // Create headers object and conditionally add the Authorization header
-  let headers = new Headers();
-  if (accessToken) {
-    headers.append("Authorization", "Bearer " + accessToken);
-  }
-
-  fetch(url, {
-    method: "GET", // or 'POST', depending on your needs
-    headers: headers,
-  })
+  fetch(url)
     .then((response) => {
       if (!response.ok) console.log("yeaah");
       else return response.json();
@@ -167,18 +126,7 @@ function load_playMenu() {
 function single_pregame() {
   let url = "/singleplayer_menu";
 
-  let accessToken = localStorage.getItem("access_token"); // or sessionStorage, or document.cookie
-
-  // Create headers object and conditionally add the Authorization header
-  let headers = new Headers();
-  if (accessToken) {
-    headers.append("Authorization", "Bearer " + accessToken);
-  }
-
-  fetch(url, {
-    method: "GET", // or 'POST', depending on your needs
-    headers: headers,
-  })
+  fetch(url)
     .then((response) => {
       if (!response.ok) console.log("yeaah");
       else return response.json();
@@ -202,18 +150,7 @@ function single_pregame() {
 function local_pregame() {
   let url = "/local_menu";
 
-  let accessToken = localStorage.getItem("access_token"); // or sessionStorage, or document.cookie
-
-  // Create headers object and conditionally add the Authorization header
-  let headers = new Headers();
-  if (accessToken) {
-    headers.append("Authorization", "Bearer " + accessToken);
-  }
-
-  fetch(url, {
-    method: "GET", // or 'POST', depending on your needs
-    headers: headers,
-  })
+  fetch(url)
     .then((response) => {
       if (!response.ok) console.log("yeaah");
       else return response.json();
@@ -235,18 +172,7 @@ function local_pregame() {
 function online_pregame() {
   let url = "/online_menu";
 
-  let accessToken = localStorage.getItem("access_token"); // or sessionStorage, or document.cookie
-
-  // Create headers object and conditionally add the Authorization header
-  let headers = new Headers();
-  if (accessToken) {
-    headers.append("Authorization", "Bearer " + accessToken);
-  }
-
-  fetch(url, {
-    method: "GET", // or 'POST', depending on your needs
-    headers: headers,
-  })
+  fetch(url)
     .then((response) => {
       if (!response.ok) console.log("yeaah");
       else return response.json();
@@ -268,18 +194,7 @@ function online_pregame() {
 function load_register() {
   let url = "/register";
 
-  let accessToken = localStorage.getItem("access_token"); // or sessionStorage, or document.cookie
-
-  // Create headers object and conditionally add the Authorization header
-  let headers = new Headers();
-  if (accessToken) {
-    headers.append("Authorization", "Bearer " + accessToken);
-  }
-
-  fetch(url, {
-    method: "GET", // or 'POST', depending on your needs
-    headers: headers,
-  })
+  fetch(url)
     .then((response) => {
       if (!response.ok) console.log("yeaah");
       else return response.json();
@@ -304,18 +219,7 @@ function load_register() {
 function load_login() {
   let url = "/login";
 
-  let accessToken = localStorage.getItem("access_token"); // or sessionStorage, or document.cookie
-
-  // Create headers object and conditionally add the Authorization header
-  let headers = new Headers();
-  if (accessToken) {
-    headers.append("Authorization", "Bearer " + accessToken);
-  }
-
-  fetch(url, {
-    method: "GET", // or 'POST', depending on your needs
-    headers: headers,
-  })
+  fetch(url)
     .then((response) => {
       if (!response.ok) console.log("yeaah");
       else return response.json();

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'django_extensions',
 ]
 
 AUTH_USER_MODEL = "transcendence.Users2"
@@ -60,11 +61,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'transcendence.middleware.JWTAuthFromCookiesMiddleware',
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",  # Adjust according to your frontend URL
     "http://127.0.0.1:8000",
+    "https://localhost:8000",
+    "https://127.0.0.1:8000",
 ]
 
 ROOT_URLCONF = 'transcendence.urls'
