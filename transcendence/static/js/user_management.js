@@ -78,7 +78,7 @@ function jwt_kriegen(event) {
 
   console.log("Starting fetch request...");
 
-  fetch("https://localhost:8000/api/token/", {
+  fetch("https://127.0.0.1:8000/api/token/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

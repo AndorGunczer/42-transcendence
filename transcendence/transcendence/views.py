@@ -14,7 +14,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 import copy
 
-# from rest_framework.decorators import api_view
 from .menus import MENU_DATA
 
 # Neue Datei
