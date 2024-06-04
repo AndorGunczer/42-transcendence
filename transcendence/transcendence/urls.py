@@ -36,4 +36,5 @@ urlpatterns = [
     path('registration_check', views.registration_check, name="registration_check"),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
+    path('logout', views.logout, name='logout'),
 ]

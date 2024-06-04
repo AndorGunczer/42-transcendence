@@ -105,6 +105,22 @@ function jwt_kriegen(event) {
       }
     })
     .catch((error) => {
-      console.error("There was an error:", error);
+      console.error("There was an error: ", error);
+    });
+}
+
+function logout(event) {
+  fetch("https://127.0.0.1:8000/logout", {
+    method: "POST",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Token Cookies Deleted Successfully.");
+      load_main();
+    })
+    .catch((error) => {
+      console.error("there was an error: ", error);
     });
 }

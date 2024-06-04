@@ -87,6 +87,14 @@ def modify_json_menu(menu_type, token):
     menu['headerItems'][0]['content'][2]['text'] = f'wins: {user.wins}'
     menu['headerItems'][0]['content'][3]['text'] = f'losses: {user.losses}'
 
+    menu['headerItems'].append({
+                'id': 2,
+                'type': 'button',
+                'class': 'menu-button',
+                'text': 'LOGOUT',
+                'onclick': 'logout()'
+    })
+
     if token and menu['menuTitle'] == 'Main Menu Buttons':
         del menu['menuItems'][4]['content'][0]
         menu['menuItems'][4]['content'][0]['class'] = 'menu-button'
@@ -264,3 +272,14 @@ def login_check(request):
 
 # def index(request):
 #     return render(request, "/", {})
+
+@csrf_exempt
+def logout(request):
+    if request.method == "POST":
+        try:
+            response = JsonResponse({'message': 'Logged out successfully'})
+            response.delete_cookie('access_token')
+            response.delete_cookie('refresh_token')
+            return response
+        except Exception as e:
+            pass
