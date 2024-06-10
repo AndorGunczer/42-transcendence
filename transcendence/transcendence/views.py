@@ -13,6 +13,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 import copy
+from django.middleware.csrf import get_token
+import json
 
 from .menus import MENU_DATA
 
@@ -227,14 +229,14 @@ def register(request, warning: str = None, menu_type='register'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
-@csrf_exempt
 def registration_check(request):
     if request.method == "POST":
         try:
-            print(request.POST)
-            username = request.POST["username"]
+            data = json.loads(request.body)
+            print(request.body)
+            username = data.get('username')
             if username == '': raise Exception("username_not_specified")
-            password = request.POST["password"]
+            password = data.get('password')
             if password == '': raise Exception("password_not_specified")
             new_user = Users2(username=username, wins=0, losses=0)
             new_user.set_password(password)
@@ -249,13 +251,11 @@ def registration_check(request):
     else:
         return JsonResponse(MENU_DATA.get('register'))
 
-@csrf_exempt
 def login_check(request):
     if request.method == "POST":
         try:
             check_if_user_exists = Users2.objects.filter(username=request.POST["username"]).exists()
             if check_if_user_exists:
-                print("WHATSAPP")
                 user = authenticate(request, username=request.POST["username"], password=request.POST["password"])
                 print(user)
                 if user is not None:
@@ -273,7 +273,6 @@ def login_check(request):
 # def index(request):
 #     return render(request, "/", {})
 
-@csrf_exempt
 def logout(request):
     if request.method == "POST":
         try:
@@ -283,3 +282,7 @@ def logout(request):
             return response
         except Exception as e:
             pass
+
+def get_csrf_token(request):
+    csrf_token = get_token(request)
+    return JsonResponse({'csrfToken': csrf_token})

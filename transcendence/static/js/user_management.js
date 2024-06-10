@@ -1,17 +1,27 @@
-function submit_registration_form(event) {
+async function submit_registration_form(event) {
   event.preventDefault(); // Prevent default form submission
+
+  const csrfToken = await getCsrfToken();
 
   console.log(document.getElementById("username").value);
 
-  let formData = new FormData();
-  formData.append("username", document.getElementById("username").value);
-  formData.append("password", document.getElementById("password").value);
+  // let formData = new FormData();
+  // formData.append("username", document.getElementById("username").value);
+  // formData.append("password", document.getElementById("password").value);
 
-  console.log(formData);
+  let username = document.getElementById("username").value;
+  let password = document.getElementById("password").value;
+
+  // console.log(formData);
 
   fetch("/registration_check", {
     method: "POST",
-    body: formData,
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({ username, password }), // JSON.stringify({ username, password })
+    credentials: "include",
   })
     .then((response) => response.json())
     .then((json) => {
@@ -70,8 +80,10 @@ function submit_login_form(event) {
     );
 }
 
-function jwt_kriegen(event) {
+async function jwt_kriegen(event) {
   event.preventDefault(); // Prevent default form submission behavior
+
+  const csrfToken = await getCsrfToken();
 
   let username = document.getElementById("username").value;
   let password = document.getElementById("password").value;
@@ -82,9 +94,11 @@ function jwt_kriegen(event) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
       Accept: "application/json",
     },
     body: JSON.stringify({ username, password }),
+    credentials: "include",
   })
     .then((response) => {
       console.log("response from Javascript Token process: " + response.ok);
@@ -109,9 +123,16 @@ function jwt_kriegen(event) {
     });
 }
 
-function logout(event) {
+async function logout(event) {
+  const csrfToken = await getCsrfToken();
+
   fetch("https://127.0.0.1:8000/logout", {
     method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    credentials: "include",
   })
     .then((response) => {
       return response.json();
@@ -123,4 +144,13 @@ function logout(event) {
     .catch((error) => {
       console.error("there was an error: ", error);
     });
+}
+
+async function getCsrfToken() {
+  const response = await fetch("/api/csrf-token/", {
+    method: "GET",
+    credentials: "include",
+  });
+  const data = await response.json();
+  return data.csrfToken;
 }
