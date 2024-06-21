@@ -19,17 +19,22 @@ RUN pip3 install django-cors-headers
 RUN pip3 install djangorestframework-simplejwt
 RUN pip3 install django-extensions
 RUN pip3 install pyOpenSSL
+RUN apt-get install python3-psycopg2 -y
+RUN pip install Werkzeug
 RUN apt-get install sudo
 
 RUN apt-get install postgresql -y
 
 COPY ./script/script.sh script.sh
 COPY ./files/pg_hba.conf .
+COPY ./transcendence ./transcendence
 
 RUN chmod +x ./script.sh
 
 RUN echo 'postgres:12345' | chpasswd
 
 RUN echo 'root ALL=(postgres) NOPASSWD: ALL' >> /etc/sudoers
+
+EXPOSE 8000
 
 ENTRYPOINT ["./script.sh"]
