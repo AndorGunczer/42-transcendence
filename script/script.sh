@@ -25,7 +25,7 @@ psql -v ON_ERROR_STOP=1 --username "postgres" <<-EOSQL
     ALTER DATABASE transcendence OWNER TO project;
 EOSQL
 
-cd transcandance
+cd ../transcendence
 
 python3 manage.py migrate
-python3 manage.py runserver_plus --cert-file /app/cert.pem --key-file /app/key.pem
+python3 manage.py runserver_plus 8000:8000 --cert-file /app/cert.crt --key-file /app/key.pem

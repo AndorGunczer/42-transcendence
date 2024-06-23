@@ -64,11 +64,15 @@ MIDDLEWARE = [
     'transcendence.middleware.JWTAuthFromCookiesMiddleware',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",  # Adjust according to your frontend URL
     "http://127.0.0.1:8000",
     "https://localhost:8000",
     "https://127.0.0.1:8000",
+    "http://0.0.0.0:8000",
+    "https://0.0.0.0:8000",
 ]
 
 ROOT_URLCONF = 'transcendence.urls'
@@ -200,3 +204,23 @@ SIMPLE_JWT = {
 #         },
 #     },
 # }
+
+import os
+from django.core.management.commands.runserver import Command as runserver
+
+class Command(runserver):
+    def add_arguments(self, parser):
+        super().add_arguments(parser)
+        parser.add_argument('--cert', help='Path to SSL certificate')
+        parser.add_argument('--key', help='Path to SSL key')
+
+    def handle(self, *args, **options):
+        cert = options.get('cert')
+        key = options.get('key')
+        if cert and key:
+            self.stdout.write("Starting server with SSL...")
+            os.environ['SSL_CERT_FILE'] = cert
+            os.environ['SSL_KEY_FILE'] = key
+        super().handle(*args, **options)
+
+ALLOWED_HOSTS=["*"]

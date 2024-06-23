@@ -3,3 +3,6 @@ apt-get install python3-psycopg2
 python3 manage.py migrate
 
 pip install Werkzeug
+
+docker run -p 8000:8000 -it integration1
+python3 manage.py createsuperuser
