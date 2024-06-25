@@ -668,6 +668,38 @@ MENU_DATA = {
                                 ]
                             },
                             {
+                                'type': 'div',
+                                'content': [
+                                    {
+                                        'type': 'label',
+                                        'for': 'avatar',
+                                        'text': 'Avatar'
+                                    },
+                                    {
+                                        'type': 'select',
+                                        'name': 'avatar',
+                                        'id': 'Avatar',
+                                        'content': [
+                                            {
+                                                'type': 'option',
+                                                'value': 'frog',
+                                                'text': 'Frog'
+                                            },
+                                            {
+                                                'type': 'option',
+                                                'value': 'dog',
+                                                'text': 'Dog'
+                                            },
+                                            {
+                                                'type': 'option',
+                                                'value': 'cat',
+                                                'text': 'Cat'
+                                            },
+                                        ]
+                                    },
+                                ]
+                            },
+                            {
                                 'type': 'input',
                                 'inputType': 'submit',
                                 'form': 'registration_form'

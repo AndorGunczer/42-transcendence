@@ -34,7 +34,7 @@ function elementCustomize(element, item) {
 
 function divLoader(parent, itemList) {
   itemList.forEach((item) => {
-    if (item.type == "div" || item.type == "form") {
+    if (item.type == "div" || item.type == "form" || item.type == "select") {
       let subElement = document.createElement(item.type);
       elementCustomize(subElement, item);
       if (item.content && item.content != "")
@@ -205,7 +205,11 @@ function load_register() {
       headerLoad(json);
       let parent = document.getElementsByClassName("container")[0];
       json.menuItems.forEach((item) => {
-        let element = document.createElement("div");
+        let element;
+        if (item.type == "div")
+          element = document.createElement("div");
+        else if (item.type == "select")
+          element = document.createElement("select")
         elementCustomize(element, item);
         divLoader(element, item.content);
         parent.appendChild(element);

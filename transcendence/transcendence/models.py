@@ -2,6 +2,10 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 
+class Avatar(models.Model):
+    name = models.CharField(max_length=100, unique=True, default="Not Set")
+    path = models.CharField(max_length=150, unique=True, default="Not Set")
+
 class Games(models.Model):
     player1 = models.CharField(max_length=20)
     player2 = models.CharField(max_length=20)
@@ -34,6 +38,7 @@ class Users2(AbstractBaseUser, PermissionsMixin):
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     games = models.ForeignKey(Games, null=True, on_delete=models.SET_NULL)
+    avatar = models.ForeignKey(Avatar, null=True, on_delete=models.SET_NULL)
 
     objects = CustomUserManager()
 
