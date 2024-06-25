@@ -678,7 +678,7 @@ MENU_DATA = {
                                     {
                                         'type': 'select',
                                         'name': 'avatar',
-                                        'id': 'Avatar',
+                                        'identifier': 'Avatar',
                                         'content': [
                                             {
                                                 'type': 'option',
@@ -697,6 +697,11 @@ MENU_DATA = {
                                             },
                                         ]
                                     },
+                                    {
+                                        'type': 'img',
+                                        'identifier': 'avatarPic',
+                                        'src': 'https://127.0.0.1:8000/static/images/question_mark.png',
+                                    }
                                 ]
                             },
                             {
