@@ -10,7 +10,7 @@ function changeSelectFunction(callback, dependencies) {
 
 
 const changeSelect = changeSelectFunction((event) => {
-  document.getElementById('avatarPic').setAttribute("src", `https://127.0.0.1:8000/static/images/${event.target.value}_avatar.jpg`);
+  document.getElementById('avatarPic').setAttribute("src", `https://127.0.0.1:8000/static/images/${event.target.value}`);
 }, []);
 
 function deleteHeader() {

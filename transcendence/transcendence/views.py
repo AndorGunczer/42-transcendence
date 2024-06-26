@@ -97,6 +97,12 @@ def modify_json_menu(menu_type, token):
                 'onclick': 'logout()'
     })
 
+    menu['headerItems'][0]['content'].append({
+                'type': 'img',
+                'src': f'{user.avatarDirect}',
+                'identifier': 'avatarPic'
+    })
+
     if token and menu['menuTitle'] == 'Main Menu Buttons':
         del menu['menuItems'][4]['content'][0]
         menu['menuItems'][4]['content'][0]['class'] = 'menu-button'
@@ -238,7 +244,11 @@ def registration_check(request):
             if username == '': raise Exception("username_not_specified")
             password = data.get('password')
             if password == '': raise Exception("password_not_specified")
-            new_user = Users2(username=username, wins=0, losses=0)
+            pre = "https://127.0.0.1:8000/static/images/"
+            print(data.get("avatar"))
+            avatar = pre + data.get('avatar')
+            print(avatar)
+            new_user = Users2(username=username, wins=0, losses=0, avatarDirect=avatar)
             new_user.set_password(password)
             new_user.save()
             # Users.objects.create(username=username, password=Users.make_password(password), wins=0, losses=0, games=None)

@@ -11,6 +11,7 @@ async function submit_registration_form(event) {
 
   let username = document.getElementById("username").value;
   let password = document.getElementById("password").value;
+  let avatar = document.getElementById("Avatar").value;
 
   // console.log(formData);
 
@@ -20,7 +21,7 @@ async function submit_registration_form(event) {
       "Content-Type": "application/json",
       "X-CSRFToken": csrfToken,
     },
-    body: JSON.stringify({ username, password }), // JSON.stringify({ username, password })
+    body: JSON.stringify({ username, password, avatar }), // JSON.stringify({ username, password })
     credentials: "include",
   })
     .then((response) => response.json())

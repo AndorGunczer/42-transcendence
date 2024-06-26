@@ -39,6 +39,7 @@ class Users2(AbstractBaseUser, PermissionsMixin):
     losses = models.IntegerField(default=0)
     games = models.ForeignKey(Games, null=True, on_delete=models.SET_NULL)
     avatar = models.ForeignKey(Avatar, null=True, on_delete=models.SET_NULL)
+    avatarDirect = models.CharField(max_length=200, null=True)
 
     objects = CustomUserManager()
 

@@ -682,17 +682,17 @@ MENU_DATA = {
                                         'content': [
                                             {
                                                 'type': 'option',
-                                                'value': 'frog',
+                                                'value': 'frog_avatar.jpg',
                                                 'text': 'Frog'
                                             },
                                             {
                                                 'type': 'option',
-                                                'value': 'dog',
+                                                'value': 'dog_avatar.jpg',
                                                 'text': 'Dog'
                                             },
                                             {
                                                 'type': 'option',
-                                                'value': 'cat',
+                                                'value': 'cat_avatar.jpg',
                                                 'text': 'Cat'
                                             },
                                         ]
