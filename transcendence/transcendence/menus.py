@@ -668,6 +668,43 @@ MENU_DATA = {
                                 ]
                             },
                             {
+                                'type': 'div',
+                                'content': [
+                                    {
+                                        'type': 'label',
+                                        'for': 'avatar',
+                                        'text': 'Avatar'
+                                    },
+                                    {
+                                        'type': 'select',
+                                        'name': 'avatar',
+                                        'identifier': 'Avatar',
+                                        'content': [
+                                            {
+                                                'type': 'option',
+                                                'value': 'frog_avatar.jpg',
+                                                'text': 'Frog'
+                                            },
+                                            {
+                                                'type': 'option',
+                                                'value': 'dog_avatar.jpg',
+                                                'text': 'Dog'
+                                            },
+                                            {
+                                                'type': 'option',
+                                                'value': 'cat_avatar.jpg',
+                                                'text': 'Cat'
+                                            },
+                                        ]
+                                    },
+                                    {
+                                        'type': 'img',
+                                        'identifier': 'avatarPic',
+                                        'src': 'https://127.0.0.1:8000/static/images/question_mark.png',
+                                    }
+                                ]
+                            },
+                            {
                                 'type': 'input',
                                 'inputType': 'submit',
                                 'form': 'registration_form'

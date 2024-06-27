@@ -11,6 +11,7 @@ async function submit_registration_form(event) {
 
   let username = document.getElementById("username").value;
   let password = document.getElementById("password").value;
+  let avatar = document.getElementById("Avatar").value;
 
   // console.log(formData);
 
@@ -20,7 +21,7 @@ async function submit_registration_form(event) {
       "Content-Type": "application/json",
       "X-CSRFToken": csrfToken,
     },
-    body: JSON.stringify({ username, password }), // JSON.stringify({ username, password })
+    body: JSON.stringify({ username, password, avatar }), // JSON.stringify({ username, password })
     credentials: "include",
   })
     .then((response) => response.json())
@@ -90,7 +91,7 @@ async function jwt_kriegen(event) {
 
   console.log("Starting fetch request...");
 
-  fetch("https://0.0.0.0:8000/api/token/", {
+  fetch("https://127.0.0.1:8000/api/token/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -126,7 +127,7 @@ async function jwt_kriegen(event) {
 async function logout(event) {
   const csrfToken = await getCsrfToken();
 
-  fetch("https://0.0.0.0:8000/logout", {
+  fetch("https://127.0.0.1:8000/logout", {
     method: "POST",
     headers: {
       "content-type": "application/json",

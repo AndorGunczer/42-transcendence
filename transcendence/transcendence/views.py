@@ -97,6 +97,12 @@ def modify_json_menu(menu_type, token):
                 'onclick': 'logout()'
     })
 
+    menu['headerItems'][0]['content'].append({
+                'type': 'img',
+                'src': f'{user.avatarDirect}',
+                'identifier': 'avatarPic'
+    })
+
     if token and menu['menuTitle'] == 'Main Menu Buttons':
         del menu['menuItems'][4]['content'][0]
         menu['menuItems'][4]['content'][0]['class'] = 'menu-button'
@@ -105,6 +111,7 @@ def modify_json_menu(menu_type, token):
     return menu
     
 # VIEW FUNCTIONS
+    # MAIN
 
 def index(request):
     token = get_token_from_header(request)
@@ -144,6 +151,7 @@ def indexPost(request, menu_type='main'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
+    # GAMES
 def play(request, menu_type='play_menu'):
     token = get_token_from_header(request)
     if (token == None) or (not validate_token(token)):
@@ -205,6 +213,22 @@ def local_game(request, menu_type='local_game'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
+    # TOURNAMENT
+
+def tournament_main(request, menu_type='tournament_main'):
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    else:
+        menu = modify_json_menu(menu_type, token)
+
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+    # AUTHENTICATION
+
 def login(request, warning: str = None, menu_type='login'):
     token = get_token_from_header(request)
     if (token == None) or (not validate_token(token)):
@@ -238,7 +262,11 @@ def registration_check(request):
             if username == '': raise Exception("username_not_specified")
             password = data.get('password')
             if password == '': raise Exception("password_not_specified")
-            new_user = Users2(username=username, wins=0, losses=0)
+            pre = "https://127.0.0.1:8000/static/images/"
+            print(data.get("avatar"))
+            avatar = pre + data.get('avatar')
+            print(avatar)
+            new_user = Users2(username=username, wins=0, losses=0, avatarDirect=avatar)
             new_user.set_password(password)
             new_user.save()
             # Users.objects.create(username=username, password=Users.make_password(password), wins=0, losses=0, games=None)

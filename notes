@@ -6,3 +6,20 @@ pip install Werkzeug
 
 docker run -p 8000:8000 -it integration1
 python3 manage.py createsuperuser
+
+
+macos-things:
+    (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/andorgunczer/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    update pip -> /Library/Developer/CommandLineTools/usr/bin/python3 -m pip install --upgrade pip
+    brew services start postgresql@16
+    openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out cert.crt
+    psql -d postgres -U andorgunczer (-d datenbank -U zu wem das Datenbank gehoert) (\d: um tabels von dem Datenbank zu schauen)
+    
+    Pre insert Avatar paths
+        Syntax:
+    INSERT INTO table(column1, column2, …)
+    VALUES
+        (value1, value2, …);
+
+    Insert without console -> psql -d transcendence -U andorgunczer -c "INSERT INTO transcendence_avatar (path, name) VALUES ('/Users/andorgunczer/WORK/SCHOOL/transcendence/development/transcendence/files/dog_avatar.jpg', 'dog');"

@@ -20,15 +20,21 @@ from . import views
 from .views import CustomTokenObtainPairView, CustomTokenRefreshView
 
 urlpatterns = [
+    # ADMIN
     path('admin/', admin.site.urls),
+    # MAIN MENUS
     path('', views.index, name="index"),
     path('indexPost', views.indexPost, name="indexPost"),
     path('play', views.play, name="play"),
+    # GAMES
     path('singleplayer_menu', views.singleplayer_menu, name="singleplayer_menu"),
     path('singleplayer_game', views.singleplayer_game, name="singleplayer_game"),
     path('local_menu', views.local_menu, name="local_menu"),
     path('local_game', views.local_game, name="local_game"),
     path('online_menu', views.online_menu, name="online_menu"),
+    # TOURNAMENT URLS
+    path('tournament_main', views.tournament_main, name="tournament_main"),
+    # AUTHENTICATION URLS
     path('login', views.login, name="login"),
     path('register', views.register, name="register"),
     path('register/<str:warning>/', views.register, name="register"),

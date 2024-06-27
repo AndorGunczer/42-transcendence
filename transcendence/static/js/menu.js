@@ -1,5 +1,18 @@
 // JAVASCRIPT CODE FOR MAIN MENU
 
+function changeSelectFunction(callback, dependencies) {
+  // This is a placeholder function. Adjust as necessary for your actual use case.
+  // It should return a function that handles events as per the requirements.
+  return function(event) {
+    callback(event);
+  };
+}
+
+
+const changeSelect = changeSelectFunction((event) => {
+  document.getElementById('avatarPic').setAttribute("src", `https://127.0.0.1:8000/static/images/${event.target.value}`);
+}, []);
+
 function deleteHeader() {
   let header = document.getElementsByClassName("header")[0];
 
@@ -30,11 +43,13 @@ function elementCustomize(element, item) {
     element.setAttribute("method", item.method);
   if (item.name && item.name != "") element.setAttribute("name", item.name);
   if (item.form && item.form != "") element.setAttribute("form", item.form);
+  if (item.src && item.src != "") element.setAttribute("src", item.src);
+  if (item.value && item.value != "") element.setAttribute("value", item.value);
 }
 
 function divLoader(parent, itemList) {
   itemList.forEach((item) => {
-    if (item.type == "div" || item.type == "form") {
+    if (item.type == "div" || item.type == "form" || item.type == "select") {
       let subElement = document.createElement(item.type);
       elementCustomize(subElement, item);
       if (item.content && item.content != "")
@@ -205,14 +220,19 @@ function load_register() {
       headerLoad(json);
       let parent = document.getElementsByClassName("container")[0];
       json.menuItems.forEach((item) => {
-        let element = document.createElement("div");
+        let element;
+        if (item.type == "div")
+          element = document.createElement("div");
+        else if (item.type == "select")
+          element = document.createElement("select")
         elementCustomize(element, item);
         divLoader(element, item.content);
         parent.appendChild(element);
       });
       document
         .getElementById("registration_form")
-        .addEventListener("submit", submit_registration_form);
+        .addEventListener("submit", submit_registration_form, {once: true});
+      document.getElementById("Avatar").addEventListener("change", changeSelect);
     });
 }
 
@@ -237,8 +257,8 @@ function load_login() {
       });
       document
         .getElementById("login_form")
-        .addEventListener("submit", jwt_kriegen);
-    });
+        .addEventListener("submit", jwt_kriegen, {once: true});
+    }, {once: true});
 }
 
 function load_singleGame() {
