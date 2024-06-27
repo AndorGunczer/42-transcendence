@@ -111,6 +111,7 @@ def modify_json_menu(menu_type, token):
     return menu
     
 # VIEW FUNCTIONS
+    # MAIN
 
 def index(request):
     token = get_token_from_header(request)
@@ -150,6 +151,7 @@ def indexPost(request, menu_type='main'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
+    # GAMES
 def play(request, menu_type='play_menu'):
     token = get_token_from_header(request)
     if (token == None) or (not validate_token(token)):
@@ -210,6 +212,22 @@ def local_game(request, menu_type='local_game'):
         return JsonResponse(menu)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+    # TOURNAMENT
+
+def tournament_main(request, menu_type='tournament_main'):
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    else:
+        menu = modify_json_menu(menu_type, token)
+
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+    # AUTHENTICATION
 
 def login(request, warning: str = None, menu_type='login'):
     token = get_token_from_header(request)
