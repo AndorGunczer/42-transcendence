@@ -1,5 +1,7 @@
 // JAVASCRIPT CODE FOR MAIN MENU
 
+// HELPER FUNCTIONS
+
 function changeSelectFunction(callback, dependencies) {
   // This is a placeholder function. Adjust as necessary for your actual use case.
   // It should return a function that handles events as per the requirements.
@@ -45,6 +47,7 @@ function elementCustomize(element, item) {
   if (item.form && item.form != "") element.setAttribute("form", item.form);
   if (item.src && item.src != "") element.setAttribute("src", item.src);
   if (item.value && item.value != "") element.setAttribute("value", item.value);
+  if (item.onsubmit && item.onsubmit != "") element.setAttribute("onsubmit", item.onsubmit);
 }
 
 function divLoader(parent, itemList) {
@@ -75,6 +78,9 @@ function headerLoad(json) {
     parent.appendChild(element);
   });
 }
+
+// LOAD FUNCTIONS
+  // MAIN
 
 function load_main() {
   let url = "/indexPost";
@@ -137,6 +143,8 @@ function load_playMenu() {
       });
     });
 }
+
+  // GAMES
 
 function single_pregame() {
   let url = "/singleplayer_menu";
@@ -329,3 +337,83 @@ function load_onlineGame() {
       startOnlineGame();
     });
 }
+
+  // TOURNAMENT
+
+  function load_tournament_main() {
+    let url = "/tournament_main";
+  
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) console.log("yeaah");
+        else return response.json();
+      })
+      .then((json) => {
+        deleteHeader();
+        deleteMain();
+  
+        // CREATE HEADER
+  
+        headerLoad(json);
+  
+        // CREATE CONTAINER
+  
+        json.menuItems.forEach((item) => {
+          let parent = document.getElementsByClassName("container")[0];
+          let element = document.createElement(item.type);
+          if (item.type == "div" || item.type == "form")
+            divLoader(element, item.content);
+  
+          elementCustomize(element, item);
+          parent.appendChild(element);
+        });
+      });
+  }
+
+  function load_tournament_create() {
+    let url = "/tournament_create";
+  
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) console.log("yeaah");
+        else return response.json();
+      })
+      .then((json) => {
+        deleteHeader();
+        deleteMain();
+  
+        // CREATE HEADER
+  
+        headerLoad(json);
+  
+        // CREATE CONTAINER
+  
+        json.menuItems.forEach((item) => {
+          let parent = document.getElementsByClassName("container")[0];
+          let element = document.createElement(item.type);
+          if (item.type == "div" || item.type == "form")
+            divLoader(element, item.content);
+  
+          elementCustomize(element, item);
+          parent.appendChild(element);
+        });
+      });
+  }
+
+  function tournament_player_add(event) {
+    event.preventDefault();
+    console.log("tournament_player_add called");
+    let player_list_dom = document.getElementById("tournament_ul");
+    let player_input = document.getElementById('player');
+    let player_list = [];
+
+    let new_li = document.createElement('li');
+    new_li.textContent = player_input.value; // Make sure to set the text content of the new list item
+
+    player_list.push(player_input.value);
+    player_input.value = "";
+    player_list_dom.appendChild(new_li);
+
+    return false;
+}
+  

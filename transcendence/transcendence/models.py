@@ -2,6 +2,11 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 
+class Tournaments(models.Model):
+    name = models.CharField(max_length=100, unique=True, default="Not Set")
+    creation_date = models.DateTimeField()
+
+
 class Avatar(models.Model):
     name = models.CharField(max_length=100, unique=True, default="Not Set")
     path = models.CharField(max_length=150, unique=True, default="Not Set")
@@ -68,3 +73,13 @@ class Users2(AbstractBaseUser, PermissionsMixin):
     @property
     def is_staff(self):
         return self.is_superuser
+
+class Participants(models.Model):
+    player_id = models.ForeignKey(Users2, null=True, on_delete=models.SET_NULL)
+    tournament_id = models.ForeignKey(Tournaments, null=True, on_delete=models.SET_NULL)
+
+class Tournament_Games(models.Model):
+    game_id = models.IntegerField(primary_key=True)
+    player1_id = models.ForeignKey(Users2, null=True, on_delete=models.SET_NULL, related_name='tournament_games_player1')
+    player2_id = models.ForeignKey(Users2, null=True, on_delete=models.SET_NULL, related_name='tournament_games_player2')
+    tournament_id = models.ForeignKey(Tournaments, null=True, on_delete=models.SET_NULL)

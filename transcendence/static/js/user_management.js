@@ -57,27 +57,42 @@ function load_next_step(json) {
   // For example, load another part of your SPA based on the next step
 }
 
-function submit_login_form(event) {
+async function submit_login_form(event) {
   event.preventDefault(); // Prevent default form submission
+
+  const csrfToken = await getCsrfToken();
+
 
   console.log(document.getElementById("username").value);
 
-  let formData = new FormData();
-  formData.append("username", document.getElementById("username").value);
-  formData.append("password", document.getElementById("password").value);
+  // let formData = new FormData();
+  // formData.append("username", document.getElementById("username").value);
+  // formData.append("password", document.getElementById("password").value);
 
-  console.log(formData);
+  let username = document.getElementById("username").value;
+  let password = document.getElementById("password").value;
+
+  // console.log(formData);
 
   fetch("/login_check", {
     method: "POST",
-    body: formData,
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({ username, password }), // JSON.stringify({ username, password })
+    credentials: "include",
   })
-    .then((response) => response.json())
+    .then((response) => {
+      console.log("step 1");
+      return response.json()
+    })
     .then((json) => {
+      console.log("step 2")
       load_next_step(json);
     })
     .catch((error) =>
-      console.error("Error submitting registration form:", error)
+      console.error("Error submitting login form:", error)
     );
 }
 

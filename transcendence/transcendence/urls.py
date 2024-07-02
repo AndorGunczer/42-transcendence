@@ -34,6 +34,7 @@ urlpatterns = [
     path('online_menu', views.online_menu, name="online_menu"),
     # TOURNAMENT URLS
     path('tournament_main', views.tournament_main, name="tournament_main"),
+    path('tournament_create', views.tournament_create, name="tournament_create"),
     # AUTHENTICATION URLS
     path('login', views.login, name="login"),
     path('register', views.register, name="register"),

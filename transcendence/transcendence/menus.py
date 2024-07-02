@@ -55,7 +55,7 @@ MENU_DATA = {
                 'type': 'button',
                 'class': 'menu-button',
                 'text': 'TOURNAMENT',
-                'onclick': 'load_tournament()'
+                'onclick': 'load_tournament_main()'
             },
             {
                 'id': 4,
@@ -155,6 +155,155 @@ MENU_DATA = {
                 'class': 'menu-button',
                 'text': 'ONLINE',
                 'onclick': 'online_pregame()'
+            },
+        ]
+    },
+    'tournament_main': {
+        'menuTitle': 'Tournament Main Menu',
+        'headerItems': [
+            {
+                'id': 1,
+                'type': 'div',
+                'class': 'player-info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'logged in as PLACEHOLDER'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'losses'
+                    }
+                ]
+            },
+            {
+                'id': 2,
+                'type': 'button',
+                'class': 'menu-button',
+                'text': 'BACK',
+                'onclick': 'load_main()'
+            }
+        ],
+        'menuItems': [
+            {
+                'id': 1,
+                'type': 'div',
+                'class': 'tournament_list',
+                'content': [
+                        # Programmaticaly filled
+                    {
+                    'type': 'select',
+                    'name': 'avatar',
+                    'identifier': 'Avatar',
+                    'content': [
+                        # {
+                        #     'type': 'option',
+                        #     'value': 'frog_avatar.jpg',
+                        #     'text': 'Frog'
+                        # },
+                        # {
+                        #     'type': 'option',
+                        #     'value': 'dog_avatar.jpg',
+                        #     'text': 'Dog'
+                        # },
+                        # {
+                        #     'type': 'option',
+                        #     'value': 'cat_avatar.jpg',
+                        #     'text': 'Cat'
+                        # },
+                    ]
+                },
+                ]
+            },
+            {
+                'id': 2,
+                'type': 'button',
+                'text': 'CREATE TOURNAMENT',
+                'class': 'menu-button',
+                'onclick': 'load_tournament_create()'
+            },
+            {
+                'id': 3,
+                'type': 'button',
+                'text': 'SELECT',
+                'class': 'menu-button',
+                'onclick': 'load_tournament_select()'
+            }
+        ]
+    },
+        'tournament_create': {
+        'menuTitle': 'Tournament Create Menu',
+        'headerItems': [
+            {
+                'id': 1,
+                'type': 'div',
+                'class': 'player-info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'logged in as PLACEHOLDER'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'losses'
+                    }
+                ]
+            },
+            {
+                'id': 2,
+                'type': 'button',
+                'class': 'menu-button',
+                'text': 'BACK',
+                'onclick': 'load_main()'
+            }
+        ],
+        'menuItems': [
+            {
+                'id': 1,
+                'type': 'form',
+                # 'class': 'tournament_form',
+                'identifier': 'tournament_form',
+                'content': [
+                    {
+                        'type': 'ul',
+                        'identifier': 'tournament_ul',
+                        'content': [
+                            
+                        ],
+                    },
+                    {
+                        'type': 'label',
+                        'for': 'player',
+                        'text': 'Player Name: '
+                    },
+                    {
+                        'type': 'input',
+                        'inputType': 'text',
+                        'identifier': 'player'
+
+                    },
+                    {
+                        'type': 'input',
+                        'inputType': 'button',
+                        'onclick': 'tournament_player_add(event)'
+                    },
+                ]
             },
         ]
     },
@@ -706,9 +855,9 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'input',
-                                'inputType': 'submit',
-                                'form': 'registration_form'
-                                # 'onclick': 'registration_check()'
+                                'inputType': 'button',
+                                'form': 'registration_form',
+                                'onclick': 'submit_registration_form(event)'
                             }
                         ]
                     }
@@ -752,7 +901,7 @@ MENU_DATA = {
         ],
         'menuItems': [
             {
-            'type': 'div',
+                'type': 'div',
                 'class': 'container',
                 'content': [
                     {
@@ -795,8 +944,9 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'input',
-                                'inputType': 'submit',
-                                'form': 'login_form'
+                                'inputType': 'button',
+                                'form': 'login_form',
+                                'onclick': 'submit_login_form(event)'
                             }
                         ]
                     }
