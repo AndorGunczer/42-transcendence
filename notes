@@ -23,3 +23,23 @@ macos-things:
         (value1, value2, …);
 
     Insert without console -> psql -d transcendence -U andorgunczer -c "INSERT INTO transcendence_avatar (path, name) VALUES ('/Users/andorgunczer/WORK/SCHOOL/transcendence/development/transcendence/files/dog_avatar.jpg', 'dog');"
+
+    export PATH=/opt/homebrew/Cellar/postgresql@16/16.3/bin:$PATH
+    DELETE FROM transcendence_users2;
+
+    PROBLEM:
+
+        python3 manage.py creatasuperuser returns error message for missing ID;
+
+    SOLUTION:
+
+        DROP DATABASE transcendence;
+        CREATE DATABASE transcendence OWNER project;
+
+TERMINOLOGY:
+    Primary Key vs Candidate Key:
+        - Primary key uniquely identifies a record, but its value cannot be NULL
+        - Candidate Key also has the abiklity to uniquely identify a record, however, should contain minimum fields/ aka null value is possible.
+    Non-Prime attribute: Cannot identify a record uniquely (derived)
+
+to run server in secure mode: python3 manage.py runserver_plus --cert-file /Users/andorgunczer/WORK/SCHOOL/transcendence/files/cert.crt --key-file /Users/andorgunczer/WORK/SCHOOL/transcendence/files/key.pem

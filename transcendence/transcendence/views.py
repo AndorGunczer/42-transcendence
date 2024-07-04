@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from . import models
 from transcendence.models import Users2
+from transcendence.models import Tournaments
 from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -227,6 +228,44 @@ def tournament_main(request, menu_type='tournament_main'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
+def tournament_create(request, menu_type='tournament_create'):
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    else:
+        menu = modify_json_menu(menu_type, token)
+
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+
+
+def tournament_create_check(request, menu_type='main'):
+    token = get_token_from_header(request)
+
+    data = json.loads(request.body)
+    tournament_name = data.get("tournament_name")
+    players = data.get("players")
+
+    print(tournament_name)
+    print(players)
+
+    tournament_db = Tournaments(name=tournament_name)
+    tournament_db.save()
+
+
+    if (token == None) or (not validate_token(token)):
+        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    else:
+        menu = modify_json_menu(menu_type, token)
+
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
+
     # AUTHENTICATION
 
 def login(request, warning: str = None, menu_type='login'):
@@ -279,24 +318,43 @@ def registration_check(request):
     else:
         return JsonResponse(MENU_DATA.get('register'))
 
+# from django.contrib.auth import login
+# from rest_framework_simplejwt.tokens import AccessToken
+# from django.http import JsonResponse
+# from django.views.decorators.csrf import csrf_exempt
+# import json
+
+@csrf_exempt
 def login_check(request):
     if request.method == "POST":
         try:
-            check_if_user_exists = Users2.objects.filter(username=request.POST["username"]).exists()
-            if check_if_user_exists:
-                user = authenticate(request, username=request.POST["username"], password=request.POST["password"])
-                print(user)
-                if user is not None:
-                    # this user is valid, do what you want to do
-                    pass
-                else:
-                    pass
-                    # this user is not valid, he provided wrong password, show some error message
+            data = json.loads(request.body)
+            username = data.get('username')
+            password = data.get('password')
+            
+            if not username or not password:
+                return JsonResponse({'error': 'Username and password are required.'}, status=400)
+            
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                access_token = str(AccessToken.for_user(user))
+
+                # Assuming modify_json_menu requires a token and modifies the menu accordingly
+                response_data = modify_json_menu('main', access_token)
+                
+                response = JsonResponse(response_data)
+                response.set_cookie(
+                    'access_token', access_token, httponly=True, secure=True, samesite='Strict'
+                )
+                
+                return response
+            else:
+                return JsonResponse({'error': 'Invalid username or password'}, status=401)
         except Exception as e:
-            pass
+            return JsonResponse({'error': str(e)}, status=500)
     else:
-        # there is no such entry with this username in the table
-        pass
+        return JsonResponse({'error': 'Only POST method is allowed.'}, status=405)
 
 # def index(request):
 #     return render(request, "/", {})

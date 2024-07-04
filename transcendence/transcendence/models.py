@@ -2,15 +2,22 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 
+class Tournaments(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100, unique=True, default="Not Set")
+    creation_date = models.DateTimeField(auto_now=True)
+
+
 class Avatar(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, unique=True, default="Not Set")
     path = models.CharField(max_length=150, unique=True, default="Not Set")
 
 class Games(models.Model):
-    player1 = models.CharField(max_length=20)
-    player2 = models.CharField(max_length=20)
+    id = models.AutoField(primary_key=True)
     result = models.BooleanField()
     date_of_game = models.DateTimeField()
+    tournament = models.BooleanField(default="False")
 
     def __str__(self):
         return str(self.date_of_game)
@@ -33,12 +40,13 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(username, password, **extra_fields)
 
 class Users2(AbstractBaseUser, PermissionsMixin):
+    id = models.BigAutoField(primary_key=True)
     username = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=128)
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
-    games = models.ForeignKey(Games, null=True, on_delete=models.SET_NULL)
-    avatar = models.ForeignKey(Avatar, null=True, on_delete=models.SET_NULL)
+    games = models.ForeignKey(Games, null=True, on_delete=models.CASCADE)
+    # avatar = models.ForeignKey(Avatar, null=True, on_delete=models.SET_NULL)
     avatarDirect = models.CharField(max_length=200, null=True)
 
     objects = CustomUserManager()
@@ -68,3 +76,12 @@ class Users2(AbstractBaseUser, PermissionsMixin):
     @property
     def is_staff(self):
         return self.is_superuser
+
+class Participants(models.Model):
+    id = models.AutoField(primary_key=True)
+    player_id = models.ForeignKey(Users2, null=True, on_delete=models.CASCADE)
+    tournament_id = models.ForeignKey(Tournaments, null=True, on_delete=models.CASCADE)
+
+class Players(models.Model):
+        player = models.ForeignKey(Users2, null=True, on_delete=models.CASCADE)
+        game = models.ForeignKey(Games, null=True, on_delete=models.CASCADE)
