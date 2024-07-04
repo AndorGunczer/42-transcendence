@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from . import models
 from transcendence.models import Users2
-from transcendence.models import Tournaments
+from transcendence.models import Tournaments, Participants
 from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -247,13 +247,25 @@ def tournament_create_check(request, menu_type='main'):
 
     data = json.loads(request.body)
     tournament_name = data.get("tournament_name")
-    players = data.get("players")
+    participants = data.get("players")
 
     print(tournament_name)
-    print(players)
+    print(participants)
 
     tournament_db = Tournaments(name=tournament_name)
     tournament_db.save()
+
+    for participant in participants:
+        try:
+            user = Users2.objects.get(username=participant)
+        except Users2.DoesNotExist:
+            print(f"User {participant} does not exist")
+            continue
+        
+        participant_db = Participants(player=user, tournament=tournament_db)
+        participant_db.save()
+        
+        
 
 
     if (token == None) or (not validate_token(token)):

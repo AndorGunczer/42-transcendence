@@ -79,8 +79,8 @@ class Users2(AbstractBaseUser, PermissionsMixin):
 
 class Participants(models.Model):
     id = models.AutoField(primary_key=True)
-    player_id = models.ForeignKey(Users2, null=True, on_delete=models.CASCADE)
-    tournament_id = models.ForeignKey(Tournaments, null=True, on_delete=models.CASCADE)
+    player = models.ForeignKey(Users2, null=True, on_delete=models.CASCADE)
+    tournament = models.ForeignKey(Tournaments, null=True, on_delete=models.CASCADE)
 
 class Players(models.Model):
         player = models.ForeignKey(Users2, null=True, on_delete=models.CASCADE)
