@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from . import models
 from transcendence.models import Users2
+from transcendence.models import Tournaments
 from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -239,6 +240,32 @@ def tournament_create(request, menu_type='tournament_create'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
+
+
+def tournament_create_check(request, menu_type='main'):
+    token = get_token_from_header(request)
+
+    data = json.loads(request.body)
+    tournament_name = data.get("tournament_name")
+    players = data.get("players")
+
+    print(tournament_name)
+    print(players)
+
+    tournament_db = Tournaments(name=tournament_name)
+    tournament_db.save()
+
+
+    if (token == None) or (not validate_token(token)):
+        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    else:
+        menu = modify_json_menu(menu_type, token)
+
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
+
     # AUTHENTICATION
 
 def login(request, warning: str = None, menu_type='login'):
@@ -297,6 +324,7 @@ def registration_check(request):
 # from django.views.decorators.csrf import csrf_exempt
 # import json
 
+@csrf_exempt
 def login_check(request):
     if request.method == "POST":
         try:

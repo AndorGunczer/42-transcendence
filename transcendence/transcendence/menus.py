@@ -301,8 +301,15 @@ MENU_DATA = {
                     {
                         'type': 'input',
                         'inputType': 'button',
+                        'value': 'Add Player',
                         'onclick': 'tournament_player_add(event)'
                     },
+                    {
+                        'type': 'input',
+                        'inputType': 'button',
+                        'value': 'Submit',
+                        'onclick': 'submit_tournament_create(event)'
+                    }
                 ]
             },
         ]
