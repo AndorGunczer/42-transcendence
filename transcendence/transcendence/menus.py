@@ -289,6 +289,16 @@ MENU_DATA = {
                     },
                     {
                         'type': 'label',
+                        'for': 'tournament_name',
+                        'text': 'Tournament Name: '
+                    },
+                    {
+                        'type': 'input',
+                        'inputType': 'text',
+                        'identifier': 'tournament_name'
+                    },
+                    {
+                        'type': 'label',
                         'for': 'player',
                         'text': 'Player Name: '
                     },

@@ -424,6 +424,8 @@ function load_onlineGame() {
     async function submit_tournament_create(event) {
       event.preventDefault();
 
+      let tournament_name = document.getElementById('tournament_name').value;
+
       const csrfToken = await getCsrfToken();
 
       fetch("https://127.0.0.1:8000/tournament_create_check", {
@@ -433,7 +435,7 @@ function load_onlineGame() {
           "X-CSRFToken": csrfToken,
         },
         body: JSON.stringify({
-          tournament_name: 'test_tournament',
+          tournament_name: tournament_name,
           players: player_list
         }),
         credentials: "include",
