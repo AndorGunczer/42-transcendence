@@ -30,7 +30,9 @@ urlpatterns = [
     path('singleplayer_menu', views.singleplayer_menu, name="singleplayer_menu"),
     path('singleplayer_game', views.singleplayer_game, name="singleplayer_game"),
     path('local_menu', views.local_menu, name="local_menu"),
+    path('local_check', views.local_check, name="local_check"),
     path('local_game', views.local_game, name="local_game"),
+    path('close_local', views.close_local, name="close_local"),
     path('online_menu', views.online_menu, name="online_menu"),
     # TOURNAMENT URLS
     path('tournament_main', views.tournament_main, name="tournament_main"),

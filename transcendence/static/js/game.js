@@ -23,7 +23,7 @@ function startSingleGame() {
   const paddleSpeed = 9;
   let playerScore = 0,
     aiScore = 0;
-  const winningScore = 15;
+  const winningScore = 5;
   let gameRunning = false;
   let countdown = 3;
   let playerMoveUp = false,
@@ -214,7 +214,7 @@ function startSingleGame() {
 //   else return Math.floor(num / 2) * -1;
 // }
 
-function startLocalGame() {
+function startLocalGame(state_json) {
   const canvas = document.getElementById("pongCanvas");
   const ctx = canvas.getContext("2d");
 
@@ -237,7 +237,7 @@ function startLocalGame() {
   const paddleSpeed = 9;
   let P1Score = 0,
     P2Score = 0;
-  const winningScore = 15;
+  const winningScore = 1;
   let gameRunning = false;
   let countdown = 3;
   let P1MoveUp = false,
@@ -415,10 +415,81 @@ function startLocalGame() {
   }
 
   function startGame() {
-    resetBall();
-    render();
-    setInterval(update, 1000 / 60); // 60 FPS
+    return new Promise((resolve) => {
+      function gameLoop() {
+        if (P1Score >= winningScore || P2Score >= winningScore) {
+          resolve(); // Game over
+        } else {
+          update();
+          render();
+          requestAnimationFrame(gameLoop);
+        }
+      }
+      resetBall();
+      render();
+      gameLoop();
+    });
   }
 
-  startGame();
+  async function runGame() {
+    await startGame();
+
+    let player1;
+    let player2;
+    console.log(state_json);
+    let state_json_string = JSON.stringify(state_json);
+
+    let jsonObject = JSON.parse(state_json_string);
+
+    if (P1Score > P2Score) {
+      player1 = {
+        name: jsonObject.player1,
+        id: jsonObject.player1_id,
+        status: 'winner'
+      }
+      player2 = {
+        name: jsonObject.player2,
+        id: jsonObject.player2_d,
+        status: 'loser'
+      }
+    } else {
+      player1 = {
+        name: jsonObject.player1,
+        id: jsonObject.player1_id,
+        status: 'loser'
+      }
+      player2 = {
+        name: jsonObject.player2,
+        id: jsonObject.player2_id,
+        status: 'winner'
+      }
+    }
+
+    close_local_game(player1, player2);
+  }
+
+  runGame();
+}
+
+async function close_local_game(player1, player2) {
+  let url = "/close_local";
+
+  const csrfToken = await getCsrfToken();
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({
+      player1: player1,
+      player2: player2,
+    }),
+    credentials: "include",
+  }).then((response) => {
+    return response.json()
+  }).then((json) => {
+    load_next_step(json);
+  });
 }

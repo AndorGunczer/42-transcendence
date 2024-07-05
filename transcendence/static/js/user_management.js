@@ -57,6 +57,34 @@ function load_next_step(json) {
   // For example, load another part of your SPA based on the next step
 }
 
+// 'id': 1,
+// 'type': 'canvas',
+// 'identifier': 'pongCanvas',
+// 'width': 800,
+// 'height': 400
+
+// function load_game(json) {
+//   console.log("Next step:");
+//   deleteHeader();
+//   deleteMain();
+
+//   // CREATE HEADER
+
+//   // headerLoad(json);
+
+//   // CREATE CONTAINER
+
+//   json.menuItems.forEach((item) => {
+//     let parent = document.getElementsByClassName("container")[0];
+//     let element = document.createElement(item.type);
+//     if (item.type == "div" || item.type == "form")
+//       divLoader(element, item.content);
+
+//     elementCustomize(element, item);
+//     parent.appendChild(element);
+//   })
+// };
+
 async function submit_login_form(event) {
   event.preventDefault(); // Prevent default form submission
 

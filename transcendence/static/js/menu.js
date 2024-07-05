@@ -27,6 +27,12 @@ function deleteMain() {
   main.replaceChildren();
 }
 
+// 'id': 1,
+// 'type': 'canvas',
+// 'identifier': 'pongCanvas',
+// 'width': 800,
+// 'height': 400
+
 function elementCustomize(element, item) {
   if (item.class && item.class != "") element.setAttribute("class", item.class);
   if (item.identifier && item.identifier != "")
@@ -48,6 +54,7 @@ function elementCustomize(element, item) {
   if (item.src && item.src != "") element.setAttribute("src", item.src);
   if (item.value && item.value != "") element.setAttribute("value", item.value);
   if (item.onsubmit && item.onsubmit != "") element.setAttribute("onsubmit", item.onsubmit);
+  // if ()
   // if (item.text && item.text != "") element.textContent = item.text;
 }
 
@@ -193,6 +200,36 @@ function local_pregame() {
     });
 }
 
+//CONTINUE
+
+async function submit_local_pregame(event) {
+  event.preventDefault()
+
+  player1 = document.getElementById('player1').value;
+  player2 = document.getElementById('player2').value;
+
+  const csrfToken = await getCsrfToken();
+
+  fetch('/local_check', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+      Accept: "application/json",
+    },
+    body: JSON.stringify({ player1, player2 }),
+    credentials: "include",
+  })
+    .then((response) => {
+      if (!response.ok) console.log("okay");
+      else return response.json();
+    }).then((json) => {
+      console.log(json);
+      console.log(json.player1)
+      load_localGame(json);
+    })
+}
+
 function online_pregame() {
   let url = "/online_menu";
 
@@ -293,7 +330,7 @@ function load_singleGame() {
     });
 }
 
-function load_localGame() {
+function load_localGame(state_json) {
   let url = "/local_game";
 
   fetch(url)
@@ -312,7 +349,7 @@ function load_localGame() {
         elementCustomize(element, item);
         parent.appendChild(element);
       });
-      startLocalGame();
+      startLocalGame(state_json);
     });
 }
 
