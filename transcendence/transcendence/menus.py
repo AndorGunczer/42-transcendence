@@ -666,7 +666,7 @@ MENU_DATA = {
                                             {
                                                 'type': 'label',
                                                 'for': 'player1',
-                                                'text': 'username'
+                                                'text': 'player 1: '
                                             },
                                             {
                                                 'type': 'input',
@@ -675,26 +675,26 @@ MENU_DATA = {
                                             }
                                         ]
                                     },
-                                    {
-                                        'type': 'div',
-                                        'content': [
-                                            {
-                                                'type': 'label',
-                                                'for': 'password1',
-                                                'text': 'password'
-                                            },
-                                            {
-                                                'type': 'input',
-                                                'inputType': 'password',
-                                                'identifier': 'password1'
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        'type': 'button',
-                                        'class': 'menu-button',
-                                        'text': 'Submit'
-                                    }
+                                    # {
+                                    #     'type': 'div',
+                                    #     'content': [
+                                    #         {
+                                    #             'type': 'label',
+                                    #             'for': 'password1',
+                                    #             'text': 'password'
+                                    #         },
+                                    #         {
+                                    #             'type': 'input',
+                                    #             'inputType': 'password',
+                                    #             'identifier': 'password1'
+                                    #         }
+                                    #     ]
+                                    # },
+                                    # {
+                                    #     'type': 'button',
+                                    #     'class': 'menu-button',
+                                    #     'text': 'Submit'
+                                    # }
                                 ]
                             }
                         ]
@@ -713,7 +713,7 @@ MENU_DATA = {
                                             {
                                                 'type': 'label',
                                                 'for': 'player2',
-                                                'text': 'username'
+                                                'text': 'player 2: '
                                             },
                                             {
                                                 'type': 'input',
@@ -722,26 +722,26 @@ MENU_DATA = {
                                             }
                                         ]
                                     },
-                                    {
-                                        'type': 'div',
-                                        'content': [
-                                            {
-                                                'type': 'label',
-                                                'for': 'password2',
-                                                'text': 'password'
-                                            },
-                                            {
-                                                'type': 'input',
-                                                'inputType': 'password',
-                                                'identifier': 'password2'
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        'type': 'button',
-                                        'class': 'menu-button',
-                                        'text': 'Submit'
-                                    }
+                                    # {
+                                    #     'type': 'div',
+                                    #     'content': [
+                                    #         {
+                                    #             'type': 'label',
+                                    #             'for': 'password2',
+                                    #             'text': 'password'
+                                    #         },
+                                    #         {
+                                    #             'type': 'input',
+                                    #             'inputType': 'password',
+                                    #             'identifier': 'password2'
+                                    #         }
+                                    #     ]
+                                    # },
+                                    # {
+                                    #     'type': 'button',
+                                    #     'class': 'menu-button',
+                                    #     'text': 'Submit'
+                                    # }
                                 ]
                             }
                         ]
@@ -750,7 +750,7 @@ MENU_DATA = {
                         'type': 'button',
                         'class': 'menu-button',
                         'text': 'play',
-                        'onclick': 'load_localGame()'
+                        'onclick': 'submit_local_pregame(event)'
                     }
                 ]
             },

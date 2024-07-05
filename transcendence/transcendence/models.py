@@ -15,8 +15,8 @@ class Avatar(models.Model):
 
 class Games(models.Model):
     id = models.AutoField(primary_key=True)
-    result = models.BooleanField()
-    date_of_game = models.DateTimeField()
+    result = models.CharField(max_length=100, null=True, default="Not Set")
+    date_of_game = models.DateTimeField(auto_now=True)
     tournament = models.BooleanField(default="False")
 
     def __str__(self):
