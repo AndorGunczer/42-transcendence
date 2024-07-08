@@ -51,3 +51,12 @@
     /* Adjust the button's size with padding as needed */
     padding: 10px;
 }
+
+/* TOURNAMENT MENU */
+
+.participant {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 40px;
+}

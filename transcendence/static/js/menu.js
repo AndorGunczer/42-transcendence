@@ -465,7 +465,7 @@ function load_onlineGame() {
 
       const csrfToken = await getCsrfToken();
 
-      fetch("https://127.0.0.1:8000/tournament_create_check", {
+      fetch("/tournament_create_check", {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -488,3 +488,46 @@ function load_onlineGame() {
       console.log('submit_tournament_create(event) called');
       player_list = [];
     }
+
+async function load_tournament_select() {
+  let url = "/tournament_select";
+  
+  const csrfToken = await getCsrfToken();
+
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
+      body: JSON.stringify({
+        tournament_name: document.getElementById('Avatar').value
+      }),
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) console.log("yeaah");
+        else return response.json();
+      })
+      .then((json) => {
+        deleteHeader();
+        deleteMain();
+  
+        // CREATE HEADER
+  
+        headerLoad(json);
+  
+        // CREATE CONTAINER
+  
+        json.menuItems.forEach((item) => {
+          let parent = document.getElementsByClassName("container")[0];
+          let element = document.createElement(item.type);
+          if (item.type == "div" || item.type == "form")
+            divLoader(element, item.content);
+  
+          elementCustomize(element, item);
+          parent.appendChild(element);
+        });
+      });
+}

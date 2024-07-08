@@ -109,6 +109,39 @@ def modify_json_menu(menu_type, token):
     
 
     return menu
+
+def tournament_select_fill(menu):
+    tournament_list = Tournaments.objects.all()
+
+    for tournament in tournament_list:
+        menu['menuItems'][0]['content'][0]['content'].append({
+            'type': 'option',
+            'value': tournament.name,
+            'text': tournament.name
+        })
+
+    print("tournament_select_fill(menu) called")
+    
+    return menu
+
+def tournament_select_page_fill(menu, participants):
+    for participant in participants:
+        menu['menuItems'][0]['content'][0]['content'].append({
+            'type': 'div',
+            'class': 'participant',
+            'content': [
+                {
+                    'type': 'p',
+                    'text': participant.player.username,
+                },
+                {
+                    'type': 'p',
+                    'text': f'{participant.points}'
+                }
+            ]
+        })
+    print('tournament_select_page_fill() called')
+    return menu
     
 # VIEW FUNCTIONS
     # MAIN
@@ -326,10 +359,12 @@ def local_game(request, menu_type='local_game'):
 
 def tournament_main(request, menu_type='tournament_main'):
     token = get_token_from_header(request)
+    print("tournament_main is loading")
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
     else:
         menu = modify_json_menu(menu_type, token)
+        menu = tournament_select_fill(menu)
 
     if menu is not None:
         return JsonResponse(menu)
@@ -357,8 +392,39 @@ def tournament_create_check(request, menu_type='main'):
     tournament_name = data.get("tournament_name")
     participants = data.get("players")
 
-    print(tournament_name)
-    print(participants)
+    # if len(players) % 2:
+    #     players.append(None)  # Add a dummy player for odd number of players
+
+    # n = len(players)
+    # schedule = []
+
+    # for round in range(n - 1):
+    #     round_matches = []
+    #     for i in range(n // 2):
+    #         if players[i] is not None and players[n - 1 - i] is not None:
+    #             round_matches.append((players[i], players[n - 1 - i]))
+    #     players.insert(1, players.pop())
+    #     schedule.append(round_matches)
+
+    # return schedule
+
+    players = participants
+
+    if len(players) % 2:
+        players.append(None)
+
+    n = len(players)
+    schedule = []
+
+    for round in range(n - 1):
+        round_matches = []
+        for i in range(n // 2):
+            if players[i] is not None and players[n - 1 - i] is not None:
+                round_matches.append((players[i], players[n - 1 - i]))
+        players.insert(1, players.pop())
+        schedule.append(round_matches)
+
+    print(schedule)
 
     tournament_db = Tournaments(name=tournament_name)
     tournament_db.save()
@@ -366,16 +432,25 @@ def tournament_create_check(request, menu_type='main'):
     for participant in participants:
         try:
             user = Users2.objects.get(username=participant)
+            participant_db = Participants(player=user, tournament=tournament_db)
+            participant_db.save()
         except Users2.DoesNotExist:
             print(f"User {participant} does not exist")
             continue
-        
-        participant_db = Participants(player=user, tournament=tournament_db)
-        participant_db.save()
-        
-        
 
+    for rounds in schedule:
+        for matches in rounds:
+            player1 = Users2.objects.get(username=matches[0])
+            player2 = Users2.objects.get(username=matches[1])
 
+            game_db = Games(tournament=tournament_db)
+            game_db.save()
+            player1_db = Players(player=player1, game=game_db)
+            player1_db.save()
+            player2_db = Players(player=player2, game=game_db)
+            player2_db.save()
+    
+    
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
     else:
@@ -385,6 +460,25 @@ def tournament_create_check(request, menu_type='main'):
         return JsonResponse(menu)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+
+def tournament_select(request, menu_type='tournament_select'):
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    else:
+        data = json.loads(request.body)
+        tournament_name = data.get("tournament_name")
+        participants = Participants.objects.filter(tournament__name=tournament_name).order_by('-points')
+        print(participants)
+        menu = modify_json_menu(menu_type, token)
+        menu = tournament_select_page_fill(menu, participants)
+
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
+
 
     # AUTHENTICATION
 

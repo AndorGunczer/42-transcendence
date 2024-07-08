@@ -17,7 +17,7 @@ class Games(models.Model):
     id = models.AutoField(primary_key=True)
     result = models.CharField(max_length=100, null=True, default="Not Set")
     date_of_game = models.DateTimeField(auto_now=True)
-    tournament = models.BooleanField(default="False")
+    tournament = models.ForeignKey(Tournaments, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.date_of_game)
@@ -81,6 +81,7 @@ class Participants(models.Model):
     id = models.AutoField(primary_key=True)
     player = models.ForeignKey(Users2, null=True, on_delete=models.CASCADE)
     tournament = models.ForeignKey(Tournaments, null=True, on_delete=models.CASCADE)
+    points = models.IntegerField(default=0)
 
 class Players(models.Model):
         player = models.ForeignKey(Users2, null=True, on_delete=models.CASCADE)
