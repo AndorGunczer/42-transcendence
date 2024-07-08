@@ -134,7 +134,7 @@ async function jwt_kriegen(event) {
 
   console.log("Starting fetch request...");
 
-  fetch("https://127.0.0.1:8000/api/token/", {
+  fetch("/api/token/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -170,7 +170,7 @@ async function jwt_kriegen(event) {
 async function logout(event) {
   const csrfToken = await getCsrfToken();
 
-  fetch("https://127.0.0.1:8000/logout", {
+  fetch("/logout", {
     method: "POST",
     headers: {
       "content-type": "application/json",

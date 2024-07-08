@@ -324,6 +324,71 @@ MENU_DATA = {
             },
         ]
     },
+    'tournament_select': {
+        'menuTitle': 'Selected Tournament Menu',
+        'headerItems': [
+            {
+                'id': 1,
+                'type': 'div',
+                'class': 'player-info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'logged in as PLACEHOLDER'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'losses'
+                    }
+                ]
+            },
+            {
+                'id': 2,
+                'type': 'button',
+                'class': 'menu-button',
+                'text': 'BACK',
+                'onclick': 'load_main()'
+            }
+        ],
+        'menuItems': [
+            {
+                'id': 1,
+                'type': 'div',
+                # 'class': 'tournament_form',
+                'identifier': 'tournament_form',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'participant_list',
+                        'content': [
+                            {
+                                'type': 'div',
+                                'class': 'participant',
+                                'content': [
+                                    {
+                                        'type': 'p',
+                                        'text': 'name',
+                                    },
+                                    {
+                                        'type': 'p',
+                                        'text': 'points'
+                                    }
+                                ]
+                            },
+                        ]
+                    },
+                ]
+            },
+        ]
+    },
     'singleplayer_menu': {
         'menuTitle': 'Singleplayer Menu Buttons',
         'headerItems': [
