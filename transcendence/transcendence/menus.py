@@ -385,6 +385,15 @@ MENU_DATA = {
                             },
                         ]
                     },
+                    {
+                        'type': 'p',
+                        'text': 'placeholder for next game'
+                    },
+                    {
+                        'type': 'button',
+                        'text': 'Play Game',
+                        'onclick': 'load_tournament_localGame()'
+                    }
                 ]
             },
         ]

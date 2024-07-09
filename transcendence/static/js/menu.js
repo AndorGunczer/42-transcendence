@@ -489,6 +489,8 @@ function load_onlineGame() {
       player_list = [];
     }
 
+let gameId;
+
 async function load_tournament_select() {
   let url = "/tournament_select";
   
@@ -516,11 +518,12 @@ async function load_tournament_select() {
   
         // CREATE HEADER
   
-        headerLoad(json);
+        headerLoad(json.menu);
+        gameId = json.game;
   
         // CREATE CONTAINER
   
-        json.menuItems.forEach((item) => {
+        json.menu.menuItems.forEach((item) => {
           let parent = document.getElementsByClassName("container")[0];
           let element = document.createElement(item.type);
           if (item.type == "div" || item.type == "form")
@@ -530,4 +533,43 @@ async function load_tournament_select() {
           parent.appendChild(element);
         });
       });
+}
+
+async function load_tournament_localGame() {
+  console.log("load_tournament_localGame() is called");
+  console.log("Game_id = " + gameId);
+  
+  let url = "/tournament_game_check";
+
+  const csrfToken = await getCsrfToken();
+
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({
+      'game_id': gameId
+    }),
+    credentials: "include",
+  })
+    .then((response) => {
+      if (!response.ok) console.log("yeaah");
+      else return response.json();
+    })
+    .then((json) => {
+      console.log(json);
+      deleteHeader();
+      deleteMain();
+      headerLoad(json.menu);
+      let parent = document.getElementsByClassName("container")[0];
+      json.menu.menuItems.forEach((item) => {
+        let element = document.createElement(item.type);
+        elementCustomize(element, item);
+        parent.appendChild(element);
+      });
+      startTournamentGame(json);
+    });
 }
