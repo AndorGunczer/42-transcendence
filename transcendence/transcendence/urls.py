@@ -39,6 +39,8 @@ urlpatterns = [
     path('tournament_create', views.tournament_create, name="tournament_create"),
     path('tournament_create_check', views.tournament_create_check, name="tournament_create_check"),
     path('tournament_select', views.tournament_select, name="tournament_select"),
+    path('tournament_game_check', views.tournament_game_check, name="tournament_game_check"),
+    path('close_tournament_game', views.close_tournament_game, name="close_tournament_game"),
     # AUTHENTICATION URLS
     path('login', views.login, name="login"),
     path('register', views.register, name="register"),

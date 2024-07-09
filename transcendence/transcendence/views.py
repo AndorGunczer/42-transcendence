@@ -124,6 +124,8 @@ def tournament_select_fill(menu):
     
     return menu
 
+from django.db.models import Q
+
 def tournament_select_page_fill(menu, participants):
     for participant in participants:
         menu['menuItems'][0]['content'][0]['content'].append({
@@ -140,8 +142,33 @@ def tournament_select_page_fill(menu, participants):
                 }
             ]
         })
+
+    if participants:
+        # Assuming all participants are from the same tournament
+        tournament_id = participants[0].tournament_id
+
+        # Correctly formed query to get the first Game where result is either None or an empty string and matches the given tournament_id
+        first_game_with_empty_result = Games.objects.filter(
+            (Q(result__isnull=True) | Q(result='Not Set')) & Q(tournament_id=tournament_id)
+        ).order_by('id').first()
+
+        if first_game_with_empty_result:
+            players_of_game = Players.objects.filter(game=first_game_with_empty_result.id)
+            if len(players_of_game) >= 2:
+                menu['menuItems'][0]['content'][1]['text'] = f'{players_of_game[0].player.username} vs {players_of_game[1].player.username}'
+            else:
+                menu['menuItems'][0]['content'][1]['text'] = 'Not enough players in the game'
+        else:
+            menu['menuItems'][0]['content'][1]['text'] = 'No game found with an empty result'
+    else:
+        menu['menuItems'][0]['content'][1]['text'] = 'No participants found'
+
     print('tournament_select_page_fill() called')
-    return menu
+    return {'menu': menu, 'game': first_game_with_empty_result.id}
+
+def tournament_local_game(menu, game):
+    pass
+
     
 # VIEW FUNCTIONS
     # MAIN
@@ -472,12 +499,129 @@ def tournament_select(request, menu_type='tournament_select'):
         participants = Participants.objects.filter(tournament__name=tournament_name).order_by('-points')
         print(participants)
         menu = modify_json_menu(menu_type, token)
-        menu = tournament_select_page_fill(menu, participants)
+        response_data = tournament_select_page_fill(menu, participants)
 
     if menu is not None:
-        return JsonResponse(menu)
+        return JsonResponse(response_data)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+def tournament_game_check(request, menu_type="local_game"):
+    token = get_token_from_header(request)
+
+    data = json.loads(request.body)
+
+    # if (token == None) or (not validate_token(token)):
+    menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    # else:
+    #     menu = None
+
+    print(data)
+    # response_data = {'player1': player1, 'player2': player2, 'player1_id': player1_db.id, 'player2_id': player2_db.id}
+
+
+    players = Players.objects.filter(game=data['game_id'])
+    print(players[0].player.username)
+    print(players)
+
+    response_data = {'menu': menu, 'game_id': data['game_id'], 'player1': players[0].player.username, 'player1_id': players[0].id, 'player2': players[1].player.username, 'player2_id': players[1].id}
+
+    if menu is not None:
+        return JsonResponse(response_data)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+def close_tournament_game(request, menu_type='main'):
+    try:
+        token = get_token_from_header(request)
+
+        data = json.loads(request.body)
+        player1 = data.get('player1')
+        player2 = data.get('player2')
+        game_id = data.get('game').get('game_id')
+        print(game_id)
+        game_db = Games.objects.get(id=game_id)
+
+        if player1.get('status') == 'winner':
+            player1_db = Users2.objects.get(username=player1.get('name'))
+            player1_db.wins += 1
+            player1_db.save()
+
+            player2_db = Users2.objects.get(username=player2.get('name'))
+            player2_db.losses += 1
+            player2_db.save()
+
+            player_id = player1.get('id')
+            if player_id is None:
+                return JsonResponse({'error': 'Player 1 ID not provided'}, status=400)
+
+            try:
+                player = Players.objects.get(id=player_id)
+                game = Games.objects.get(id=player.game.id)
+                game.result = player1.get('name')
+                game.save()
+
+                # Update Participants.points for the winner
+                participant = Participants.objects.get(player=player1_db, tournament=game.tournament)
+                participant.points += 1
+                participant.save()
+            except Players.DoesNotExist:
+                return JsonResponse({'error': 'Player 1 not found'}, status=404)
+            except Games.DoesNotExist:
+                return JsonResponse({'error': 'Game not found'}, status=404)
+            except Participants.DoesNotExist:
+                return JsonResponse({'error': 'Participant not found'}, status=404)
+
+        else:
+            player1_db = Users2.objects.get(username=player1.get('name'))
+            player1_db.losses += 1
+            player1_db.save()
+
+            player2_db = Users2.objects.get(username=player2.get('name'))
+            player2_db.wins += 1
+            player2_db.save()
+
+            player_id = player1.get('id')
+            if player_id is None:
+                return JsonResponse({'error': 'Player 1 ID not provided'}, status=400)
+
+            try:
+                player = Players.objects.get(id=player_id)
+                game = Games.objects.get(id=player.game.id)
+                game.result = player2.get('name')
+                game.save()
+
+                # Update Participants.points for the winner
+                participant = Participants.objects.get(player=player2_db, tournament=game.tournament)
+                participant.points += 1
+                participant.save()
+            except Players.DoesNotExist:
+                return JsonResponse({'error': 'Player 1 not found'}, status=404)
+            except Games.DoesNotExist:
+                return JsonResponse({'error': 'Game not found'}, status=404)
+            except Participants.DoesNotExist:
+                return JsonResponse({'error': 'Participant not found'}, status=404)
+
+        # Determine the menu based on the token
+        if (token is None) or (not validate_token(token)):
+            menu = copy.deepcopy(MENU_DATA.get(menu_type))
+        else:
+            menu = modify_json_menu(menu_type, token)
+
+        # Return the menu if found, else return an error response
+        if menu is not None:
+            return JsonResponse(menu)
+        else:
+            return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+    except Users2.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, status=404)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 
     # AUTHENTICATION
