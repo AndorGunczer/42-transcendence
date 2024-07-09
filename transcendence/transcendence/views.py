@@ -126,6 +126,8 @@ def tournament_select_fill(menu):
 
 from django.db.models import Q
 
+from django.db.models import Q
+
 def tournament_select_page_fill(menu, participants):
     for participant in participants:
         menu['menuItems'][0]['content'][0]['content'].append({
@@ -147,27 +149,38 @@ def tournament_select_page_fill(menu, participants):
         # Assuming all participants are from the same tournament
         tournament_id = participants[0].tournament_id
 
-        # Correctly formed query to get the first Game where result is either None or an empty string and matches the given tournament_id
+        # Correctly formed query to get the first Game where result is either None or 'Not Set' and matches the given tournament_id
         first_game_with_empty_result = Games.objects.filter(
             (Q(result__isnull=True) | Q(result='Not Set')) & Q(tournament_id=tournament_id)
         ).order_by('id').first()
+
 
         if first_game_with_empty_result:
             players_of_game = Players.objects.filter(game=first_game_with_empty_result.id)
             if len(players_of_game) >= 2:
                 menu['menuItems'][0]['content'][1]['text'] = f'{players_of_game[0].player.username} vs {players_of_game[1].player.username}'
             else:
-                menu['menuItems'][0]['content'][1]['text'] = 'Not enough players in the game'
+                top_participant = Participants.objects.filter(tournament=tournament_id).order_by('-points').first()
+                if top_participant:
+                    menu['menuItems'][0]['content'][1]['text'] = f'Winner: {top_participant.player.username}'
+                else:
+                    menu['menuItems'][0]['content'][1]['text'] = 'Winner: Unknown'
         else:
-            menu['menuItems'][0]['content'][1]['text'] = 'No game found with an empty result'
+            top_participant = Participants.objects.filter(tournament=tournament_id).order_by('-points').first()
+            if top_participant:
+                menu['menuItems'][0]['content'][1]['text'] = f'Winner: {top_participant.player.username}'
+            else:
+                menu['menuItems'][0]['content'][1]['text'] = 'Winner: Unknown'
+            del menu['menuItems'][0]['content'][2]
     else:
         menu['menuItems'][0]['content'][1]['text'] = 'No participants found'
 
     print('tournament_select_page_fill() called')
-    return {'menu': menu, 'game': first_game_with_empty_result.id}
+    return {'menu': menu, 'game': first_game_with_empty_result.id if first_game_with_empty_result else None}
 
-def tournament_local_game(menu, game):
-    pass
+
+# def tournament_local_game(menu, game):
+#     pass
 
     
 # VIEW FUNCTIONS
@@ -267,7 +280,7 @@ def local_check(request, menu_type='local_game'):
         JsonResponse({'error': str(e)}, status=403)
     else:
         # create game database instance and 2 player instances joined into game
-        game_db = Games(tournament=0)
+        game_db = Games()
         game_db.save()
         player1_db = Players(player=Users2.objects.get(username=player1), game=game_db)
         player1_db.save()
