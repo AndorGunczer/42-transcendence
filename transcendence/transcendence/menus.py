@@ -945,6 +945,26 @@ MENU_DATA = {
                                 ]
                             },
                             {
+                                'type': 'div',
+                                'content': [
+                                    {
+                                        'type': 'label',
+                                        'for': 'fileUpload',
+                                        'text': 'Upload Avatar: ',
+                                    },
+                                    {
+                                        'type': 'input',
+                                        'inputType': 'file',
+                                        'identifier': 'fileUpload',
+                                    },
+                                    {
+                                        'type': 'button',
+                                        'text': 'Upload',
+                                        'onclick': 'uploadAvatar()'
+                                    },
+                                ]
+                            },
+                            {
                                 'type': 'input',
                                 'inputType': 'button',
                                 'form': 'registration_form',
@@ -1038,6 +1058,80 @@ MENU_DATA = {
                                 'inputType': 'button',
                                 'form': 'login_form',
                                 'onclick': 'submit_login_form(event)'
+                            }
+                        ]
+                    }
+                ]
+            },
+        ]
+    },
+    'settings': {
+        'menuTitle': 'User Data Change',
+        'headerItems': [
+            {
+                'id': 1,
+                'type': 'div',
+                'class': 'player-info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'logged in as PLACEHOLDER'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'losses'
+                    }
+                ]
+            },
+            {
+                'id': 2,
+                'type': 'button',
+                'class': 'menu-button',
+                'text': 'BACK',
+                'onclick': 'load_main()'
+            }
+        ],
+        'menuItems': [
+            {
+                'type': 'div',
+                'class': 'container',
+                'content': [
+                    {
+                        'type': 'form',
+                        # 'action': '',
+                        # 'method': 'POST',
+                        'identifier': 'settings_form',
+                        'content': [
+                            {
+                                'type': 'input',
+                                'inputType': 'text',
+                                'default': 'placeholder'
+                            },
+                            {
+                                'type': 'select',
+                                'name': 'avatar',
+                                'identifier': 'avatar',
+                                'content': [
+
+                                ]
+                            },
+                            {
+                                'type': 'button',
+                                'text': 'Delete User Statistics',
+                                'onclick': 'deleteUserStats(event)',
+                            },
+                            {
+                                'type': 'button',
+                                'text': 'Save',
+                                'onclick': 'saveChanges()'
                             }
                         ]
                     }

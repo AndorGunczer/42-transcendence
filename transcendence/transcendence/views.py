@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from . import models
-from transcendence.models import Users2, Tournaments, Participants, Players, Games
+from transcendence.models import Users2, Tournaments, Participants, Players, Games, Avatar
 from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -90,7 +90,15 @@ def modify_json_menu(menu_type, token):
     menu['headerItems'][0]['content'][3]['text'] = f'losses: {user.losses}'
 
     menu['headerItems'].append({
-                'id': 2,
+        'id': 2,
+        'type': 'button',
+        'class': 'menu-button',
+        'text': 'SETTINGS',
+        'onclick': 'settings()',
+    })
+
+    menu['headerItems'].append({
+                'id': 3,
                 'type': 'button',
                 'class': 'menu-button',
                 'text': 'LOGOUT',
@@ -100,7 +108,7 @@ def modify_json_menu(menu_type, token):
     menu['headerItems'][0]['content'].append({
                 'type': 'img',
                 'src': f'{user.avatarDirect}',
-                'identifier': 'avatarPic'
+                'identifier': 'avatarHeaderPic'
     })
 
     if token and menu['menuTitle'] == 'Main Menu Buttons':
@@ -655,8 +663,24 @@ def register(request, warning: str = None, menu_type='register'):
     token = get_token_from_header(request)
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
+        avatars = Avatar.objects.all()
+        print(avatars)
+        for avatar in avatars:
+            menu['menuItems'][0]['content'][0]['content'][2]['content'][1]['content'].append({
+                'type': 'option',
+                'value': avatar.name,
+                'text': avatar.name
+        })
     else:
         menu = modify_json_menu(menu_type, token)
+        avatars = Avatar.objects.all()
+        print(avatars)
+        for avatar in avatars:
+            menu['menuItems'][0]['content'][0]['content'][2]['content'][1]['content'].append({
+                'type': 'option',
+                'value': avatar.name,
+                'text': avatar.name
+            })
 
     if menu is not None:
         return JsonResponse(menu)
@@ -743,3 +767,84 @@ def logout(request):
 def get_csrf_token(request):
     csrf_token = get_token(request)
     return JsonResponse({'csrfToken': csrf_token})
+
+# views.py
+
+# views.py
+
+import base64
+import os
+from pathlib import Path
+from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@csrf_exempt
+def upload_file(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        file_name = data.get('fileName')
+        file_type = data.get('fileType')
+        file_data = data.get('fileData')
+
+        if not file_name or not file_data:
+            return JsonResponse({'error': 'Invalid file data'}, status=400)
+
+        # Decode the base64 file data
+        file_content = base64.b64decode(file_data)
+
+        # Construct the file path
+        static_images_dir = Path(settings.BASE_DIR) / 'static' / 'images'
+        file_path = static_images_dir / file_name
+
+        # Ensure the directory exists
+        os.makedirs(static_images_dir, exist_ok=True)
+
+        # Write the file
+        with open(file_path, 'wb') as f:
+            f.write(file_content)
+
+        return JsonResponse({'message': 'File uploaded successfully', 'file_path': str(file_path)})
+    
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+def settings(request, menu_type='settings'):
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    else:
+        menu = modify_json_menu(menu_type, token)
+        avatars = Avatar.objects.all()
+        print(avatars)
+        for avatar in avatars:
+            menu['menuItems'][0]['content'][0]['content'][1]['content'].append({
+                'type': 'option',
+                'value': avatar.name,
+                'text': avatar.name
+            })
+        print(menu)
+        # menu['menuItems'][0]['content'][0]['content'][1]['content']
+
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+def delete_user_stats(request, menu_type='main'):
+    token = get_token_from_header(request)
+    user = get_user_from_token(token)
+
+    user.wins = 0
+    user.losses = 0
+    user.save()
+
+    if (token == None) or (not validate_token(token)):
+        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    else:
+        menu = modify_json_menu(menu_type, token)
+
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)

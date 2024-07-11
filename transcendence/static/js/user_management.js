@@ -198,3 +198,135 @@ async function getCsrfToken() {
   const data = await response.json();
   return data.csrfToken;
 }
+
+async function uploadAvatar() {
+  const csrfToken = await getCsrfToken();
+
+  const fileInput = document.getElementById('fileUpload');
+  const file = fileInput.files[0];
+
+  if (!file) {
+      alert('Please Select a File to Upload');
+      return;
+  }
+
+  const base64File = await convertToBase64(file);
+
+  let url = '/upload_file';
+
+  fetch(url, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+      },
+      body: JSON.stringify({
+          fileName: file.name,
+          fileType: file.type,
+          fileData: base64File
+      }),
+      credentials: "include"
+  })
+  .then(response => response.json())
+  .then(data => {
+      console.log('Success:', data);
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+}
+
+function convertToBase64(file) {
+  return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+          resolve(reader.result.split(',')[1]); // Remove the "data:*/*;base64," part
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+  });
+}
+async function settings() {
+
+  const csrfToken = await getCsrfToken();
+
+  let url = '/settings';
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    credentials: 'include',
+  })
+  .then(response => response.json())
+  .then(json => {
+    deleteHeader();
+    deleteMain();
+
+    // CREATE HEADER
+
+    headerLoad(json);
+
+    // CREATE CONTAINER
+
+    json.menuItems.forEach((item) => {
+      let parent = document.getElementsByClassName("container")[0];
+      let element = document.createElement(item.type);
+      if (item.type == "div" || item.type == "form" || item.type == "select")
+        divLoader(element, item.content);
+
+      elementCustomize(element, item);
+      parent.appendChild(element);
+
+      // div.appendChild(element);
+    });
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+}
+
+async function deleteUserStats(event) {
+  event.preventDefault();
+
+  const csrfToken = await getCsrfToken();
+
+  let url = '/delete_user_stats';
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    credentials: 'include'
+  })
+  .then(response => response.json())
+  .then(json => {
+    deleteHeader();
+    deleteMain();
+
+    // CREATE HEADER
+
+    headerLoad(json);
+
+    // CREATE CONTAINER
+
+    json.menuItems.forEach((item) => {
+      let parent = document.getElementsByClassName("container")[0];
+      let element = document.createElement(item.type);
+      if (item.type == "div" || item.type == "form" || item.type == "select")
+        divLoader(element, item.content);
+
+      elementCustomize(element, item);
+      parent.appendChild(element);
+
+      // div.appendChild(element);
+    });
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+}

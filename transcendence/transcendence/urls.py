@@ -45,10 +45,13 @@ urlpatterns = [
     path('login', views.login, name="login"),
     path('register', views.register, name="register"),
     path('register/<str:warning>/', views.register, name="register"),
+    path('upload_file', views.upload_file, name="upload_file"),
     path('login_check', views.login_check, name="login_check"),
     path('registration_check', views.registration_check, name="registration_check"),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
     path('api/csrf-token/', views.get_csrf_token, name='csrf-token'),
     path('logout', views.logout, name='logout'),
+    path('settings', views.settings, name='settings'),
+    path('delete_user_stats', views.delete_user_stats, name='delete_user_stats'),
 ]
