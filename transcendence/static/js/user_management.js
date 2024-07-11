@@ -330,3 +330,55 @@ async function deleteUserStats(event) {
       console.error('Error:', error);
   });
 }
+
+async function saveChanges() {
+  event.preventDefault();
+
+  const csrfToken = await getCsrfToken();
+
+  let url = '/save_changes';
+
+  let username = document.getElementById('username').value;
+  let avatar = document.getElementById('avatar').value;
+
+  console.log("selected avatar: " + avatar);
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({
+      'username': username,
+      'avatar': avatar
+    }),
+    credentials: 'include'
+  })
+  .then(response => response.json())
+  .then(json => {
+    deleteHeader();
+    deleteMain();
+
+    // CREATE HEADER
+
+    headerLoad(json);
+
+    // CREATE CONTAINER
+
+    json.menuItems.forEach((item) => {
+      let parent = document.getElementsByClassName("container")[0];
+      let element = document.createElement(item.type);
+      if (item.type == "div" || item.type == "form" || item.type == "select")
+        divLoader(element, item.content);
+
+      elementCustomize(element, item);
+      parent.appendChild(element);
+
+      // div.appendChild(element);
+    });
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+}
