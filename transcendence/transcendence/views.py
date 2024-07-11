@@ -743,3 +743,46 @@ def logout(request):
 def get_csrf_token(request):
     csrf_token = get_token(request)
     return JsonResponse({'csrfToken': csrf_token})
+
+# views.py
+
+# views.py
+
+import base64
+import os
+from pathlib import Path
+from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@csrf_exempt
+def upload_file(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        file_name = data.get('fileName')
+        file_type = data.get('fileType')
+        file_data = data.get('fileData')
+
+        if not file_name or not file_data:
+            return JsonResponse({'error': 'Invalid file data'}, status=400)
+
+        # Decode the base64 file data
+        file_content = base64.b64decode(file_data)
+
+        # Construct the file path
+        static_images_dir = Path(settings.BASE_DIR) / 'static' / 'images'
+        file_path = static_images_dir / file_name
+
+        # Ensure the directory exists
+        os.makedirs(static_images_dir, exist_ok=True)
+
+        # Write the file
+        with open(file_path, 'wb') as f:
+            f.write(file_content)
+
+        return JsonResponse({'message': 'File uploaded successfully', 'file_path': str(file_path)})
+    
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+    

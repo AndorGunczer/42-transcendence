@@ -945,6 +945,26 @@ MENU_DATA = {
                                 ]
                             },
                             {
+                                'type': 'div',
+                                'content': [
+                                    {
+                                        'type': 'label',
+                                        'for': 'fileUpload',
+                                        'text': 'Upload Avatar: ',
+                                    },
+                                    {
+                                        'type': 'input',
+                                        'inputType': 'file',
+                                        'identifier': 'fileUpload',
+                                    },
+                                    {
+                                        'type': 'button',
+                                        'text': 'Upload',
+                                        'onclick': 'uploadAvatar()'
+                                    },
+                                ]
+                            },
+                            {
                                 'type': 'input',
                                 'inputType': 'button',
                                 'form': 'registration_form',

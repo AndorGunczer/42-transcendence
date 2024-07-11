@@ -77,9 +77,13 @@ CORS_ALLOWED_ORIGINS = [
 
 ROOT_URLCONF = 'transcendence.urls'
 
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+# Ensure the /static/images directory exists
+os.makedirs(os.path.join(BASE_DIR, 'static', 'images'), exist_ok=True)
 
 TEMPLATES = [
     {
