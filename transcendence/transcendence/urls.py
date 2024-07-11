@@ -54,4 +54,5 @@ urlpatterns = [
     path('logout', views.logout, name='logout'),
     path('settings', views.settings, name='settings'),
     path('delete_user_stats', views.delete_user_stats, name='delete_user_stats'),
+    path('save_changes', views.save_changes, name='save_changes'),
 ]

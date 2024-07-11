@@ -1113,7 +1113,8 @@ MENU_DATA = {
                             {
                                 'type': 'input',
                                 'inputType': 'text',
-                                'default': 'placeholder'
+                                'identifier': 'username',
+                                'value': 'placeholder'
                             },
                             {
                                 'type': 'select',

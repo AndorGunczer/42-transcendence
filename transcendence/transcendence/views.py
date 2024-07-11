@@ -811,18 +811,28 @@ def upload_file(request):
 
 def settings(request, menu_type='settings'):
     token = get_token_from_header(request)
+    user = get_user_from_token(token)
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
     else:
         menu = modify_json_menu(menu_type, token)
         avatars = Avatar.objects.all()
         print(avatars)
+        i = 0
         for avatar in avatars:
             menu['menuItems'][0]['content'][0]['content'][1]['content'].append({
                 'type': 'option',
                 'value': avatar.name,
                 'text': avatar.name
             })
+
+            if avatar.name == user.avatarDirect.rsplit('/', 1)[1]:
+                menu['menuItems'][0]['content'][0]['content'][1]['content'][i]['selected'] = user.avatarDirect.rsplit('/', 1)[1]
+            i = i + 1
+
+        menu['menuItems'][0]['content'][0]['content'][0]['value'] = user.username
+
+        # menu['menuItems'][0]['content'][0]['content'][1]['selected'] = user.avatarDirect.rsplit('/', 1)[1]
         print(menu)
         # menu['menuItems'][0]['content'][0]['content'][1]['content']
 
@@ -838,6 +848,35 @@ def delete_user_stats(request, menu_type='main'):
     user.wins = 0
     user.losses = 0
     user.save()
+
+    if (token == None) or (not validate_token(token)):
+        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    else:
+        menu = modify_json_menu(menu_type, token)
+
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+def save_changes(request, menu_type='main'):
+    token = get_token_from_header(request)
+    user = get_user_from_token(token)
+
+    try:
+        data = json.loads(request.body)
+        username = data.get('username')
+        avatar = data.get('avatar')
+        pre = "https://127.0.0.1:8000/static/images/"
+        print(data.get("avatar"))
+        avatar = pre + data.get('avatar')
+
+        user.username = username
+        print(avatar)
+        user.avatarDirect = avatar
+        user.save()
+    except Exception as e:
+        pass
 
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
