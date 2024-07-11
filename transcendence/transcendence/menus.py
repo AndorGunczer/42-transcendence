@@ -1065,6 +1065,80 @@ MENU_DATA = {
             },
         ]
     },
+    'settings': {
+        'menuTitle': 'User Data Change',
+        'headerItems': [
+            {
+                'id': 1,
+                'type': 'div',
+                'class': 'player-info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'logged in as PLACEHOLDER'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'text': 'losses'
+                    }
+                ]
+            },
+            {
+                'id': 2,
+                'type': 'button',
+                'class': 'menu-button',
+                'text': 'BACK',
+                'onclick': 'load_main()'
+            }
+        ],
+        'menuItems': [
+            {
+                'type': 'div',
+                'class': 'container',
+                'content': [
+                    {
+                        'type': 'form',
+                        # 'action': '',
+                        # 'method': 'POST',
+                        'identifier': 'settings_form',
+                        'content': [
+                            {
+                                'type': 'input',
+                                'inputType': 'text',
+                                'default': 'placeholder'
+                            },
+                            {
+                                'type': 'select',
+                                'name': 'avatar',
+                                'identifier': 'avatar',
+                                'content': [
+
+                                ]
+                            },
+                            {
+                                'type': 'button',
+                                'text': 'Delete User Statistics',
+                                'onclick': 'deleteUserStats(event)',
+                            },
+                            {
+                                'type': 'button',
+                                'text': 'Save',
+                                'onclick': 'saveChanges()'
+                            }
+                        ]
+                    }
+                ]
+            },
+        ]
+    },
     'singleplayer_game': {
         'menuTitle': 'Singleplayer Game Window',
         'headerItems': [

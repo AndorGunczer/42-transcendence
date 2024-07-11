@@ -246,3 +246,87 @@ function convertToBase64(file) {
       reader.readAsDataURL(file);
   });
 }
+async function settings() {
+
+  const csrfToken = await getCsrfToken();
+
+  let url = '/settings';
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    credentials: 'include',
+  })
+  .then(response => response.json())
+  .then(json => {
+    deleteHeader();
+    deleteMain();
+
+    // CREATE HEADER
+
+    headerLoad(json);
+
+    // CREATE CONTAINER
+
+    json.menuItems.forEach((item) => {
+      let parent = document.getElementsByClassName("container")[0];
+      let element = document.createElement(item.type);
+      if (item.type == "div" || item.type == "form" || item.type == "select")
+        divLoader(element, item.content);
+
+      elementCustomize(element, item);
+      parent.appendChild(element);
+
+      // div.appendChild(element);
+    });
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+}
+
+async function deleteUserStats(event) {
+  event.preventDefault();
+
+  const csrfToken = await getCsrfToken();
+
+  let url = '/delete_user_stats';
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    credentials: 'include'
+  })
+  .then(response => response.json())
+  .then(json => {
+    deleteHeader();
+    deleteMain();
+
+    // CREATE HEADER
+
+    headerLoad(json);
+
+    // CREATE CONTAINER
+
+    json.menuItems.forEach((item) => {
+      let parent = document.getElementsByClassName("container")[0];
+      let element = document.createElement(item.type);
+      if (item.type == "div" || item.type == "form" || item.type == "select")
+        divLoader(element, item.content);
+
+      elementCustomize(element, item);
+      parent.appendChild(element);
+
+      // div.appendChild(element);
+    });
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+}
