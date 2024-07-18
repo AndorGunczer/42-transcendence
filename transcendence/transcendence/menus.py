@@ -912,6 +912,22 @@ MENU_DATA = {
                                 'content': [
                                     {
                                         'type': 'label',
+                                        'for': 'email',
+                                        'text': 'Email: '
+                                    },
+                                    {
+                                        'type': 'input',
+                                        'inputType': 'text',
+                                        'identifier': 'email',
+                                        'name': 'email'
+                                    }
+                                ]
+                            },
+                            {
+                                'type': 'div',
+                                'content': [
+                                    {
+                                        'type': 'label',
                                         'for': 'avatar',
                                         'text': 'Avatar'
                                     },
@@ -962,6 +978,22 @@ MENU_DATA = {
                                         'text': 'Upload',
                                         'onclick': 'uploadAvatar()'
                                     },
+                                ]
+                            },
+                            {
+                                'type': 'div',
+                                'content': [
+                                    {
+                                        'type': 'label',
+                                        'for': 'twofa',
+                                        'text': 'Two-Factor Authentication: '
+                                    },
+                                    {
+                                        'type': 'input',
+                                        'inputType': 'checkbox',
+                                        'identifier': 'twofa',
+                                        'name': 'twofa'
+                                    }
                                 ]
                             },
                             {
@@ -1058,6 +1090,39 @@ MENU_DATA = {
                                 'inputType': 'button',
                                 'form': 'login_form',
                                 'onclick': 'submit_login_form(event)'
+                            }
+                        ]
+                    },
+                    {
+                        'type': 'div',
+                        'identifier': 'otpPopup',
+                        'content': [
+                            {
+                                'type': 'h2',
+                                'text': 'Enter OTP',
+                            },
+                            {
+                                'type': 'form',
+                                # 'action': '',
+                                # 'method': 'POST',
+                                'identifier': 'otpForm',
+                                'content': [
+                                    {
+                                        'type': 'input',
+                                        'inputType': 'text',
+                                        'identifier': 'otp',
+                                        'name': 'top',
+                                        'placeholder': 'OTP',
+                                        'required': 'True'
+                                    },
+                                    {
+                                        'type': 'input',
+                                        'inputType': 'button',
+                                        'form': 'otpForm',
+                                        'text': 'Verify',
+                                        'onclick': 'verify_otp(event)'
+                                    }
+                                ]
                             }
                         ]
                     }

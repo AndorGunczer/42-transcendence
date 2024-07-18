@@ -43,11 +43,13 @@ class Users2(AbstractBaseUser, PermissionsMixin):
     id = models.BigAutoField(primary_key=True)
     username = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=128)
+    email = models.CharField(max_length=128, null=True)
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     games = models.ForeignKey(Games, null=True, on_delete=models.CASCADE)
     # avatar = models.ForeignKey(Avatar, null=True, on_delete=models.SET_NULL)
     avatarDirect = models.CharField(max_length=200, null=True)
+    allow_otp = models.BooleanField(default=False)
 
     objects = CustomUserManager()
 

@@ -12,6 +12,10 @@ async function submit_registration_form(event) {
   let username = document.getElementById("username").value;
   let password = document.getElementById("password").value;
   let avatar = document.getElementById("Avatar").value;
+  let email = document.getElementById('email').value;
+  let twofa = document.getElementById('twofa').checked;
+
+  console.log('twofa value: ' + twofa);
 
   // console.log(formData);
 
@@ -21,7 +25,7 @@ async function submit_registration_form(event) {
       "Content-Type": "application/json",
       "X-CSRFToken": csrfToken,
     },
-    body: JSON.stringify({ username, password, avatar }), // JSON.stringify({ username, password })
+    body: JSON.stringify({ username, password, avatar, email, twofa }), // JSON.stringify({ username, password })
     credentials: "include",
   })
     .then((response) => response.json())
@@ -88,42 +92,56 @@ function load_next_step(json) {
 async function submit_login_form(event) {
   event.preventDefault(); // Prevent default form submission
 
+  console.log('submit login form called');
+
   const csrfToken = await getCsrfToken();
-
-
-  console.log(document.getElementById("username").value);
-
-  // let formData = new FormData();
-  // formData.append("username", document.getElementById("username").value);
-  // formData.append("password", document.getElementById("password").value);
-
-  let username = document.getElementById("username").value;
-  let password = document.getElementById("password").value;
-
-  // console.log(formData);
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
 
   fetch("/login_check", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": csrfToken,
-    },
-    body: JSON.stringify({ username, password }), // JSON.stringify({ username, password })
-    credentials: "include",
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+      },
+      body: JSON.stringify({ username, password }),
+      credentials: "include",
   })
-    .then((response) => {
-      console.log("step 1");
-      return response.json()
-    })
-    .then((json) => {
-      console.log("step 2")
-      load_next_step(json);
-    })
-    .catch((error) =>
-      console.error("Error submitting login form:", error)
-    );
+  .then((response) => response.json())
+  .then((json) => {
+    console.log(json.status);
+      if (json.status === 'otp_sent') {
+        // Show OTP popup
+        document.getElementById("otpPopup").style.display = "block";
+      } else {
+        load_main();
+      }
+      
+  })
+  .catch((error) => console.error("Error submitting login form:", error));
 }
 
+async function verify_otp(event) {
+  event.preventDefault(); // Prevent default form submission behavior
+
+  const csrfToken = await getCsrfToken();
+  const otp = document.getElementById("otp").value;
+
+  fetch("/verify_otp", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+      },
+      body: JSON.stringify({ otp }),
+      credentials: "include",
+  })
+  .then((response) => response.json())
+  .then((json) => {
+      load_main()
+  })
+  .catch((error) => console.error("Error verifying OTP:", error));
+}
 async function jwt_kriegen(event) {
   event.preventDefault(); // Prevent default form submission behavior
 
