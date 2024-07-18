@@ -1,0 +1,1823 @@
+{
+  "contractName": "Tournaments",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "tournaments",
+      "outputs": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "winner",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_winner",
+          "type": "string"
+        }
+      ],
+      "name": "addTournament",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getTournamentCount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getTournament",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        },
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.0+commit.1d4f565a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"getTournamentCount\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"getTournament\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"},{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"tournaments\",\"outputs\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"winner\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_name\",\"type\":\"string\"},{\"name\":\"_winner\",\"type\":\"string\"}],\"name\":\"addTournament\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Tournaments.sol\":\"Tournaments\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/Tournaments.sol\":{\"keccak256\":\"0x6329d968383d7f7137f2eb224c2ed962fd5605d610b4cb26712df3184fe5d958\",\"urls\":[\"bzzr://bb9031b9c930e3de2245be964220efd0ef1b49beacfc7b8a0ef0fef026943a74\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b50610779806100206000396000f3fe6080604052600436106100615763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663078c51f081146100665780631a5bd7fc1461008d5780637503e1b7146101955780639e3ec1d7146101bf575b600080fd5b34801561007257600080fd5b5061007b6102fb565b60408051918252519081900360200190f35b34801561009957600080fd5b506100b7600480360360208110156100b057600080fd5b5035610302565b604051808060200180602001838103835285818151815260200191508051906020019080838360005b838110156100f85781810151838201526020016100e0565b50505050905090810190601f1680156101255780820380516001836020036101000a031916815260200191505b50838103825284518152845160209182019186019080838360005b83811015610158578181015183820152602001610140565b50505050905090810190601f1680156101855780820380516001836020036101000a031916815260200191505b5094505050505060405180910390f35b3480156101a157600080fd5b506100b7600480360360208110156101b857600080fd5b50356104e9565b3480156101cb57600080fd5b506102f9600480360360408110156101e257600080fd5b8101906020810181356401000000008111156101fd57600080fd5b82018360208201111561020f57600080fd5b8035906020019184600183028401116401000000008311171561023157600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250929594936020810193503591505064010000000081111561028457600080fd5b82018360208201111561029657600080fd5b803590602001918460018302840111640100000000831117156102b857600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250929550610635945050505050565b005b6000545b90565b6000546060908190831061037757604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601360248201527f496e646578206f7574206f6620626f756e647300000000000000000000000000604482015290519081900360640190fd5b600080548490811061038557fe5b90600052602060002090600202016000016000848154811015156103a557fe5b9060005260206000209060020201600101818054600181600116156101000203166002900480601f01602080910402602001604051908101604052809291908181526020018280546001816001161561010002031660029004801561044b5780601f106104205761010080835404028352916020019161044b565b820191906000526020600020905b81548152906001019060200180831161042e57829003601f168201915b5050845460408051602060026001851615610100026000190190941693909304601f8101849004840282018401909252818152959750869450925084019050828280156104d95780601f106104ae576101008083540402835291602001916104d9565b820191906000526020600020905b8154815290600101906020018083116104bc57829003601f168201915b5050505050905091509150915091565b60008054829081106104f757fe5b60009182526020918290206002918202018054604080516001831615610100026000190190921693909304601f81018590048502820185019093528281529093509183919083018282801561058d5780601f106105625761010080835404028352916020019161058d565b820191906000526020600020905b81548152906001019060200180831161057057829003601f168201915b505050505090806001018054600181600116156101000203166002900480601f01602080910402602001604051908101604052809291908181526020018280546001816001161561010002031660029004801561062b5780601f106106005761010080835404028352916020019161062b565b820191906000526020600020905b81548152906001019060200180831161060e57829003601f168201915b5050505050905082565b60408051808201909152828152602080820183905260008054600181018083559180528351805192949360029092027f290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563019261069492849201906106b5565b5060208281015180516106ad92600185019201906106b5565b505050505050565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106106f657805160ff1916838001178555610723565b82800160010185558215610723579182015b82811115610723578251825591602001919060010190610708565b5061072f929150610733565b5090565b6102ff91905b8082111561072f576000815560010161073956fea165627a7a72305820608808589b3d512f0304a113d6844db14b7458c57bf2ff45f4574a379595bbf10029",
+  "deployedBytecode": "0x6080604052600436106100615763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663078c51f081146100665780631a5bd7fc1461008d5780637503e1b7146101955780639e3ec1d7146101bf575b600080fd5b34801561007257600080fd5b5061007b6102fb565b60408051918252519081900360200190f35b34801561009957600080fd5b506100b7600480360360208110156100b057600080fd5b5035610302565b604051808060200180602001838103835285818151815260200191508051906020019080838360005b838110156100f85781810151838201526020016100e0565b50505050905090810190601f1680156101255780820380516001836020036101000a031916815260200191505b50838103825284518152845160209182019186019080838360005b83811015610158578181015183820152602001610140565b50505050905090810190601f1680156101855780820380516001836020036101000a031916815260200191505b5094505050505060405180910390f35b3480156101a157600080fd5b506100b7600480360360208110156101b857600080fd5b50356104e9565b3480156101cb57600080fd5b506102f9600480360360408110156101e257600080fd5b8101906020810181356401000000008111156101fd57600080fd5b82018360208201111561020f57600080fd5b8035906020019184600183028401116401000000008311171561023157600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250929594936020810193503591505064010000000081111561028457600080fd5b82018360208201111561029657600080fd5b803590602001918460018302840111640100000000831117156102b857600080fd5b91908080601f016020809104026020016040519081016040528093929190818152602001838380828437600092019190915250929550610635945050505050565b005b6000545b90565b6000546060908190831061037757604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601360248201527f496e646578206f7574206f6620626f756e647300000000000000000000000000604482015290519081900360640190fd5b600080548490811061038557fe5b90600052602060002090600202016000016000848154811015156103a557fe5b9060005260206000209060020201600101818054600181600116156101000203166002900480601f01602080910402602001604051908101604052809291908181526020018280546001816001161561010002031660029004801561044b5780601f106104205761010080835404028352916020019161044b565b820191906000526020600020905b81548152906001019060200180831161042e57829003601f168201915b5050845460408051602060026001851615610100026000190190941693909304601f8101849004840282018401909252818152959750869450925084019050828280156104d95780601f106104ae576101008083540402835291602001916104d9565b820191906000526020600020905b8154815290600101906020018083116104bc57829003601f168201915b5050505050905091509150915091565b60008054829081106104f757fe5b60009182526020918290206002918202018054604080516001831615610100026000190190921693909304601f81018590048502820185019093528281529093509183919083018282801561058d5780601f106105625761010080835404028352916020019161058d565b820191906000526020600020905b81548152906001019060200180831161057057829003601f168201915b505050505090806001018054600181600116156101000203166002900480601f01602080910402602001604051908101604052809291908181526020018280546001816001161561010002031660029004801561062b5780601f106106005761010080835404028352916020019161062b565b820191906000526020600020905b81548152906001019060200180831161060e57829003601f168201915b5050505050905082565b60408051808201909152828152602080820183905260008054600181018083559180528351805192949360029092027f290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563019261069492849201906106b5565b5060208281015180516106ad92600185019201906106b5565b505050505050565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106106f657805160ff1916838001178555610723565b82800160010185558215610723579182015b82811115610723578251825591602001919060010190610708565b5061072f929150610733565b5090565b6102ff91905b8082111561072f576000815560010161073956fea165627a7a72305820608808589b3d512f0304a113d6844db14b7458c57bf2ff45f4574a379595bbf10029",
+  "sourceMap": "61:814:0:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;61:814:0;;;;;;;",
+  "deployedSourceMap": "61:814:0:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;483:99;;8:9:-1;5:2;;;30:1;27;20:12;5:2;483:99:0;;;;;;;;;;;;;;;;;;;;643:230;;8:9:-1;5:2;;;30:1;27;20:12;5:2;643:230:0;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;643:230:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;643:230:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;643:230:0;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;643:230:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;201:31;;8:9:-1;5:2;;;30:1;27;20:12;5:2;201:31:0;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;201:31:0;;;283:135;;8:9:-1;5:2;;;30:1;27;20:12;5:2;283:135:0;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;283:135:0;;;;;;;;21:11:-1;5:28;;2:2;;;46:1;43;36:12;2:2;283:135:0;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;283:135:0;;;;;;100:9:-1;95:1;81:12;77:20;67:8;63:35;60:50;39:11;25:12;22:29;11:107;8:2;;;131:1;128;121:12;8:2;283:135:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;81:16;;74:27;;;;-1:-1;283:135:0;;;;;;;;-1:-1:-1;283:135:0;;-1:-1:-1;;21:11;5:28;;2:2;;;46:1;43;36:12;2:2;283:135:0;;35:9:-1;28:4;12:14;8:25;5:40;2:2;;;58:1;55;48:12;2:2;283:135:0;;;;;;100:9:-1;95:1;81:12;77:20;67:8;63:35;60:50;39:11;25:12;22:29;11:107;8:2;;;131:1;128;121:12;8:2;283:135:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;30:3:-1;22:6;14;1:33;99:1;81:16;;74:27;;;;-1:-1;283:135:0;;-1:-1:-1;283:135:0;;-1:-1:-1;;;;;283:135:0;;;483:99;534:4;557:18;483:99;;:::o;643:230::-;755:11;:18;699:13;;;;747:26;;739:58;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;815:11;:18;;827:5;;815:18;;;;;;;;;;;;;;;;:23;;840:11;852:5;840:18;;;;;;;;;;;;;;;;;;;;:25;;807:59;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;807:59:0;;;;;;;;;;;;;-1:-1:-1;;807:59:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;807:59:0;;-1:-1:-1;807:59:0;-1:-1:-1;807:59:0;;;-1:-1:-1;807:59:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;643:230;;;:::o;201:31::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;201:31:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;201:31:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;283:135::-;384:26;;;;;;;;;;;;;;;;;;;367:11;27:10:-1;;39:1;23:18;;45:23;;;367:44:0;;;;;;;23:18:-1;;384:26:0;367:44;;;;;;;;;;;;;;:::i;:::-;-1:-1:-1;367:44:0;;;;;;;;;;;;;;;;:::i;:::-;;;;;283:135;;:::o;61:814::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;61:814:0;;;-1:-1:-1;61:814:0;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;",
+  "source": "// SPDX-License-Identifier: GPL-3.0\npragma solidity ^0.5.0;\n\ncontract Tournaments {\n    struct Tournament {\n        string name;\n        string winner;\n    }\n    \n    // Array to store tournaments\n    Tournament[] public tournaments;\n    \n    // Function to add a new tournament\n    function addTournament(string memory _name, string memory _winner) public {\n        tournaments.push(Tournament(_name, _winner));\n    }\n    \n    // Function to get the total number of tournaments\n    function getTournamentCount() public view returns (uint) {\n        return tournaments.length;\n    }\n    \n    // Function to get tournament details by index\n    function getTournament(uint index) public view returns (string memory, string memory) {\n        require(index < tournaments.length, \"Index out of bounds\");\n        return (tournaments[index].name, tournaments[index].winner);\n    }\n}\n",
+  "sourcePath": "/Users/andorgunczer/WORK/MISC/BLOCKCHAIN/transcendence_local/contracts/Tournaments.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/Tournaments.sol",
+    "exportedSymbols": {
+      "Tournaments": [
+        64
+      ]
+    },
+    "id": 65,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "36:23:0"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 64,
+        "linearizedBaseContracts": [
+          64
+        ],
+        "name": "Tournaments",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "Tournaments.Tournament",
+            "id": 6,
+            "members": [
+              {
+                "constant": false,
+                "id": 3,
+                "name": "name",
+                "nodeType": "VariableDeclaration",
+                "scope": 6,
+                "src": "116:11:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 2,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "116:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 5,
+                "name": "winner",
+                "nodeType": "VariableDeclaration",
+                "scope": 6,
+                "src": "137:13:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 4,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "137:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "Tournament",
+            "nodeType": "StructDefinition",
+            "scope": 64,
+            "src": "88:69:0",
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "id": 9,
+            "name": "tournaments",
+            "nodeType": "VariableDeclaration",
+            "scope": 64,
+            "src": "201:31:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_array$_t_struct$_Tournament_$6_storage_$dyn_storage",
+              "typeString": "struct Tournaments.Tournament[]"
+            },
+            "typeName": {
+              "baseType": {
+                "contractScope": null,
+                "id": 7,
+                "name": "Tournament",
+                "nodeType": "UserDefinedTypeName",
+                "referencedDeclaration": 6,
+                "src": "201:10:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Tournament_$6_storage_ptr",
+                  "typeString": "struct Tournaments.Tournament"
+                }
+              },
+              "id": 8,
+              "length": null,
+              "nodeType": "ArrayTypeName",
+              "src": "201:12:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_array$_t_struct$_Tournament_$6_storage_$dyn_storage_ptr",
+                "typeString": "struct Tournaments.Tournament[]"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 25,
+              "nodeType": "Block",
+              "src": "357:61:0",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 20,
+                            "name": "_name",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 11,
+                            "src": "395:5:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_string_memory_ptr",
+                              "typeString": "string memory"
+                            }
+                          },
+                          {
+                            "argumentTypes": null,
+                            "id": 21,
+                            "name": "_winner",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 13,
+                            "src": "402:7:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_string_memory_ptr",
+                              "typeString": "string memory"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_string_memory_ptr",
+                              "typeString": "string memory"
+                            },
+                            {
+                              "typeIdentifier": "t_string_memory_ptr",
+                              "typeString": "string memory"
+                            }
+                          ],
+                          "id": 19,
+                          "name": "Tournament",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 6,
+                          "src": "384:10:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_type$_t_struct$_Tournament_$6_storage_ptr_$",
+                            "typeString": "type(struct Tournaments.Tournament storage pointer)"
+                          }
+                        },
+                        "id": 22,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "structConstructorCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "384:26:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Tournament_$6_memory",
+                          "typeString": "struct Tournaments.Tournament memory"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_struct$_Tournament_$6_memory",
+                          "typeString": "struct Tournaments.Tournament memory"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 16,
+                        "name": "tournaments",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 9,
+                        "src": "367:11:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_struct$_Tournament_$6_storage_$dyn_storage",
+                          "typeString": "struct Tournaments.Tournament storage ref[] storage ref"
+                        }
+                      },
+                      "id": 18,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "push",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": null,
+                      "src": "367:16:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_arraypush_nonpayable$_t_struct$_Tournament_$6_storage_$returns$_t_uint256_$",
+                        "typeString": "function (struct Tournaments.Tournament storage ref) returns (uint256)"
+                      }
+                    },
+                    "id": 23,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "367:44:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "id": 24,
+                  "nodeType": "ExpressionStatement",
+                  "src": "367:44:0"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 26,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "addTournament",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 14,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 11,
+                  "name": "_name",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 26,
+                  "src": "306:19:0",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 10,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "306:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 13,
+                  "name": "_winner",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 26,
+                  "src": "327:21:0",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 12,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "327:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "305:44:0"
+            },
+            "returnParameters": {
+              "id": 15,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "357:0:0"
+            },
+            "scope": 64,
+            "src": "283:135:0",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 34,
+              "nodeType": "Block",
+              "src": "540:42:0",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "expression": {
+                      "argumentTypes": null,
+                      "id": 31,
+                      "name": "tournaments",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 9,
+                      "src": "557:11:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_array$_t_struct$_Tournament_$6_storage_$dyn_storage",
+                        "typeString": "struct Tournaments.Tournament storage ref[] storage ref"
+                      }
+                    },
+                    "id": 32,
+                    "isConstant": false,
+                    "isLValue": true,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "memberName": "length",
+                    "nodeType": "MemberAccess",
+                    "referencedDeclaration": null,
+                    "src": "557:18:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 30,
+                  "id": 33,
+                  "nodeType": "Return",
+                  "src": "550:25:0"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 35,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getTournamentCount",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 27,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "510:2:0"
+            },
+            "returnParameters": {
+              "id": 30,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 35,
+                  "src": "534:4:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 28,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "534:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "533:6:0"
+            },
+            "scope": 64,
+            "src": "483:99:0",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 62,
+              "nodeType": "Block",
+              "src": "729:144:0",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "commonType": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        },
+                        "id": 48,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "leftExpression": {
+                          "argumentTypes": null,
+                          "id": 45,
+                          "name": "index",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 37,
+                          "src": "747:5:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "nodeType": "BinaryOperation",
+                        "operator": "<",
+                        "rightExpression": {
+                          "argumentTypes": null,
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 46,
+                            "name": "tournaments",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 9,
+                            "src": "755:11:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_array$_t_struct$_Tournament_$6_storage_$dyn_storage",
+                              "typeString": "struct Tournaments.Tournament storage ref[] storage ref"
+                            }
+                          },
+                          "id": 47,
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "length",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "755:18:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "src": "747:26:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "hexValue": "496e646578206f7574206f6620626f756e6473",
+                        "id": 49,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": true,
+                        "kind": "string",
+                        "lValueRequested": false,
+                        "nodeType": "Literal",
+                        "src": "775:21:0",
+                        "subdenomination": null,
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_stringliteral_dd00b67a545791a54dd99d9c09eb42099756ea4ee2bd47188784c22234589367",
+                          "typeString": "literal_string \"Index out of bounds\""
+                        },
+                        "value": "Index out of bounds"
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        },
+                        {
+                          "typeIdentifier": "t_stringliteral_dd00b67a545791a54dd99d9c09eb42099756ea4ee2bd47188784c22234589367",
+                          "typeString": "literal_string \"Index out of bounds\""
+                        }
+                      ],
+                      "id": 44,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        82,
+                        83
+                      ],
+                      "referencedDeclaration": 83,
+                      "src": "739:7:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$_t_string_memory_ptr_$returns$__$",
+                        "typeString": "function (bool,string memory) pure"
+                      }
+                    },
+                    "id": 50,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "739:58:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 51,
+                  "nodeType": "ExpressionStatement",
+                  "src": "739:58:0"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "components": [
+                      {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "baseExpression": {
+                            "argumentTypes": null,
+                            "id": 52,
+                            "name": "tournaments",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 9,
+                            "src": "815:11:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_array$_t_struct$_Tournament_$6_storage_$dyn_storage",
+                              "typeString": "struct Tournaments.Tournament storage ref[] storage ref"
+                            }
+                          },
+                          "id": 54,
+                          "indexExpression": {
+                            "argumentTypes": null,
+                            "id": 53,
+                            "name": "index",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 37,
+                            "src": "827:5:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "IndexAccess",
+                          "src": "815:18:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_Tournament_$6_storage",
+                            "typeString": "struct Tournaments.Tournament storage ref"
+                          }
+                        },
+                        "id": 55,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "name",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 3,
+                        "src": "815:23:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_storage",
+                          "typeString": "string storage ref"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "expression": {
+                          "argumentTypes": null,
+                          "baseExpression": {
+                            "argumentTypes": null,
+                            "id": 56,
+                            "name": "tournaments",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 9,
+                            "src": "840:11:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_array$_t_struct$_Tournament_$6_storage_$dyn_storage",
+                              "typeString": "struct Tournaments.Tournament storage ref[] storage ref"
+                            }
+                          },
+                          "id": 58,
+                          "indexExpression": {
+                            "argumentTypes": null,
+                            "id": 57,
+                            "name": "index",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 37,
+                            "src": "852:5:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_uint256",
+                              "typeString": "uint256"
+                            }
+                          },
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "nodeType": "IndexAccess",
+                          "src": "840:18:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_struct$_Tournament_$6_storage",
+                            "typeString": "struct Tournaments.Tournament storage ref"
+                          }
+                        },
+                        "id": 59,
+                        "isConstant": false,
+                        "isLValue": true,
+                        "isPure": false,
+                        "lValueRequested": false,
+                        "memberName": "winner",
+                        "nodeType": "MemberAccess",
+                        "referencedDeclaration": 5,
+                        "src": "840:25:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_string_storage",
+                          "typeString": "string storage ref"
+                        }
+                      }
+                    ],
+                    "id": 60,
+                    "isConstant": false,
+                    "isInlineArray": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "nodeType": "TupleExpression",
+                    "src": "814:52:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$_t_string_storage_$_t_string_storage_$",
+                      "typeString": "tuple(string storage ref,string storage ref)"
+                    }
+                  },
+                  "functionReturnParameters": 43,
+                  "id": 61,
+                  "nodeType": "Return",
+                  "src": "807:59:0"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 63,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getTournament",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 38,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 37,
+                  "name": "index",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 63,
+                  "src": "666:10:0",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "666:4:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "665:12:0"
+            },
+            "returnParameters": {
+              "id": 43,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 40,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 63,
+                  "src": "699:13:0",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 39,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "699:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 42,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 63,
+                  "src": "714:13:0",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 41,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "714:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "698:30:0"
+            },
+            "scope": 64,
+            "src": "643:230:0",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 65,
+        "src": "61:814:0"
+      }
+    ],
+    "src": "36:840:0"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "project:/contracts/Tournaments.sol",
+      "exportedSymbols": {
+        "Tournaments": [
+          64
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.5",
+            ".0"
+          ]
+        },
+        "id": 1,
+        "name": "PragmaDirective",
+        "src": "36:23:0"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            64
+          ],
+          "name": "Tournaments",
+          "scope": 65
+        },
+        "children": [
+          {
+            "attributes": {
+              "canonicalName": "Tournaments.Tournament",
+              "name": "Tournament",
+              "scope": 64,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "name",
+                  "scope": 6,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "string",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "string",
+                      "type": "string"
+                    },
+                    "id": 2,
+                    "name": "ElementaryTypeName",
+                    "src": "116:6:0"
+                  }
+                ],
+                "id": 3,
+                "name": "VariableDeclaration",
+                "src": "116:11:0"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "winner",
+                  "scope": 6,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "string",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "string",
+                      "type": "string"
+                    },
+                    "id": 4,
+                    "name": "ElementaryTypeName",
+                    "src": "137:6:0"
+                  }
+                ],
+                "id": 5,
+                "name": "VariableDeclaration",
+                "src": "137:13:0"
+              }
+            ],
+            "id": 6,
+            "name": "StructDefinition",
+            "src": "88:69:0"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "tournaments",
+              "scope": 64,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "struct Tournaments.Tournament[]",
+              "value": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "length": null,
+                  "type": "struct Tournaments.Tournament[]"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "contractScope": null,
+                      "name": "Tournament",
+                      "referencedDeclaration": 6,
+                      "type": "struct Tournaments.Tournament"
+                    },
+                    "id": 7,
+                    "name": "UserDefinedTypeName",
+                    "src": "201:10:0"
+                  }
+                ],
+                "id": 8,
+                "name": "ArrayTypeName",
+                "src": "201:12:0"
+              }
+            ],
+            "id": 9,
+            "name": "VariableDeclaration",
+            "src": "201:31:0"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "addTournament",
+              "scope": 64,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_name",
+                      "scope": 26,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 10,
+                        "name": "ElementaryTypeName",
+                        "src": "306:6:0"
+                      }
+                    ],
+                    "id": 11,
+                    "name": "VariableDeclaration",
+                    "src": "306:19:0"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_winner",
+                      "scope": 26,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 12,
+                        "name": "ElementaryTypeName",
+                        "src": "327:6:0"
+                      }
+                    ],
+                    "id": 13,
+                    "name": "VariableDeclaration",
+                    "src": "327:21:0"
+                  }
+                ],
+                "id": 14,
+                "name": "ParameterList",
+                "src": "305:44:0"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 15,
+                "name": "ParameterList",
+                "src": "357:0:0"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "uint256",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_struct$_Tournament_$6_memory",
+                                  "typeString": "struct Tournaments.Tournament memory"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "push",
+                              "referencedDeclaration": null,
+                              "type": "function (struct Tournaments.Tournament storage ref) returns (uint256)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 9,
+                                  "type": "struct Tournaments.Tournament storage ref[] storage ref",
+                                  "value": "tournaments"
+                                },
+                                "id": 16,
+                                "name": "Identifier",
+                                "src": "367:11:0"
+                              }
+                            ],
+                            "id": 18,
+                            "name": "MemberAccess",
+                            "src": "367:16:0"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": true,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "struct Tournaments.Tournament memory",
+                              "type_conversion": false
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    {
+                                      "typeIdentifier": "t_string_memory_ptr",
+                                      "typeString": "string memory"
+                                    },
+                                    {
+                                      "typeIdentifier": "t_string_memory_ptr",
+                                      "typeString": "string memory"
+                                    }
+                                  ],
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 6,
+                                  "type": "type(struct Tournaments.Tournament storage pointer)",
+                                  "value": "Tournament"
+                                },
+                                "id": 19,
+                                "name": "Identifier",
+                                "src": "384:10:0"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 11,
+                                  "type": "string memory",
+                                  "value": "_name"
+                                },
+                                "id": 20,
+                                "name": "Identifier",
+                                "src": "395:5:0"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 13,
+                                  "type": "string memory",
+                                  "value": "_winner"
+                                },
+                                "id": 21,
+                                "name": "Identifier",
+                                "src": "402:7:0"
+                              }
+                            ],
+                            "id": 22,
+                            "name": "FunctionCall",
+                            "src": "384:26:0"
+                          }
+                        ],
+                        "id": 23,
+                        "name": "FunctionCall",
+                        "src": "367:44:0"
+                      }
+                    ],
+                    "id": 24,
+                    "name": "ExpressionStatement",
+                    "src": "367:44:0"
+                  }
+                ],
+                "id": 25,
+                "name": "Block",
+                "src": "357:61:0"
+              }
+            ],
+            "id": 26,
+            "name": "FunctionDefinition",
+            "src": "283:135:0"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "getTournamentCount",
+              "scope": 64,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 27,
+                "name": "ParameterList",
+                "src": "510:2:0"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 35,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 28,
+                        "name": "ElementaryTypeName",
+                        "src": "534:4:0"
+                      }
+                    ],
+                    "id": 29,
+                    "name": "VariableDeclaration",
+                    "src": "534:4:0"
+                  }
+                ],
+                "id": 30,
+                "name": "ParameterList",
+                "src": "533:6:0"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 30
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "member_name": "length",
+                          "referencedDeclaration": null,
+                          "type": "uint256"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 9,
+                              "type": "struct Tournaments.Tournament storage ref[] storage ref",
+                              "value": "tournaments"
+                            },
+                            "id": 31,
+                            "name": "Identifier",
+                            "src": "557:11:0"
+                          }
+                        ],
+                        "id": 32,
+                        "name": "MemberAccess",
+                        "src": "557:18:0"
+                      }
+                    ],
+                    "id": 33,
+                    "name": "Return",
+                    "src": "550:25:0"
+                  }
+                ],
+                "id": 34,
+                "name": "Block",
+                "src": "540:42:0"
+              }
+            ],
+            "id": 35,
+            "name": "FunctionDefinition",
+            "src": "483:99:0"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "getTournament",
+              "scope": 64,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "index",
+                      "scope": 63,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 36,
+                        "name": "ElementaryTypeName",
+                        "src": "666:4:0"
+                      }
+                    ],
+                    "id": 37,
+                    "name": "VariableDeclaration",
+                    "src": "666:10:0"
+                  }
+                ],
+                "id": 38,
+                "name": "ParameterList",
+                "src": "665:12:0"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 63,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 39,
+                        "name": "ElementaryTypeName",
+                        "src": "699:6:0"
+                      }
+                    ],
+                    "id": 40,
+                    "name": "VariableDeclaration",
+                    "src": "699:13:0"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 63,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 41,
+                        "name": "ElementaryTypeName",
+                        "src": "714:6:0"
+                      }
+                    ],
+                    "id": 42,
+                    "name": "VariableDeclaration",
+                    "src": "714:13:0"
+                  }
+                ],
+                "id": 43,
+                "name": "ParameterList",
+                "src": "698:30:0"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_bool",
+                                  "typeString": "bool"
+                                },
+                                {
+                                  "typeIdentifier": "t_stringliteral_dd00b67a545791a54dd99d9c09eb42099756ea4ee2bd47188784c22234589367",
+                                  "typeString": "literal_string \"Index out of bounds\""
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                82,
+                                83
+                              ],
+                              "referencedDeclaration": 83,
+                              "type": "function (bool,string memory) pure",
+                              "value": "require"
+                            },
+                            "id": 44,
+                            "name": "Identifier",
+                            "src": "739:7:0"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "commonType": {
+                                "typeIdentifier": "t_uint256",
+                                "typeString": "uint256"
+                              },
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "operator": "<",
+                              "type": "bool"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 37,
+                                  "type": "uint256",
+                                  "value": "index"
+                                },
+                                "id": 45,
+                                "name": "Identifier",
+                                "src": "747:5:0"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": true,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "length",
+                                  "referencedDeclaration": null,
+                                  "type": "uint256"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 9,
+                                      "type": "struct Tournaments.Tournament storage ref[] storage ref",
+                                      "value": "tournaments"
+                                    },
+                                    "id": 46,
+                                    "name": "Identifier",
+                                    "src": "755:11:0"
+                                  }
+                                ],
+                                "id": 47,
+                                "name": "MemberAccess",
+                                "src": "755:18:0"
+                              }
+                            ],
+                            "id": 48,
+                            "name": "BinaryOperation",
+                            "src": "747:26:0"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "hexvalue": "496e646578206f7574206f6620626f756e6473",
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "subdenomination": null,
+                              "token": "string",
+                              "type": "literal_string \"Index out of bounds\"",
+                              "value": "Index out of bounds"
+                            },
+                            "id": 49,
+                            "name": "Literal",
+                            "src": "775:21:0"
+                          }
+                        ],
+                        "id": 50,
+                        "name": "FunctionCall",
+                        "src": "739:58:0"
+                      }
+                    ],
+                    "id": 51,
+                    "name": "ExpressionStatement",
+                    "src": "739:58:0"
+                  },
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 43
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isInlineArray": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "type": "tuple(string storage ref,string storage ref)"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "name",
+                              "referencedDeclaration": 3,
+                              "type": "string storage ref"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": true,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "type": "struct Tournaments.Tournament storage ref"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 9,
+                                      "type": "struct Tournaments.Tournament storage ref[] storage ref",
+                                      "value": "tournaments"
+                                    },
+                                    "id": 52,
+                                    "name": "Identifier",
+                                    "src": "815:11:0"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 37,
+                                      "type": "uint256",
+                                      "value": "index"
+                                    },
+                                    "id": 53,
+                                    "name": "Identifier",
+                                    "src": "827:5:0"
+                                  }
+                                ],
+                                "id": 54,
+                                "name": "IndexAccess",
+                                "src": "815:18:0"
+                              }
+                            ],
+                            "id": 55,
+                            "name": "MemberAccess",
+                            "src": "815:23:0"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "winner",
+                              "referencedDeclaration": 5,
+                              "type": "string storage ref"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": true,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "type": "struct Tournaments.Tournament storage ref"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 9,
+                                      "type": "struct Tournaments.Tournament storage ref[] storage ref",
+                                      "value": "tournaments"
+                                    },
+                                    "id": 56,
+                                    "name": "Identifier",
+                                    "src": "840:11:0"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 37,
+                                      "type": "uint256",
+                                      "value": "index"
+                                    },
+                                    "id": 57,
+                                    "name": "Identifier",
+                                    "src": "852:5:0"
+                                  }
+                                ],
+                                "id": 58,
+                                "name": "IndexAccess",
+                                "src": "840:18:0"
+                              }
+                            ],
+                            "id": 59,
+                            "name": "MemberAccess",
+                            "src": "840:25:0"
+                          }
+                        ],
+                        "id": 60,
+                        "name": "TupleExpression",
+                        "src": "814:52:0"
+                      }
+                    ],
+                    "id": 61,
+                    "name": "Return",
+                    "src": "807:59:0"
+                  }
+                ],
+                "id": 62,
+                "name": "Block",
+                "src": "729:144:0"
+              }
+            ],
+            "id": 63,
+            "name": "FunctionDefinition",
+            "src": "643:230:0"
+          }
+        ],
+        "id": 64,
+        "name": "ContractDefinition",
+        "src": "61:814:0"
+      }
+    ],
+    "id": 65,
+    "name": "SourceUnit",
+    "src": "36:840:0"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.0+commit.1d4f565a.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.16",
+  "updatedAt": "2024-07-17T07:57:13.629Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

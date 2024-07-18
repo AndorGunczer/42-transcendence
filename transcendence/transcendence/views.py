@@ -15,6 +15,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 import copy
 from django.middleware.csrf import get_token
 import json
+import random
 
 from .menus import MENU_DATA
 
@@ -666,7 +667,7 @@ def register(request, warning: str = None, menu_type='register'):
         avatars = Avatar.objects.all()
         print(avatars)
         for avatar in avatars:
-            menu['menuItems'][0]['content'][0]['content'][2]['content'][1]['content'].append({
+            menu['menuItems'][0]['content'][0]['content'][3]['content'][1]['content'].append({
                 'type': 'option',
                 'value': avatar.name,
                 'text': avatar.name
@@ -700,7 +701,11 @@ def registration_check(request):
             print(data.get("avatar"))
             avatar = pre + data.get('avatar')
             print(avatar)
-            new_user = Users2(username=username, wins=0, losses=0, avatarDirect=avatar)
+            email = data.get('email')
+            print(email)
+            twofa = data.get('twofa')
+            print(twofa)
+            new_user = Users2(username=username, email=email, wins=0, losses=0, avatarDirect=avatar, allow_otp=twofa)
             new_user.set_password(password)
             new_user.save()
             # Users.objects.create(username=username, password=Users.make_password(password), wins=0, losses=0, games=None)
@@ -719,6 +724,9 @@ def registration_check(request):
 # from django.views.decorators.csrf import csrf_exempt
 # import json
 
+def generate_otp():
+    return str(random.randint(100000, 999999))
+
 @csrf_exempt
 def login_check(request):
     if request.method == "POST":
@@ -732,18 +740,31 @@ def login_check(request):
             
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                login(request, user)
-                access_token = str(AccessToken.for_user(user))
-
-                # Assuming modify_json_menu requires a token and modifies the menu accordingly
-                response_data = modify_json_menu('main', access_token)
-                
-                response = JsonResponse(response_data)
-                response.set_cookie(
-                    'access_token', access_token, httponly=True, secure=True, samesite='Strict'
-                )
-                
-                return response
+                if user.allow_otp:
+                    # Generate OTP and save it to the session
+                    otp = generate_otp()
+                    request.session['otp'] = otp
+                    request.session['username'] = username
+                    request.session['password'] = password
+                    
+                    # Simulate sending OTP to user (e.g., via email or SMS)
+                    print(f"Your OTP is: {otp}")
+                    
+                    return JsonResponse({'status': 'otp_sent'})
+                else:
+                    # Directly log the user in without OTP
+                    login(request, user)
+                    access_token = str(AccessToken.for_user(user))
+                    
+                    # Assuming modify_json_menu requires a token and modifies the menu accordingly
+                    response_data = modify_json_menu('main', access_token)
+                    
+                    response = JsonResponse(response_data)
+                    response.set_cookie(
+                        'access_token', access_token, httponly=True, secure=True, samesite='Strict'
+                    )
+                    
+                    return response
             else:
                 return JsonResponse({'error': 'Invalid username or password'}, status=401)
         except Exception as e:
@@ -751,6 +772,43 @@ def login_check(request):
     else:
         return JsonResponse({'error': 'Only POST method is allowed.'}, status=405)
 
+@csrf_exempt
+def verify_otp_view(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            otp_input = data.get('otp')
+            
+            if otp_input == request.session.get('otp'):
+                # OTP is correct, log the user in
+                username = request.session.get('username')
+                password = request.session.get('password')
+                
+                user = authenticate(request, username=username, password=password)
+                
+                if user is not None:
+                    login(request, user)
+                    access_token = str(AccessToken.for_user(user))
+                    
+                    # Assuming modify_json_menu requires a token and modifies the menu accordingly
+                    response_data = modify_json_menu('main', access_token)
+                    
+                    response = JsonResponse(response_data)
+                    response.set_cookie(
+                        'access_token', access_token, httponly=True, secure=True, samesite='Strict'
+                    )
+                    
+                    # Clear session data
+                    request.session.pop('otp', None)
+                    request.session.pop('username', None)
+                    request.session.pop('password', None)
+                    
+                    return response
+            return JsonResponse({'error': 'Invalid OTP'}, status=401)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Only POST method is allowed.'}, status=405)
 # def index(request):
 #     return render(request, "/", {})
 

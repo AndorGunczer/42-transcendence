@@ -43,6 +43,7 @@ urlpatterns = [
     path('close_tournament_game', views.close_tournament_game, name="close_tournament_game"),
     # AUTHENTICATION URLS
     path('login', views.login, name="login"),
+    path('verify_otp', views.verify_otp_view, name='verify_otp'),
     path('register', views.register, name="register"),
     path('register/<str:warning>/', views.register, name="register"),
     path('upload_file', views.upload_file, name="upload_file"),
