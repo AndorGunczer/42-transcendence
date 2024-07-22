@@ -27,5 +27,8 @@ EOSQL
 
 cd ../transcendence
 
+python3 manage.py makemigrations
 python3 manage.py migrate
-python3 manage.py runserver_plus 8000:8000 --cert-file /app/cert.crt --key-file /app/key.pem
+python3 manage.py runserver_plus 0.0.0.0:8000 --cert-file /app/cert.crt --key-file /app/key.pem
+
+# tail -f /dev/null

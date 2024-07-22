@@ -43,3 +43,11 @@ TERMINOLOGY:
     Non-Prime attribute: Cannot identify a record uniquely (derived)
 
 to run server in secure mode: python3 manage.py runserver_plus --cert-file /Users/andorgunczer/WORK/SCHOOL/transcendence/files/cert.crt --key-file /Users/andorgunczer/WORK/SCHOOL/transcendence/files/key.pem
+
+DOCKER SETUP:
+
+    docker build . -t main_app
+
+    docker run -p 8000:8000 -it main_app
+
+    
