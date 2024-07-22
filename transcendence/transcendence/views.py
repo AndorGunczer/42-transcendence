@@ -135,8 +135,6 @@ def tournament_select_fill(menu):
 
 from django.db.models import Q
 
-from django.db.models import Q
-
 def tournament_select_page_fill(menu, participants):
     for participant in participants:
         menu['menuItems'][0]['content'][0]['content'].append({
@@ -309,80 +307,80 @@ def local_check(request, menu_type='local_game'):
 
 from django.core.exceptions import ObjectDoesNotExist
 
-def close_local(request, menu_type='main'):
-    try:
-        token = get_token_from_header(request)
+# def close_local(request, menu_type='main'):
+#     try:
+#         token = get_token_from_header(request)
 
-        data = json.loads(request.body)
-        player1 = data.get('player1')
-        player2 = data.get('player2')
+#         data = json.loads(request.body)
+#         player1 = data.get('player1')
+#         player2 = data.get('player2')
 
-        if player1.get('status') == 'winner':
-            player1_db = Users2.objects.get(username=player1.get('name'))
-            player1_db.wins += 1
-            player1_db.save()
+#         if player1.get('status') == 'winner':
+#             player1_db = Users2.objects.get(username=player1.get('name'))
+#             player1_db.wins += 1
+#             player1_db.save()
 
-            player2_db = Users2.objects.get(username=player2.get('name'))
-            player2_db.losses += 1
-            player2_db.save()
+#             player2_db = Users2.objects.get(username=player2.get('name'))
+#             player2_db.losses += 1
+#             player2_db.save()
 
-            player_id = player1.get('id')
-            if player_id is None:
-                return JsonResponse({'error': 'Player 1 ID not provided'}, status=400)
+#             player_id = player1.get('id')
+#             if player_id is None:
+#                 return JsonResponse({'error': 'Player 1 ID not provided'}, status=400)
 
-            try:
-                player = Players.objects.get(id=player_id)
-                game = Games.objects.get(id=player.game.id)
-                game.result = player1.get('name')
-                game.save()
-            except Players.DoesNotExist:
-                return JsonResponse({'error': 'Player 1 not found'}, status=404)
-            except Games.DoesNotExist:
-                return JsonResponse({'error': 'Game not found'}, status=404)
+#             try:
+#                 player = Players.objects.get(id=player_id)
+#                 game = Games.objects.get(id=player.game.id)
+#                 game.result = player1.get('name')
+#                 game.save()
+#             except Players.DoesNotExist:
+#                 return JsonResponse({'error': 'Player 1 not found'}, status=404)
+#             except Games.DoesNotExist:
+#                 return JsonResponse({'error': 'Game not found'}, status=404)
 
-        else:
-            player1_db = Users2.objects.get(username=player1.get('name'))
-            player1_db.losses += 1
-            player1_db.save()
+#         else:
+#             player1_db = Users2.objects.get(username=player1.get('name'))
+#             player1_db.losses += 1
+#             player1_db.save()
 
-            player2_db = Users2.objects.get(username=player2.get('name'))
-            player2_db.wins += 1
-            player2_db.save()
+#             player2_db = Users2.objects.get(username=player2.get('name'))
+#             player2_db.wins += 1
+#             player2_db.save()
 
-            player_id = player1.get('id')
-            if player_id is None:
-                return JsonResponse({'error': 'Player 1 ID not provided'}, status=400)
+#             player_id = player1.get('id')
+#             if player_id is None:
+#                 return JsonResponse({'error': 'Player 1 ID not provided'}, status=400)
 
-            try:
-                player = Players.objects.get(id=player_id)
-                game = Games.objects.get(id=player.game.id)
-                game.result = player2.get('name')
-                game.save()
-            except Players.DoesNotExist:
-                return JsonResponse({'error': 'Player 1 not found'}, status=404)
-            except Games.DoesNotExist:
-                return JsonResponse({'error': 'Game not found'}, status=404)
+#             try:
+#                 player = Players.objects.get(id=player_id)
+#                 game = Games.objects.get(id=player.game.id)
+#                 game.result = player2.get('name')
+#                 game.save()
+#             except Players.DoesNotExist:
+#                 return JsonResponse({'error': 'Player 1 not found'}, status=404)
+#             except Games.DoesNotExist:
+#                 return JsonResponse({'error': 'Game not found'}, status=404)
 
-        # Determine the menu based on the token
-        if (token is None) or (not validate_token(token)):
-            menu = copy.deepcopy(MENU_DATA.get(menu_type))
-        else:
-            menu = modify_json_menu(menu_type, token)
+#         # Determine the menu based on the token
+#         if (token is None) or (not validate_token(token)):
+#             menu = copy.deepcopy(MENU_DATA.get(menu_type))
+#         else:
+#             menu = modify_json_menu(menu_type, token)
 
-        # Return the menu if found, else return an error response
-        if menu is not None:
-            return JsonResponse(menu)
-        else:
-            return JsonResponse({'error': 'Menu type not found'}, status=404)
+#         # Return the menu if found, else return an error response
+#         if menu is not None:
+#             return JsonResponse(menu)
+#         else:
+#             return JsonResponse({'error': 'Menu type not found'}, status=404)
 
-    except Users2.DoesNotExist:
-        return JsonResponse({'error': 'User not found'}, status=404)
+#     except Users2.DoesNotExist:
+#         return JsonResponse({'error': 'User not found'}, status=404)
 
-    except ObjectDoesNotExist as e:
-        return JsonResponse({'error': str(e)}, status=404)
+#     except ObjectDoesNotExist as e:
+#         return JsonResponse({'error': str(e)}, status=404)
 
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+#     except Exception as e:
+#         return JsonResponse({'error': str(e)}, status=500)
 
 
 def online_menu(request, menu_type='online_menu'):
@@ -945,3 +943,123 @@ def save_changes(request, menu_type='main'):
         return JsonResponse(menu)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+# NEW
+
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from .models import GameState, Users2, Games, Players
+import json
+
+def start_game(request):
+    data = json.loads(request.body)
+    player1 = Users2.objects.get(username=data['player1'])
+    player2 = Users2.objects.get(username=data['player2'])
+    game = Games.objects.create()
+    Players.objects.create(player=player1, game=game)
+    Players.objects.create(player=player2, game=game)
+    game_state = GameState.objects.create(game=game, player1=player1, player2=player2)
+    return JsonResponse({'game_id': game_state.id})
+
+def get_game_state(request, game_id):
+    game_state = get_object_or_404(GameState, id=game_id)
+    return JsonResponse({
+        'player1': {'name': game_state.player1.username, 'score': game_state.player1.wins},
+        'player2': {'name': game_state.player2.username, 'score': game_state.player2.wins},
+        'ball': {'x': game_state.ball_x, 'y': game_state.ball_y, 'speed_x': game_state.ball_speed_x, 'speed_y': game_state.ball_speed_y, 'direction_x': game_state.ball_direction_x, 'direction_y': game_state.ball_direction_y},
+        'paddle1_y': game_state.paddle1_y,
+        'paddle2_y': game_state.paddle2_y,
+        'game_running': game_state.game_running,
+        'countdown': game_state.countdown,
+        'winning_score': game_state.winning_score
+    })
+
+def update_game_state(request, game_id):
+    game_state = get_object_or_404(GameState, id=game_id)
+    data = json.loads(request.body)
+    game_state.ball_x = data.get('ball_x', game_state.ball_x)
+    game_state.ball_y = data.get('ball_y', game_state.ball_y)
+    game_state.ball_speed_x = data.get('ball_speed_x', game_state.ball_speed_x)
+    game_state.ball_speed_y = data.get('ball_speed_y', game_state.ball_speed_y)
+    game_state.ball_direction_x = data.get('ball_direction_x', game_state.ball_direction_x)
+    game_state.ball_direction_y = data.get('ball_direction_y', game_state.ball_direction_y)
+    game_state.paddle1_y = data.get('paddle1_y', game_state.paddle1_y)
+    game_state.paddle2_y = data.get('paddle2_y', game_state.paddle2_y)
+    game_state.game_running = data.get('game_running', game_state.game_running)
+    game_state.countdown = data.get('countdown', game_state.countdown)
+    game_state.winning_score = data.get('winning_score', game_state.winning_score)
+    game_state.save()
+    return JsonResponse({'status': 'success'})
+
+def close_local(request, menu_type='main'):
+    try:
+        token = get_token_from_header(request)
+
+        data = json.loads(request.body)
+        player1 = data.get('player1')
+        player2 = data.get('player2')
+
+        if player1.get('status') == 'winner':
+            player1_db = Users2.objects.get(username=player1.get('name'))
+            player1_db.increment_wins()
+            player1_db.save()
+
+            player2_db = Users2.objects.get(username=player2.get('name'))
+            player2_db.increment_losses()
+            player2_db.save()
+
+            player_id = player1.get('id')
+            if player_id is None:
+                return JsonResponse({'error': 'Player 1 ID not provided'}, status=400)
+
+            try:
+                player = Players.objects.get(id=player_id)
+                game = Games.objects.get(id=player.game.id)
+                game.result = player1.get('name')
+                game.save()
+            except Players.DoesNotExist:
+                return JsonResponse({'error': 'Player 1 not found'}, status=404)
+            except Games.DoesNotExist:
+                return JsonResponse({'error': 'Game not found'}, status=404)
+
+        else:
+            player1_db = Users2.objects.get(username=player1.get('name'))
+            player1_db.increment_losses()
+            player1_db.save()
+
+            player2_db = Users2.objects.get(username=player2.get('name'))
+            player2_db.increment_wins()
+            player2_db.save()
+
+            player_id = player2.get('id')
+            if player_id is None:
+                return JsonResponse({'error': 'Player 2 ID not provided'}, status=400)
+
+            try:
+                player = Players.objects.get(id=player_id)
+                game = Games.objects.get(id=player.game.id)
+                game.result = player2.get('name')
+                game.save()
+            except Players.DoesNotExist:
+                return JsonResponse({'error': 'Player 2 not found'}, status=404)
+            except Games.DoesNotExist:
+                return JsonResponse({'error': 'Game not found'}, status=404)
+
+        if (token is None) or (not validate_token(token)):
+            menu = copy.deepcopy(MENU_DATA.get(menu_type))
+        else:
+            menu = modify_json_menu(menu_type, token)
+
+        if menu is not None:
+            return JsonResponse(menu)
+        else:
+            return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+    except Users2.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, status=404)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

@@ -1,12 +1,11 @@
+from django.db import models
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.db import models
 
 class Tournaments(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, unique=True, default="Not Set")
     creation_date = models.DateTimeField(auto_now=True)
-
 
 class Avatar(models.Model):
     id = models.AutoField(primary_key=True)
@@ -47,7 +46,6 @@ class Users2(AbstractBaseUser, PermissionsMixin):
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     games = models.ForeignKey(Games, null=True, on_delete=models.CASCADE)
-    # avatar = models.ForeignKey(Avatar, null=True, on_delete=models.SET_NULL)
     avatarDirect = models.CharField(max_length=200, null=True)
     allow_otp = models.BooleanField(default=False)
 
@@ -64,15 +62,13 @@ class Users2(AbstractBaseUser, PermissionsMixin):
     def increment_wins(self):
         self.wins += 1
 
-    def decrement_wins(self):
+    def increment_losses(self):
         self.losses += 1
 
     def has_perm(self, perm, obj=None):
-        # Handle custom permissions if needed
         return True
 
     def has_module_perms(self, app_label):
-        # Handle custom permissions if needed
         return True
 
     @property
@@ -86,5 +82,21 @@ class Participants(models.Model):
     points = models.IntegerField(default=0)
 
 class Players(models.Model):
-        player = models.ForeignKey(Users2, null=True, on_delete=models.CASCADE)
-        game = models.ForeignKey(Games, null=True, on_delete=models.CASCADE)
+    player = models.ForeignKey(Users2, null=True, on_delete=models.CASCADE)
+    game = models.ForeignKey(Games, null=True, on_delete=models.CASCADE)
+
+class GameState(models.Model):
+    game = models.OneToOneField(Games, on_delete=models.CASCADE)
+    player1 = models.ForeignKey(Users2, related_name='player1', on_delete=models.CASCADE)
+    player2 = models.ForeignKey(Users2, related_name='player2', on_delete=models.CASCADE)
+    ball_x = models.FloatField(default=600.0)
+    ball_y = models.FloatField(default=300.0)
+    ball_speed_x = models.FloatField(default=7.5)
+    ball_speed_y = models.FloatField(default=7.5)
+    ball_direction_x = models.IntegerField(default=1)
+    ball_direction_y = models.IntegerField(default=1)
+    paddle1_y = models.FloatField(default=262.5)
+    paddle2_y = models.FloatField(default=262.5)
+    game_running = models.BooleanField(default=False)
+    countdown = models.IntegerField(default=3)
+    winning_score = models.IntegerField(default=1)

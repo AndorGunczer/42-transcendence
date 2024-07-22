@@ -32,7 +32,7 @@ urlpatterns = [
     path('local_menu', views.local_menu, name="local_menu"),
     path('local_check', views.local_check, name="local_check"),
     path('local_game', views.local_game, name="local_game"),
-    path('close_local', views.close_local, name="close_local"),
+    # path('close_local', views.close_local, name="close_local"),
     path('online_menu', views.online_menu, name="online_menu"),
     # TOURNAMENT URLS
     path('tournament_main', views.tournament_main, name="tournament_main"),
@@ -56,4 +56,9 @@ urlpatterns = [
     path('settings', views.settings, name='settings'),
     path('delete_user_stats', views.delete_user_stats, name='delete_user_stats'),
     path('save_changes', views.save_changes, name='save_changes'),
+    # NEW
+    path('start_game', views.start_game, name='start_game'),
+    path('get_game_state/<int:game_id>/', views.get_game_state, name='get_game_state'),
+    path('update_game_state/<int:game_id>/', views.update_game_state, name='update_game_state'),
+    path('close_local/', views.close_local, name='close_local'),
 ]

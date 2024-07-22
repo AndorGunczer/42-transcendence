@@ -494,6 +494,63 @@ async function close_local_game(player1, player2) {
   });
 }
 
+////////////////////////////////////////////////////
+
+async function fetchGameState(gameId) {
+  let response = await fetch(`/get_game_state/${gameId}/`);
+  let gameState = await response.json();
+  // Update your frontend based on gameState
+}
+
+async function updateGameState(gameId, gameState) {
+  const csrfToken = await getCsrfToken();
+
+  await fetch(`/update_game_state/${gameId}/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken,  // Make sure to include CSRF token
+    },
+    body: JSON.stringify(gameState)
+  });
+}
+
+async function startLocalGame(state_json) {
+  const csrfToken = await getCsrfToken();
+
+  let state_json_string = JSON.stringify(state_json);
+  let jsonObject = JSON.parse(state_json_string);
+  let gameId;
+
+// Example usage
+  await fetch(`/start_game`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrfToken,  // Make sure to include CSRF token
+    },
+    body: JSON.stringify({
+      "player1": jsonObject.player1,
+      "player2": jsonObject.player2
+    })
+  }).then((response) => {
+    return response.json()
+  }).then((json) => {
+    gameId = json.game_id;
+    // console.log(gameId);
+  });
+  console.log(gameId); // Assume game ID is 1
+  
+  
+  setInterval(() => {
+    fetchGameState(gameId);
+    // Update game logic
+    let newState = {};  // Populate with updated state
+    updateGameState(gameId, newState);
+  }, 1000);
+}
+
+
 function startTournamentGame(state_json) {
   const canvas = document.getElementById("pongCanvas");
   const ctx = canvas.getContext("2d");
