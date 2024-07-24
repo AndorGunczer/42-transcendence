@@ -5,7 +5,7 @@ import json
 w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:7545'))
 
 # Verify connection
-if not w3.isConnected():
+if not w3.is_connected():
     print("Failed to connect to the Ethereum node")
 else:
     print("Connected to the Ethereum node")
@@ -52,10 +52,12 @@ contract_abi = [
 ]
 
 # Contract address
-contract_address = '0x8fe065a44AA43106946577353EfbFdb57da72835'
+f = open("/app/contractAddress.txt", "r")
+contract_address = (f.read()).strip()
+print(contract_address)
 
 # Check if contract code exists at the address
-code = w3.eth.getCode(contract_address)
+code = w3.eth.get_code(contract_address)
 if code == b'0x':
     print("No contract deployed at the address")
 else:
@@ -69,7 +71,7 @@ else:
 
     # Add a tournament
     tx_hash = contract.functions.addTournament("Tournament1", "Winner1").transact({'from': account})
-    receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+    receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
 
     # Check transaction receipt
     if receipt.status == 1:

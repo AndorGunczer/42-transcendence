@@ -16,7 +16,7 @@ import copy
 from django.middleware.csrf import get_token
 import json
 import random
-
+from transcendence.web3_utils import add_tournament_to_blockchain, query_blockchain
 from .menus import MENU_DATA
 
 # Neue Datei
@@ -623,6 +623,17 @@ def close_tournament_game(request, menu_type='main'):
                 return JsonResponse({'error': 'Game not found'}, status=404)
             except Participants.DoesNotExist:
                 return JsonResponse({'error': 'Participant not found'}, status=404)
+
+        #TBC
+        first_game_with_empty_result = Games.objects.filter(
+            (Q(result__isnull=True) | Q(result='Not Set')) & Q(tournament_id=game.tournament)
+        ).order_by('id').first()
+
+        if not first_game_with_empty_result:
+            tournament = Tournaments.objects.get(id=game.tournament.id)
+            tournament_winner = Participants.objects.filter(tournament=tournament.id).order_by('-points').first()
+            if tournament_winner:
+                add_tournament_to_blockchain(tournament.name, tournament_winner.player.username)
 
         # Determine the menu based on the token
         if (token is None) or (not validate_token(token)):

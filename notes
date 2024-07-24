@@ -48,6 +48,10 @@ DOCKER SETUP:
 
     docker build . -t main_app
 
-    docker run -p 8000:8000 -it main_app
+    docker run -p 8000:8000 -it main_app --name main_app
+
+    to get contractAddress: node scripts/deploy.js | grep "0x" | cut -c 31-
+
+    docker exec -it main_app /bin/bash
 
     
