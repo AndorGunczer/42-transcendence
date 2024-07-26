@@ -1,3 +1,5 @@
+# Functions as to what the server should do upon requests at specific urls
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from . import models
@@ -19,7 +21,7 @@ import random
 from transcendence.web3_utils import add_tournament_to_blockchain, query_blockchain
 from .menus import MENU_DATA
 
-# Neue Datei
+# Initial Load of Site
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
@@ -54,7 +56,7 @@ class CustomTokenRefreshView(TokenRefreshView):
             )
         return response
 
-# HELPER FUNCTIONS
+# Utilize Access Tokens
 
 def validate_token(token):
     try:
@@ -79,6 +81,8 @@ def get_token_from_header(request):
         return auth_header.split(' ')[1]  # Get the token part after 'Bearer'
     else:
         return None
+
+# Modify JSON Menus with Dynamic data
     
 def modify_json_menu(menu_type, token):
     menu = copy.deepcopy(MENU_DATA.get(menu_type))
@@ -187,13 +191,10 @@ def tournament_select_page_fill(menu, participants):
     print('tournament_select_page_fill() called')
     return {'menu': menu, 'game': first_game_with_empty_result.id if first_game_with_empty_result else None}
 
-
-# def tournament_local_game(menu, game):
-#     pass
-
     
 # VIEW FUNCTIONS
-    # MAIN
+
+# Initial Website Load
 
 def index(request):
     token = get_token_from_header(request)
@@ -214,6 +215,7 @@ def index(request):
         print(obj)
         return render(request, 'menu_general/index.html', obj)
 
+# Site loads with JSON Data
 
 def indexPost(request, menu_type='main'):
     token = get_token_from_header(request)
@@ -233,7 +235,7 @@ def indexPost(request, menu_type='main'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
-    # GAMES
+# GAMES
 def play(request, menu_type='play_menu'):
     token = get_token_from_header(request)
     if (token == None) or (not validate_token(token)):
@@ -308,6 +310,8 @@ def local_check(request, menu_type='local_game'):
             return JsonResponse({'error': 'Menu type not found'}, status=404)
 
 from django.core.exceptions import ObjectDoesNotExist
+
+# Database Manipulation based on the results of Local Game
 
 def close_local(request, menu_type='main'):
     try:
@@ -404,7 +408,9 @@ def local_game(request, menu_type='local_game'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
-    # TOURNAMENT
+# TOURNAMENT
+
+# Loading the first menu of tournament
 
 def tournament_main(request, menu_type='tournament_main'):
     token = get_token_from_header(request)
@@ -420,6 +426,8 @@ def tournament_main(request, menu_type='tournament_main'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
+# Creation form of tournament
+
 def tournament_create(request, menu_type='tournament_create'):
     token = get_token_from_header(request)
     if (token == None) or (not validate_token(token)):
@@ -432,7 +440,8 @@ def tournament_create(request, menu_type='tournament_create'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
-
+# Processing of the form submitted at tournament_create()
+#   Creates an instance/s of: Tournament & Participants & Games & Players
 
 def tournament_create_check(request, menu_type='main'):
     token = get_token_from_header(request)
@@ -440,23 +449,6 @@ def tournament_create_check(request, menu_type='main'):
     data = json.loads(request.body)
     tournament_name = data.get("tournament_name")
     participants = data.get("players")
-
-    # if len(players) % 2:
-    #     players.append(None)  # Add a dummy player for odd number of players
-
-    # n = len(players)
-    # schedule = []
-
-    # for round in range(n - 1):
-    #     round_matches = []
-    #     for i in range(n // 2):
-    #         if players[i] is not None and players[n - 1 - i] is not None:
-    #             round_matches.append((players[i], players[n - 1 - i]))
-    #     players.insert(1, players.pop())
-    #     schedule.append(round_matches)
-
-    # return schedule
-
     players = participants
 
     if len(players) % 2:
@@ -510,6 +502,7 @@ def tournament_create_check(request, menu_type='main'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
+# Load the selected tournament (selected in tournament_main/initial page of tournament)
 
 def tournament_select(request, menu_type='tournament_select'):
     token = get_token_from_header(request)
@@ -527,6 +520,8 @@ def tournament_select(request, menu_type='tournament_select'):
         return JsonResponse(response_data)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+# Prepare game to be played
 
 def tournament_game_check(request, menu_type="local_game"):
     token = get_token_from_header(request)
@@ -552,6 +547,9 @@ def tournament_game_check(request, menu_type="local_game"):
         return JsonResponse(response_data)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+# Check tournament game results, manipulate database
+#   In case of last tournament game, save results to blockchain.
 
 def close_tournament_game(request, menu_type='main'):
     try:
@@ -659,6 +657,8 @@ def close_tournament_game(request, menu_type='main'):
 
     # AUTHENTICATION
 
+# Load Login Form
+
 def login(request, warning: str = None, menu_type='login'):
     token = get_token_from_header(request)
     if (token == None) or (not validate_token(token)):
@@ -670,6 +670,8 @@ def login(request, warning: str = None, menu_type='login'):
         return JsonResponse(menu)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+# Load Registration Form
 
 def register(request, warning: str = None, menu_type='register'):
     token = get_token_from_header(request)
@@ -698,6 +700,8 @@ def register(request, warning: str = None, menu_type='register'):
         return JsonResponse(menu)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+# Process Data from Registration Form
 
 def registration_check(request):
     if request.method == "POST":
@@ -729,14 +733,12 @@ def registration_check(request):
     else:
         return JsonResponse(MENU_DATA.get('register'))
 
-# from django.contrib.auth import login
-# from rest_framework_simplejwt.tokens import AccessToken
-# from django.http import JsonResponse
-# from django.views.decorators.csrf import csrf_exempt
-# import json
+# Generate One Time Password
 
 def generate_otp():
     return str(random.randint(100000, 999999))
+
+# Process Data From Login Form
 
 @csrf_exempt
 def login_check(request):
@@ -782,6 +784,8 @@ def login_check(request):
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Only POST method is allowed.'}, status=405)
+
+# Load OTP View if Two-Factor is enabled for user.
 
 @csrf_exempt
 def verify_otp_view(request):
@@ -849,6 +853,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+# Upload File to server in the registration form
+
 @csrf_exempt
 def upload_file(request):
     if request.method == 'POST':
@@ -877,6 +883,8 @@ def upload_file(request):
         return JsonResponse({'message': 'File uploaded successfully', 'file_path': str(file_path)})
     
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+# Load User Settings
 
 def settings(request, menu_type='settings'):
     token = get_token_from_header(request)
@@ -910,6 +918,8 @@ def settings(request, menu_type='settings'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
+# In Settings, reset user statistics
+
 def delete_user_stats(request, menu_type='main'):
     token = get_token_from_header(request)
     user = get_user_from_token(token)
@@ -927,6 +937,8 @@ def delete_user_stats(request, menu_type='main'):
         return JsonResponse(menu)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+# In Settings, save changes to user data
 
 def save_changes(request, menu_type='main'):
     token = get_token_from_header(request)

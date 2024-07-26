@@ -1,3 +1,6 @@
+#   This file is to give django information on database structure
+#       and in more detail on how to build the database within postgresql.
+
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models

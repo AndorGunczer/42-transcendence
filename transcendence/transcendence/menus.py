@@ -1,3 +1,12 @@
+# Allows App to behave as SPA (Single Page Application) with
+#   instructions for frontend to generate html from JSON objects.
+
+#   'reference_name': {
+#       'useless_title',
+#       'content_for_html_header',
+#       'content_for_htmo_main'
+#   }
+
 MENU_DATA = {
     'main': {
         'menuTitle': 'Main Menu Buttons',

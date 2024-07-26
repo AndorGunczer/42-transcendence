@@ -1,4 +1,7 @@
-# middleware.py
+# This file is used to define middleware classes. Middleware is a way to process requests 
+#     globally before they reach the view or after the view has processed them.
+
+
 from django.utils.deprecation import MiddlewareMixin
 
 class JWTAuthFromCookiesMiddleware(MiddlewareMixin):
