@@ -60,21 +60,21 @@ MENU_DATA = {
                     {
                         'id': 2,
                         'type': 'button',
-                        'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded',
+                        'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
                         'text': 'PLAY',
                         'onclick': 'load_playMenu()'
                     },
                     {
                         'id': 3,
                         'type': 'button',
-                        'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded',
+                        'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
                         'text': 'TOURNAMENT',
                         'onclick': 'load_tournament_main()'
                     },
                     {
                         'id': 4,
                         'type': 'button',
-                        'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded',
+                        'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
                         'text': 'LEADERBOARD',
                         'onclick': 'load_leaderboard()'
                     },
@@ -87,14 +87,14 @@ MENU_DATA = {
                             {
                                 'type': 'button',
                                 'text': 'LOGIN',
-                                'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded',
+                                'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded bg-secondary bg-gradient text-white',
                                 'identifier': 'button-login',
                                 'onclick': 'load_login()'
                             },
                             {
                                 'type': 'button',
                                 'text': 'REGISTER',
-                                'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded',
+                                'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded bg-secondary bg-gradient text-white',
                                 'identifier': 'button-register',
                                 'onclick': 'load_register()'
                             }

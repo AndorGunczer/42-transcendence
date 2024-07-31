@@ -111,7 +111,7 @@ function load_main() {
       // CREATE CONTAINER
 
       json.menuItems.forEach((item) => {
-        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0];
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
         let element = document.createElement(item.type);
         if (item.type == "div" || item.type == "form")
           divLoader(element, item.content);
@@ -168,7 +168,7 @@ function single_pregame() {
       deleteHeader();
       deleteMain();
       headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0];
+      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
       json.menuItems.forEach((item) => {
         let element = document.createElement("div");
         elementCustomize(element, item);
@@ -192,7 +192,7 @@ function local_pregame() {
       deleteHeader();
       deleteMain();
       headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0];
+      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
       json.menuItems.forEach((item) => {
         let element = document.createElement("div");
         elementCustomize(element, item);
@@ -244,7 +244,7 @@ function online_pregame() {
       deleteHeader();
       deleteMain();
       headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0];
+      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
       json.menuItems.forEach((item) => {
         let element = document.createElement("div");
         elementCustomize(element, item);
@@ -266,7 +266,7 @@ function load_register() {
       deleteHeader();
       deleteMain();
       headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0];
+      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
       json.menuItems.forEach((item) => {
         let element;
         if (item.type == "div")
@@ -296,7 +296,7 @@ function load_login() {
       deleteHeader();
       deleteMain();
       headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0];
+      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
       json.menuItems.forEach((item) => {
         let element = document.createElement("div");
         elementCustomize(element, item);
@@ -322,7 +322,7 @@ function load_singleGame() {
       deleteHeader();
       deleteMain();
       headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0];
+      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
       json.menuItems.forEach((item) => {
         let element = document.createElement(item.type);
         elementCustomize(element, item);
@@ -345,7 +345,7 @@ function load_localGame(state_json) {
       deleteHeader();
       deleteMain();
       headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0];
+      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
       json.menuItems.forEach((item) => {
         let element = document.createElement(item.type);
         elementCustomize(element, item);
@@ -368,7 +368,7 @@ function load_onlineGame() {
       deleteHeader();
       deleteMain();
       headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0];
+      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
       json.menuItems.forEach((item) => {
         let element = document.createElement(item.type);
         elementCustomize(element, item);
@@ -399,7 +399,7 @@ function load_onlineGame() {
         // CREATE CONTAINER
   
         json.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0];
+          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
           let element = document.createElement(item.type);
           if (item.type == "div" || item.type == "form")
             divLoader(element, item.content);
@@ -429,7 +429,7 @@ function load_onlineGame() {
         // CREATE CONTAINER
   
         json.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0];
+          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
           let element = document.createElement(item.type);
           if (item.type == "div" || item.type == "form")
             divLoader(element, item.content);
@@ -526,7 +526,7 @@ async function load_tournament_select() {
         // CREATE CONTAINER
   
         json.menu.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0];
+          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
           let element = document.createElement(item.type);
           if (item.type == "div" || item.type == "form")
             divLoader(element, item.content);
@@ -566,7 +566,7 @@ async function load_tournament_localGame() {
       deleteHeader();
       deleteMain();
       headerLoad(json.menu);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0];
+      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
       json.menu.menuItems.forEach((item) => {
         let element = document.createElement(item.type);
         elementCustomize(element, item);
