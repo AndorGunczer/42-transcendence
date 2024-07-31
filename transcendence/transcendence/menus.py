@@ -44,54 +44,61 @@ MENU_DATA = {
             {
                 'id': 1,
                 'type': 'div',
-                'identifier': 'container-logo',
+                'class': 'container-fluid d-flex flex-column align-items-center',
                 'content': [
                     {
-                        'type': 'h1',
-                        'text': 'PONG',
-                    }
-                ]
-            },
-            {
-                'id': 2,
-                'type': 'button',
-                'class': 'menu-button',
-                'text': 'PLAY',
-                'onclick': 'load_playMenu()'
-            },
-            {
-                'id': 3,
-                'type': 'button',
-                'class': 'menu-button',
-                'text': 'TOURNAMENT',
-                'onclick': 'load_tournament_main()'
-            },
-            {
-                'id': 4,
-                'type': 'button',
-                'class': 'menu-button',
-                'text': 'LEADERBOARD',
-                'onclick': 'load_leaderboard()'
-            },
-            {
-                'id': 5,
-                'type': 'div',
-                'identifier': '',
-                'class': 'button-container',
-                'content': [
-                    {
-                        'type': 'button',
-                        'text': 'LOGIN',
-                        'class': 'menu-button-05',
-                        'identifier': 'button-login',
-                        'onclick': 'load_login()'
+                        'id': 1,
+                        'type': 'div',
+                        'identifier': 'container-logo',
+                        'content': [
+                            {
+                                'type': 'h1',
+                                'text': 'PONG',
+                            }
+                        ]
                     },
                     {
+                        'id': 2,
                         'type': 'button',
-                        'text': 'REGISTER',
-                        'class': 'menu-button-05',
-                        'identifier': 'button-register',
-                        'onclick': 'load_register()'
+                        'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded',
+                        'text': 'PLAY',
+                        'onclick': 'load_playMenu()'
+                    },
+                    {
+                        'id': 3,
+                        'type': 'button',
+                        'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded',
+                        'text': 'TOURNAMENT',
+                        'onclick': 'load_tournament_main()'
+                    },
+                    {
+                        'id': 4,
+                        'type': 'button',
+                        'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded',
+                        'text': 'LEADERBOARD',
+                        'onclick': 'load_leaderboard()'
+                    },
+                    {
+                        'id': 5,
+                        'type': 'div',
+                        'identifier': '',
+                        'class': 'd-flex flex-row w-25 justify-content-center',
+                        'content': [
+                            {
+                                'type': 'button',
+                                'text': 'LOGIN',
+                                'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded',
+                                'identifier': 'button-login',
+                                'onclick': 'load_login()'
+                            },
+                            {
+                                'type': 'button',
+                                'text': 'REGISTER',
+                                'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded',
+                                'identifier': 'button-register',
+                                'onclick': 'load_register()'
+                            }
+                        ]
                     }
                 ]
             }
@@ -126,7 +133,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_main()'
             }
@@ -146,14 +153,14 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'SINGLEPLAYER',
                 'onclick': 'single_pregame()'
             },
             {
                 'id': 3,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'LOCAL',
                 'onclick': 'local_pregame()'
 
@@ -161,7 +168,7 @@ MENU_DATA = {
             {
                 'id': 4,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'ONLINE',
                 'onclick': 'online_pregame()'
             },
@@ -196,7 +203,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_main()'
             }
@@ -236,14 +243,14 @@ MENU_DATA = {
                 'id': 2,
                 'type': 'button',
                 'text': 'CREATE TOURNAMENT',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'onclick': 'load_tournament_create()'
             },
             {
                 'id': 3,
                 'type': 'button',
                 'text': 'SELECT',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'onclick': 'load_tournament_select()'
             }
         ]
@@ -277,7 +284,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_main()'
             }
@@ -327,6 +334,7 @@ MENU_DATA = {
                         'type': 'input',
                         'inputType': 'button',
                         'value': 'Submit',
+                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                         'onclick': 'submit_tournament_create(event)'
                     }
                 ]
@@ -362,7 +370,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_main()'
             }
@@ -401,6 +409,7 @@ MENU_DATA = {
                     {
                         'type': 'button',
                         'text': 'Play Game',
+                        'class': 'menu-items col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                         'onclick': 'load_tournament_localGame()'
                     }
                 ]
@@ -436,7 +445,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_playMenu()'
             }
@@ -487,7 +496,7 @@ MENU_DATA = {
                                     },
                                     {
                                         'type': 'button',
-                                        'class': 'menu-button',
+                                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                                         'text': 'Submit'
                                     }
                                 ]
@@ -534,7 +543,7 @@ MENU_DATA = {
                                     },
                                     {
                                         'type': 'button',
-                                        'class': 'menu-button',
+                                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                                         'text': 'Submit'
                                     }
                                 ]
@@ -543,7 +552,7 @@ MENU_DATA = {
                     },
                     {
                         'type': 'button',
-                        'class': 'menu-button',
+                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                         'text': 'play',
                         'onclick': 'load_singleGame()'
                     }
@@ -580,7 +589,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_playMenu()'
             }
@@ -631,7 +640,7 @@ MENU_DATA = {
                                     },
                                     {
                                         'type': 'button',
-                                        'class': 'menu-button',
+                                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                                         'text': 'Submit'
                                     }
                                 ]
@@ -678,7 +687,7 @@ MENU_DATA = {
                                     },
                                     {
                                         'type': 'button',
-                                        'class': 'menu-button',
+                                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                                         'text': 'Submit'
                                     }
                                 ]
@@ -687,7 +696,7 @@ MENU_DATA = {
                     },
                     {
                         'type': 'button',
-                        'class': 'menu-button',
+                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                         'text': 'play',
                         'onclick': 'load_onlineGame()'
                     }
@@ -724,7 +733,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_playMenu()'
             }
@@ -831,7 +840,7 @@ MENU_DATA = {
                     },
                     {
                         'type': 'button',
-                        'class': 'menu-button',
+                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                         'text': 'play',
                         'onclick': 'submit_local_pregame(event)'
                     }
@@ -868,7 +877,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_main()'
             }
@@ -886,6 +895,7 @@ MENU_DATA = {
                         'content': [
                             {
                                 'type': 'div',
+                                'class': 'form-group',
                                 'content': [
                                     {
                                         'type': 'label',
@@ -894,6 +904,7 @@ MENU_DATA = {
                                     },
                                     {
                                         'type': 'input',
+                                        'class': 'form-control mb-3',
                                         'inputType': 'text',
                                         'identifier': 'username',
                                         'name': 'username'
@@ -902,6 +913,7 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'div',
+                                'class': 'form-group',
                                 'content': [
                                     {
                                         'type': 'label',
@@ -910,6 +922,7 @@ MENU_DATA = {
                                     },
                                     {
                                         'type': 'input',
+                                        'class': 'form-control mb-3',
                                         'inputType': 'password',
                                         'identifier': 'password',
                                         'name': 'password'
@@ -918,6 +931,7 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'div',
+                                'class': 'form-group',
                                 'content': [
                                     {
                                         'type': 'label',
@@ -926,6 +940,7 @@ MENU_DATA = {
                                     },
                                     {
                                         'type': 'input',
+                                        'class': 'form-control mb-3',
                                         'inputType': 'text',
                                         'identifier': 'email',
                                         'name': 'email'
@@ -934,6 +949,7 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'div',
+                                'class': 'form-group',
                                 'content': [
                                     {
                                         'type': 'label',
@@ -942,6 +958,7 @@ MENU_DATA = {
                                     },
                                     {
                                         'type': 'select',
+                                        'class': 'form-control mb-3',
                                         'name': 'avatar',
                                         'identifier': 'Avatar',
                                         'content': [
@@ -965,12 +982,14 @@ MENU_DATA = {
                                     {
                                         'type': 'img',
                                         'identifier': 'avatarPic',
+                                        'class': 'mb-3',
                                         'src': 'https://127.0.0.1:8000/static/images/question_mark.png',
                                     }
                                 ]
                             },
                             {
                                 'type': 'div',
+                                'class': 'form-group',
                                 'content': [
                                     {
                                         'type': 'label',
@@ -979,11 +998,13 @@ MENU_DATA = {
                                     },
                                     {
                                         'type': 'input',
+                                        'class': 'form-control mb-3',
                                         'inputType': 'file',
                                         'identifier': 'fileUpload',
                                     },
                                     {
                                         'type': 'button',
+                                        'class': 'btn col-md-12 mt-2 w-100 h-10 p-3 m-10 rounded bg-secondary bg-gradient text-white',
                                         'text': 'Upload',
                                         'onclick': 'uploadAvatar()'
                                     },
@@ -991,6 +1012,7 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'div',
+                                'class': 'form-group',
                                 'content': [
                                     {
                                         'type': 'label',
@@ -999,6 +1021,7 @@ MENU_DATA = {
                                     },
                                     {
                                         'type': 'input',
+                                        'class': 'form-check',
                                         'inputType': 'checkbox',
                                         'identifier': 'twofa',
                                         'name': 'twofa'
@@ -1008,7 +1031,9 @@ MENU_DATA = {
                             {
                                 'type': 'input',
                                 'inputType': 'button',
+                                'class': 'btn btn-primary col-md-12 mt-2 w-100 h-10 p-3 m-10 rounded bg-secondary bg-gradient text-white',
                                 'form': 'registration_form',
+                                'value': 'SUBMIT',
                                 'onclick': 'submit_registration_form(event)'
                             }
                         ]
@@ -1046,7 +1071,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_main()'
             }
@@ -1068,7 +1093,7 @@ MENU_DATA = {
                                     {
                                         'type': 'label',
                                         'for': 'username',
-                                        'text': 'username: '
+                                        'text': 'username'
                                     },
                                     {
                                         'type': 'input',
@@ -1097,6 +1122,7 @@ MENU_DATA = {
                             {
                                 'type': 'input',
                                 'inputType': 'button',
+                                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                                 'form': 'login_form',
                                 'onclick': 'submit_login_form(event)'
                             }
@@ -1168,7 +1194,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_main()'
             }
@@ -1200,11 +1226,13 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'button',
+                                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                                 'text': 'Delete User Statistics',
                                 'onclick': 'deleteUserStats(event)',
                             },
                             {
                                 'type': 'button',
+                                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                                 'text': 'Save',
                                 'onclick': 'saveChanges()'
                             }

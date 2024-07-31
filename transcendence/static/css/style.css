@@ -3,6 +3,20 @@
     box-sizing: border-box;
 }
 
+body {
+    background-color: #61a57d;
+}
+
+div {
+    background-color: #61a57d;
+}
+
+img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
 .header {
     /* Removed the height property */
     /* Consider using padding instead to maintain the layout */
@@ -22,13 +36,13 @@
     padding: 24px 0;
 }
 
-.button-container {
+/* .button-container {
     display: flex;
     gap: 12px;
     width: 200px;
     justify-content: space-between;
     /* Consider using padding instead of height for the buttons */
-}
+/* }  */
 
 #container-logo {
     /* Removed the height property */

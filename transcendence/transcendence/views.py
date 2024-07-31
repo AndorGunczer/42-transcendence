@@ -97,7 +97,7 @@ def modify_json_menu(menu_type, token):
     menu['headerItems'].append({
         'id': 2,
         'type': 'button',
-        'class': 'menu-button',
+        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded',
         'text': 'SETTINGS',
         'onclick': 'settings()',
     })
@@ -105,7 +105,7 @@ def modify_json_menu(menu_type, token):
     menu['headerItems'].append({
                 'id': 3,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded',
                 'text': 'LOGOUT',
                 'onclick': 'logout()'
     })
@@ -117,8 +117,8 @@ def modify_json_menu(menu_type, token):
     })
 
     if token and menu['menuTitle'] == 'Main Menu Buttons':
-        del menu['menuItems'][4]['content'][0]
-        menu['menuItems'][4]['content'][0]['class'] = 'menu-button'
+        del menu['menuItems'][0]['content'][4]
+        # menu['menuItems'][0]['content'][0]['class'] = 'menu-button'
     
 
     return menu
@@ -740,11 +740,15 @@ def generate_otp():
 
 # Process Data From Login Form
 
+import traceback
+
 @csrf_exempt
 def login_check(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
+            print(data)
+            print("PRINT THE LINE BEFORE")
             username = data.get('username')
             password = data.get('password')
             
@@ -754,22 +758,16 @@ def login_check(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 if user.allow_otp:
-                    # Generate OTP and save it to the session
                     otp = generate_otp()
                     request.session['otp'] = otp
                     request.session['username'] = username
                     request.session['password'] = password
-                    
-                    # Simulate sending OTP to user (e.g., via email or SMS)
                     print(f"Your OTP is: {otp}")
                     
                     return JsonResponse({'status': 'otp_sent'})
                 else:
-                    # Directly log the user in without OTP
                     login(request, user)
                     access_token = str(AccessToken.for_user(user))
-                    
-                    # Assuming modify_json_menu requires a token and modifies the menu accordingly
                     response_data = modify_json_menu('main', access_token)
                     
                     response = JsonResponse(response_data)
@@ -781,6 +779,8 @@ def login_check(request):
             else:
                 return JsonResponse({'error': 'Invalid username or password'}, status=401)
         except Exception as e:
+            print("Exception occurred:", e)
+            traceback.print_exc()
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Only POST method is allowed.'}, status=405)
