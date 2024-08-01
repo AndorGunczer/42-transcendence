@@ -5,11 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>transcendence</title>
     <meta name="csrf-token" content="{{ csrf_token }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <div class="header">
@@ -21,9 +21,9 @@
         <div class="menu-button"></div>
     </div>
     <div class="container-fluid d-flex flex-column align-items-center">
-        <div id="container-logo">
-            <h1>PONG</h1>
-        </div>
+        <!-- <div id="container-logo"> -->
+            <img src="{% static 'design/PONG.png' %}" alt="">
+        <!-- </div> -->
         <button class="col-md-12 mt-2 p-3 h-50 w-25 p-3 mb-4 rounded bg-secondary bg-gradient text-white" id="button-play" onclick='load_playMenu()'>PLAY</button>
         <button class="col-md-12 mt-2 p-3 h-50 w-25 p-3 mb-4 rounded bg-secondary bg-gradient text-white" onclick='load_tournament_main()'>TOURNAMENT</button>
         <button class="col-md-12 mt-2 p-3 h-50 w-25 p-3 mb-4 rounded bg-secondary bg-gradient text-white">LEADERBOARD</button>

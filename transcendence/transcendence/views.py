@@ -97,7 +97,7 @@ def modify_json_menu(menu_type, token):
     menu['headerItems'].append({
         'id': 2,
         'type': 'button',
-        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded',
+        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
         'text': 'SETTINGS',
         'onclick': 'settings()',
     })
@@ -105,7 +105,7 @@ def modify_json_menu(menu_type, token):
     menu['headerItems'].append({
                 'id': 3,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'LOGOUT',
                 'onclick': 'logout()'
     })
@@ -113,7 +113,7 @@ def modify_json_menu(menu_type, token):
     menu['headerItems'][0]['content'].append({
                 'type': 'img',
                 'src': f'{user.avatarDirect}',
-                'identifier': 'avatarHeaderPic'
+                'identifier': 'avatarPic'
     })
 
     if token and menu['menuTitle'] == 'Main Menu Buttons':

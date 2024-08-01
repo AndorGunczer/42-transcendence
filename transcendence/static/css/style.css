@@ -3,18 +3,29 @@
     box-sizing: border-box;
 }
 
+html {
+    height: 100vh;
+  }
+  body {
+    min-height: 100vh;
+  }
+
 body {
-    background-color: #61a57d;
+    background-color: #180161 !important;
 }
 
-div {
+/* div {
     background-color: #61a57d;
-}
+} */
 
 img {
     width: 100px;
     height: 100px;
     border-radius: 50%;
+}
+
+.bg-secondary {
+    background-color: #FB773C !important;
 }
 
 .header {
@@ -34,6 +45,10 @@ img {
     gap: 24px;
     /* Consider using padding for vertical spacing */
     padding: 24px 0;
+}
+
+.mr-2 {
+    margin-right: 10px;
 }
 
 /* .button-container {

@@ -22,14 +22,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -118,14 +121,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -188,14 +194,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -269,14 +278,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -355,14 +367,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -430,14 +445,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -574,14 +592,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -718,14 +739,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -862,14 +886,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -900,11 +927,12 @@ MENU_DATA = {
                                     {
                                         'type': 'label',
                                         'for': 'username',
-                                        'text': 'username: '
+                                        'class': 'text-white',
+                                        'text': 'Username '
                                     },
                                     {
                                         'type': 'input',
-                                        'class': 'form-control mb-3',
+                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                         'inputType': 'text',
                                         'identifier': 'username',
                                         'name': 'username'
@@ -918,11 +946,12 @@ MENU_DATA = {
                                     {
                                         'type': 'label',
                                         'for': 'password',
-                                        'text': 'password: '
+                                        'class': 'text-white',
+                                        'text': 'Password '
                                     },
                                     {
                                         'type': 'input',
-                                        'class': 'form-control mb-3',
+                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                         'inputType': 'password',
                                         'identifier': 'password',
                                         'name': 'password'
@@ -936,11 +965,12 @@ MENU_DATA = {
                                     {
                                         'type': 'label',
                                         'for': 'email',
-                                        'text': 'Email: '
+                                        'class': 'text-white',
+                                        'text': 'Email '
                                     },
                                     {
                                         'type': 'input',
-                                        'class': 'form-control mb-3',
+                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                         'inputType': 'text',
                                         'identifier': 'email',
                                         'name': 'email'
@@ -954,11 +984,12 @@ MENU_DATA = {
                                     {
                                         'type': 'label',
                                         'for': 'avatar',
-                                        'text': 'Avatar'
+                                        'class': 'text-white',
+                                        'text': 'Avatar '
                                     },
                                     {
                                         'type': 'select',
-                                        'class': 'form-control mb-3',
+                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                         'name': 'avatar',
                                         'identifier': 'Avatar',
                                         'content': [
@@ -994,11 +1025,12 @@ MENU_DATA = {
                                     {
                                         'type': 'label',
                                         'for': 'fileUpload',
-                                        'text': 'Upload Avatar: ',
+                                        'class': 'text-white',
+                                        'text': 'Upload Avatar ',
                                     },
                                     {
                                         'type': 'input',
-                                        'class': 'form-control mb-3',
+                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                         'inputType': 'file',
                                         'identifier': 'fileUpload',
                                     },
@@ -1012,12 +1044,13 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'div',
-                                'class': 'form-group',
+                                'class': 'form-group d-flex flex-row mt-2',
                                 'content': [
                                     {
                                         'type': 'label',
                                         'for': 'twofa',
-                                        'text': 'Two-Factor Authentication: '
+                                        'class': 'd-block mr-2 text-white',
+                                        'text': 'Two-Factor Authentication '
                                     },
                                     {
                                         'type': 'input',
@@ -1056,14 +1089,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -1089,15 +1125,18 @@ MENU_DATA = {
                         'content': [
                             {
                                 'type': 'div',
+                                'class': 'form-group',
                                 'content': [
                                     {
                                         'type': 'label',
                                         'for': 'username',
+                                        'class': 'text-white',
                                         'text': 'username'
                                     },
                                     {
                                         'type': 'input',
                                         'inputType': 'text',
+                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                         'identifier': 'username',
                                         'name': 'username'
                                     }
@@ -1105,15 +1144,18 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'div',
+                                'class': 'form-group',
                                 'content': [
                                     {
                                         'type': 'label',
                                         'for': 'password',
-                                        'text': 'password: '
+                                        'class': 'text-white',
+                                        'text': 'password '
                                     },
                                     {
                                         'type': 'input',
                                         'inputType': 'password',
+                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                         'identifier': 'password',
                                         'name': 'password'
                                     }
@@ -1122,7 +1164,8 @@ MENU_DATA = {
                             {
                                 'type': 'input',
                                 'inputType': 'button',
-                                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                                'class': 'menu-button col-md-12 mt-2 w-100 p-3 rounded bg-secondary bg-gradient text-white',
+                                'value': 'SUBMIT',
                                 'form': 'login_form',
                                 'onclick': 'submit_login_form(event)'
                             }
@@ -1179,14 +1222,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
