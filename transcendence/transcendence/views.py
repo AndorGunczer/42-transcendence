@@ -897,14 +897,14 @@ def settings(request, menu_type='settings'):
         print(avatars)
         i = 0
         for avatar in avatars:
-            menu['menuItems'][0]['content'][0]['content'][1]['content'].append({
+            menu['menuItems'][0]['content'][0]['content'][1]['content'][1]['content'].append({
                 'type': 'option',
                 'value': avatar.name,
                 'text': avatar.name
             })
 
             if avatar.name == user.avatarDirect.rsplit('/', 1)[1]:
-                menu['menuItems'][0]['content'][0]['content'][1]['content'][i]['selected'] = user.avatarDirect.rsplit('/', 1)[1]
+                menu['menuItems'][0]['content'][0]['content'][1]['content'][1]['content'][1]['selected'] = user.avatarDirect.rsplit('/', 1)[1]
             i = i + 1
 
         menu['menuItems'][0]['content'][0]['content'][0]['value'] = user.username
