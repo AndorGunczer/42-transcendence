@@ -160,10 +160,11 @@ def tournament_select_page_fill(menu, participants):
 
     menu['menuItems'][0]['content'][0]['content'].append({
         'type': 'table',
+        'class': 'w-100 d-flex flex-column justify-content-center align-items-center',
         'content': [
             {
                 'type': 'thead',
-                'class': 'thead-dark text-white',
+                'class': 'thead-dark text-white w-100 d-flex flex-row justify-content-center gap-4',
                 'content': [
                     {
                         'type': 'td',
@@ -185,7 +186,7 @@ def tournament_select_page_fill(menu, participants):
         ]
     })
 
-    table = menu['menuItems'][0]['content'][0]['content']
+    table = menu['menuItems'][0]['content'][0]['content'][0]['content']
 
     for i,participant in enumerate(participants):
         table.append({

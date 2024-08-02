@@ -404,7 +404,7 @@ MENU_DATA = {
             {
                 'id': 1,
                 'type': 'div',
-                'class': 'w-50',
+                'class': 'w-100 d-flex flex-column justify-content-center align-items-center',
                 'identifier': 'tournament_form',
                 'content': [
                     {
