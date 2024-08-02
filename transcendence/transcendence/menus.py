@@ -309,44 +309,61 @@ MENU_DATA = {
                 'identifier': 'tournament_form',
                 'content': [
                     {
+                        'type': 'div',
+                        'class': 'form-group',
+                        'content': [
+                            {
+                                'type': 'label',
+                                'for': 'tournament_name',
+                                'class': 'text-white',
+                                'text': 'Tournament Name: '
+                            },
+                            {
+                                'type': 'input',
+                                'inputType': 'text',
+                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
+                                'identifier': 'tournament_name'
+                            },
+                        ]
+                    },
+                    {
+                        'type': 'div',
+                        'class': 'form-group',
+                        'content': [
+                            {
+                                'type': 'label',
+                                'for': 'player',
+                                'class': 'text-white',
+                                'text': 'Player Name: '
+                            },
+                            {
+                                'type': 'input',
+                                'inputType': 'text',
+                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
+                                'identifier': 'player'
+
+                            },
+                            {
+                                'type': 'input',
+                                'inputType': 'button',
+                                'value': 'Add Player',
+                                'onclick': 'tournament_player_add(event)'
+                            },
+                        ]
+                    },
+                    {
                         'type': 'ul',
                         'identifier': 'tournament_ul',
+                        'class': 'text-white',
                         'content': [
                             
                         ],
                     },
                     {
-                        'type': 'label',
-                        'for': 'tournament_name',
-                        'text': 'Tournament Name: '
-                    },
-                    {
-                        'type': 'input',
-                        'inputType': 'text',
-                        'identifier': 'tournament_name'
-                    },
-                    {
-                        'type': 'label',
-                        'for': 'player',
-                        'text': 'Player Name: '
-                    },
-                    {
-                        'type': 'input',
-                        'inputType': 'text',
-                        'identifier': 'player'
-
-                    },
-                    {
-                        'type': 'input',
-                        'inputType': 'button',
-                        'value': 'Add Player',
-                        'onclick': 'tournament_player_add(event)'
-                    },
-                    {
                         'type': 'input',
                         'inputType': 'button',
                         'value': 'Submit',
-                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                         'onclick': 'submit_tournament_create(event)'
                     }
                 ]
