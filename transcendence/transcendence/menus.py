@@ -152,14 +152,14 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'SINGLEPLAYER',
                 'onclick': 'single_pregame()'
             },
             {
                 'id': 3,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'LOCAL',
                 'onclick': 'local_pregame()'
 
@@ -167,7 +167,7 @@ MENU_DATA = {
             {
                 'id': 4,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'ONLINE',
                 'onclick': 'online_pregame()'
             },
@@ -245,14 +245,14 @@ MENU_DATA = {
                 'id': 2,
                 'type': 'button',
                 'text': 'CREATE TOURNAMENT',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'onclick': 'load_tournament_create()'
             },
             {
                 'id': 3,
                 'type': 'button',
                 'text': 'SELECT',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'onclick': 'load_tournament_select()'
             }
         ]
@@ -470,106 +470,12 @@ MENU_DATA = {
             {
                 'id': 1,
                 'type': 'div',
-                'class': 'players',
+                'class': 'players w-50 d-flex justify-content-center align-items-center',
                 'content': [
                     {
-                        'type': 'div',
-                        'class': 'player1',
-                        'content': [
-                            {
-                                'type': 'form',
-                                'action': '',
-                                'content': [
-                                    {
-                                        'type': 'div',
-                                        'content': [
-                                            {
-                                                'type': 'label',
-                                                'for': 'player1',
-                                                'text': 'username'
-                                            },
-                                            {
-                                                'type': 'input',
-                                                'inputType': 'text',
-                                                'identifier': 'player1'
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        'type': 'div',
-                                        'content': [
-                                            {
-                                                'type': 'label',
-                                                'for': 'password1',
-                                                'text': 'password'
-                                            },
-                                            {
-                                                'type': 'input',
-                                                'inputType': 'password',
-                                                'identifier': 'password1'
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        'type': 'button',
-                                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
-                                        'text': 'Submit'
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        'type': 'div',
-                        'class': 'player2',
-                        'content': [
-                            {
-                                'type': 'form',
-                                'action': '',
-                                'content': [
-                                    {
-                                        'type': 'div',
-                                        'content': [
-                                            {
-                                                'type': 'label',
-                                                'for': 'player2',
-                                                'text': 'username'
-                                            },
-                                            {
-                                                'type': 'input',
-                                                'inputType': 'text',
-                                                'identifier': 'player2'
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        'type': 'div',
-                                        'content': [
-                                            {
-                                                'type': 'label',
-                                                'for': 'password2',
-                                                'text': 'password'
-                                            },
-                                            {
-                                                'type': 'input',
-                                                'inputType': 'password',
-                                                'identifier': 'password2'
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        'type': 'button',
-                                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
-                                        'text': 'Submit'
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
                         'type': 'button',
-                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
-                        'text': 'play',
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-75 p-3 mt-4 rounded bg-secondary bg-gradient text-white',
+                        'text': 'PLAY',
                         'onclick': 'load_singleGame()'
                     }
                 ]
@@ -776,15 +682,18 @@ MENU_DATA = {
                                 'content': [
                                     {
                                         'type': 'div',
+                                        'class': 'form-group',
                                         'content': [
                                             {
                                                 'type': 'label',
                                                 'for': 'player1',
+                                                'class': 'text-white',
                                                 'text': 'player 1: '
                                             },
                                             {
                                                 'type': 'input',
                                                 'inputType': 'text',
+                                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                                 'identifier': 'player1'
                                             }
                                         ]
@@ -823,15 +732,18 @@ MENU_DATA = {
                                 'content': [
                                     {
                                         'type': 'div',
+                                        'class': 'form-group',
                                         'content': [
                                             {
                                                 'type': 'label',
                                                 'for': 'player2',
+                                                'class': 'text-white',
                                                 'text': 'player 2: '
                                             },
                                             {
                                                 'type': 'input',
                                                 'inputType': 'text',
+                                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                                 'identifier': 'player2'
                                             }
                                         ]
@@ -862,7 +774,7 @@ MENU_DATA = {
                     },
                     {
                         'type': 'button',
-                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                         'text': 'play',
                         'onclick': 'submit_local_pregame(event)'
                     }
