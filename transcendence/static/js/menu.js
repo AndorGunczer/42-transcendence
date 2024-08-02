@@ -23,6 +23,7 @@ function deleteHeader() {
 
 function deleteMain() {
   let main = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+  console.log(main)
 
   main.replaceChildren();
 }
@@ -62,7 +63,7 @@ function elementCustomize(element, item) {
 
 function divLoader(parent, itemList) {
   itemList.forEach((item) => {
-    if (item.type == "div" || item.type == "form" || item.type == "select") {
+    if (item.type == "div" || item.type == "form" || item.type == "select" || item.type == "table" || item.type == "thead" || item.type == "tr") {
       let subElement = document.createElement(item.type);
       elementCustomize(subElement, item);
       if (item.content && item.content != "")
@@ -528,7 +529,7 @@ async function load_tournament_select() {
         json.menu.menuItems.forEach((item) => {
           let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
           let element = document.createElement(item.type);
-          if (item.type == "div" || item.type == "form")
+          if (item.type == "div" || item.type == "form" || item.type == "table")
             divLoader(element, item.content);
   
           elementCustomize(element, item);

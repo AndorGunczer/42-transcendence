@@ -47,61 +47,54 @@ MENU_DATA = {
             {
                 'id': 1,
                 'type': 'div',
-                'class': 'container-fluid d-flex flex-column align-items-center',
+                'identifier': 'container-logo',
                 'content': [
                     {
-                        'id': 1,
-                        'type': 'div',
-                        'identifier': 'container-logo',
-                        'content': [
-                            {
-                                'type': 'h1',
-                                'text': 'PONG',
-                            }
-                        ]
-                    },
+                        'type': 'h1',
+                        'text': 'PONG',
+                    }
+                ]
+            },
+            {
+                'id': 2,
+                'type': 'button',
+                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
+                'text': 'PLAY',
+                'onclick': 'load_playMenu()'
+            },
+            {
+                'id': 3,
+                'type': 'button',
+                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
+                'text': 'TOURNAMENT',
+                'onclick': 'load_tournament_main()'
+            },
+            {
+                'id': 4,
+                'type': 'button',
+                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
+                'text': 'LEADERBOARD',
+                'onclick': 'load_leaderboard()'
+            },
+            {
+                'id': 5,
+                'type': 'div',
+                'identifier': '',
+                'class': 'd-flex flex-row w-25 justify-content-center',
+                'content': [
                     {
-                        'id': 2,
                         'type': 'button',
-                        'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
-                        'text': 'PLAY',
-                        'onclick': 'load_playMenu()'
+                        'text': 'LOGIN',
+                        'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded bg-secondary bg-gradient text-white',
+                        'identifier': 'button-login',
+                        'onclick': 'load_login()'
                     },
                     {
-                        'id': 3,
                         'type': 'button',
-                        'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
-                        'text': 'TOURNAMENT',
-                        'onclick': 'load_tournament_main()'
-                    },
-                    {
-                        'id': 4,
-                        'type': 'button',
-                        'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
-                        'text': 'LEADERBOARD',
-                        'onclick': 'load_leaderboard()'
-                    },
-                    {
-                        'id': 5,
-                        'type': 'div',
-                        'identifier': '',
-                        'class': 'd-flex flex-row w-25 justify-content-center',
-                        'content': [
-                            {
-                                'type': 'button',
-                                'text': 'LOGIN',
-                                'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded bg-secondary bg-gradient text-white',
-                                'identifier': 'button-login',
-                                'onclick': 'load_login()'
-                            },
-                            {
-                                'type': 'button',
-                                'text': 'REGISTER',
-                                'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded bg-secondary bg-gradient text-white',
-                                'identifier': 'button-register',
-                                'onclick': 'load_register()'
-                            }
-                        ]
+                        'text': 'REGISTER',
+                        'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded bg-secondary bg-gradient text-white',
+                        'identifier': 'button-register',
+                        'onclick': 'load_register()'
                     }
                 ]
             }
@@ -411,31 +404,19 @@ MENU_DATA = {
             {
                 'id': 1,
                 'type': 'div',
-                # 'class': 'tournament_form',
+                'class': 'w-50',
                 'identifier': 'tournament_form',
                 'content': [
                     {
                         'type': 'div',
                         'class': 'participant_list',
                         'content': [
-                            {
-                                'type': 'div',
-                                'class': 'participant',
-                                'content': [
-                                    {
-                                        'type': 'p',
-                                        'text': 'name',
-                                    },
-                                    {
-                                        'type': 'p',
-                                        'text': 'points'
-                                    }
-                                ]
-                            },
+
                         ]
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'placeholder for next game'
                     },
                     {

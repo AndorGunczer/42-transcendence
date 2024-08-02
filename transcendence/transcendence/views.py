@@ -117,7 +117,7 @@ def modify_json_menu(menu_type, token):
     })
 
     if token and menu['menuTitle'] == 'Main Menu Buttons':
-        del menu['menuItems'][0]['content'][4]
+        del menu['menuItems'][4]
         # menu['menuItems'][0]['content'][0]['class'] = 'menu-button'
     
 
@@ -142,21 +142,104 @@ from django.db.models import Q
 from django.db.models import Q
 
 def tournament_select_page_fill(menu, participants):
-    for participant in participants:
-        menu['menuItems'][0]['content'][0]['content'].append({
-            'type': 'div',
-            'class': 'participant',
+    # for participant in participants:
+    #     menu['menuItems'][0]['content'][0]['content'].append({
+    #         'type': 'div',
+    #         'class': 'participant',
+    #         'content': [
+    #             {
+    #                 'type': 'p',
+    #                 'text': participant.player.username,
+    #             },
+    #             {
+    #                 'type': 'p',
+    #                 'text': f'{participant.points}'
+    #             }
+    #         ]
+    #     })
+
+    menu['menuItems'][0]['content'][0]['content'].append({
+        'type': 'table',
+        'content': [
+            {
+                'type': 'thead',
+                'class': 'thead-dark text-white',
+                'content': [
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': '#'
+                    },
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': 'Player'
+                    },
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': f'Points'
+                    }                    
+                ]
+            }
+        ]
+    })
+
+    table = menu['menuItems'][0]['content'][0]['content']
+
+    for i,participant in enumerate(participants):
+        table.append({
+            'type': 'tr',
+            'class': 'participant text-white',
             'content': [
                 {
-                    'type': 'p',
+                    'type': 'td',
+                    'class': 'text-white',
+                    'text': f'{i}'
+                },
+                {
+                    'type': 'td',
+                    'class': 'text-white',
                     'text': participant.player.username,
                 },
                 {
-                    'type': 'p',
+                    'type': 'td',
+                    'class': 'text-white',
                     'text': f'{participant.points}'
                 }
             ]
         })
+
+#     <table class="table">
+#   <thead class="thead-dark">
+#     <tr>
+#       <th scope="col">#</th>
+#       <th scope="col">First</th>
+#       <th scope="col">Last</th>
+#       <th scope="col">Handle</th>
+#     </tr>
+#   </thead>
+#   <tbody>
+#     <tr>
+#       <th scope="row">1</th>
+#       <td>Mark</td>
+#       <td>Otto</td>
+#       <td>@mdo</td>
+#     </tr>
+#     <tr>
+#       <th scope="row">2</th>
+#       <td>Jacob</td>
+#       <td>Thornton</td>
+#       <td>@fat</td>
+#     </tr>
+#     <tr>
+#       <th scope="row">3</th>
+#       <td>Larry</td>
+#       <td>the Bird</td>
+#       <td>@twitter</td>
+#     </tr>
+#   </tbody>
+# </table>
 
     if participants:
         # Assuming all participants are from the same tournament
