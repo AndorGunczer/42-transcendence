@@ -1112,98 +1112,92 @@ MENU_DATA = {
         ],
         'menuItems': [
             {
-                'type': 'div',
-                'class': 'container',
+                'type': 'form',
+                # 'action': '',
+                # 'method': 'POST',
+                'identifier': 'login_form',
                 'content': [
                     {
-                        'type': 'form',
-                        # 'action': '',
-                        # 'method': 'POST',
-                        'identifier': 'login_form',
+                        'type': 'div',
+                        'class': 'form-group',
                         'content': [
                             {
-                                'type': 'div',
-                                'class': 'form-group',
-                                'content': [
-                                    {
-                                        'type': 'label',
-                                        'for': 'username',
-                                        'class': 'text-white',
-                                        'text': 'username'
-                                    },
-                                    {
-                                        'type': 'input',
-                                        'inputType': 'text',
-                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
-                                        'identifier': 'username',
-                                        'name': 'username'
-                                    }
-                                ]
-                            },
-                            {
-                                'type': 'div',
-                                'class': 'form-group',
-                                'content': [
-                                    {
-                                        'type': 'label',
-                                        'for': 'password',
-                                        'class': 'text-white',
-                                        'text': 'password '
-                                    },
-                                    {
-                                        'type': 'input',
-                                        'inputType': 'password',
-                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
-                                        'identifier': 'password',
-                                        'name': 'password'
-                                    }
-                                ]
+                                'type': 'label',
+                                'for': 'username',
+                                'class': 'text-white',
+                                'text': 'username'
                             },
                             {
                                 'type': 'input',
-                                'inputType': 'button',
-                                'class': 'menu-button col-md-12 mt-2 w-100 p-3 rounded bg-secondary bg-gradient text-white',
-                                'value': 'SUBMIT',
-                                'form': 'login_form',
-                                'onclick': 'submit_login_form(event)'
+                                'inputType': 'text',
+                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
+                                'identifier': 'username',
+                                'name': 'username'
                             }
                         ]
                     },
                     {
                         'type': 'div',
-                        'identifier': 'otpPopup',
+                        'class': 'form-group',
                         'content': [
                             {
-                                'type': 'h2',
-                                'text': 'Enter OTP',
+                                'type': 'label',
+                                'for': 'password',
+                                'class': 'text-white',
+                                'text': 'password '
                             },
                             {
-                                'type': 'form',
-                                # 'action': '',
-                                # 'method': 'POST',
-                                'identifier': 'otpForm',
-                                'content': [
-                                    {
-                                        'type': 'input',
-                                        'inputType': 'text',
-                                        'identifier': 'otp',
-                                        'name': 'top',
-                                        'placeholder': 'OTP',
-                                        'required': 'True'
-                                    },
-                                    {
-                                        'type': 'input',
-                                        'inputType': 'button',
-                                        'form': 'otpForm',
-                                        'text': 'Verify',
-                                        'onclick': 'verify_otp(event)'
-                                    }
-                                ]
+                                'type': 'input',
+                                'inputType': 'password',
+                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
+                                'identifier': 'password',
+                                'name': 'password'
+                            }
+                        ]
+                    },
+                    {
+                        'type': 'input',
+                        'inputType': 'button',
+                        'class': 'menu-button col-md-12 mt-2 w-100 p-3 rounded bg-secondary bg-gradient text-white',
+                        'value': 'SUBMIT',
+                        'form': 'login_form',
+                        'onclick': 'submit_login_form(event)'
+                    }
+                ]
+            },
+            {
+                'type': 'div',
+                'identifier': 'otpPopup',
+                'content': [
+                    {
+                        'type': 'h2',
+                        'text': 'Enter OTP',
+                    },
+                    {
+                        'type': 'form',
+                        # 'action': '',
+                        # 'method': 'POST',
+                        'identifier': 'otpForm',
+                        'content': [
+                            {
+                                'type': 'input',
+                                'inputType': 'text',
+                                'identifier': 'otp',
+                                'name': 'top',
+                                'placeholder': 'OTP',
+                                'required': 'True'
+                            },
+                            {
+                                'type': 'input',
+                                'inputType': 'button',
+                                'form': 'otpForm',
+                                'text': 'Verify',
+                                'onclick': 'verify_otp(event)'
                             }
                         ]
                     }
                 ]
-            },
+            }
         ]
     },
     'settings': {
@@ -1245,72 +1239,66 @@ MENU_DATA = {
         ],
         'menuItems': [
             {
-                'type': 'div',
-                'class': 'container',
+                'type': 'form',
+                # 'action': '',
+                # 'method': 'POST',
+                'class': 'd-flex flex-column',
+                'identifier': 'settings_form',
                 'content': [
                     {
-                        'type': 'form',
-                        # 'action': '',
-                        # 'method': 'POST',
-                        'class': 'd-flex flex-column',
-                        'identifier': 'settings_form',
+                        'type': 'div',
+                        'class': 'form-group',
                         'content': [
                             {
-                                'type': 'div',
-                                'class': 'form-group',
-                                'content': [
-                                    {
-                                        'type': 'label',
-                                        'for': 'username',
-                                        'class': 'text-white',
-                                        'text': 'Choose New Username '
-                                    },
-                                    {
-                                        'type': 'input',
-                                        'inputType': 'text',
-                                        'identifier': 'username',
-                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
-                                        'value': 'placeholder'
-                                    },
-                                ]
+                                'type': 'label',
+                                'for': 'username',
+                                'class': 'text-white',
+                                'text': 'Choose New Username '
                             },
                             {
-                                'type': 'div',
-                                'class': 'form-group',
-                                'content': [
-                                    {
-                                        'type': 'label',
-                                        'for': 'avatar',
-                                        'class': 'text-white',
-                                        'text': 'Select New Avatar'
-                                    },
-                                    {
-                                        'type': 'select',
-                                        'name': 'avatar',
-                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
-                                        'identifier': 'avatar',
-                                        'content': [
-
-                                        ]
-                                    },
-                                ]
+                                'type': 'input',
+                                'inputType': 'text',
+                                'identifier': 'username',
+                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
+                                'value': 'placeholder'
                             },
-                            {
-                                'type': 'button',
-                                'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
-                                'text': 'Delete User Statistics',
-                                'onclick': 'deleteUserStats(event)',
-                            },
-                            {
-                                'type': 'button',
-                                'class': 'menu-button col-md-12 mt-4 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
-                                'text': 'Save',
-                                'onclick': 'saveChanges()'
-                            }
                         ]
+                    },
+                    {
+                        'type': 'div',
+                        'class': 'form-group',
+                        'content': [
+                            {
+                                'type': 'label',
+                                'for': 'avatar',
+                                'class': 'text-white',
+                                'text': 'Select New Avatar'
+                            },
+                            {
+                                'type': 'select',
+                                'name': 'avatar',
+                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
+                                'identifier': 'avatar',
+                                'content': [
+
+                                ]
+                            },
+                        ]
+                    },
+                    {
+                        'type': 'button',
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                        'text': 'Delete User Statistics',
+                        'onclick': 'deleteUserStats(event)',
+                    },
+                    {
+                        'type': 'button',
+                        'class': 'menu-button col-md-12 mt-4 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                        'text': 'Save',
+                        'onclick': 'saveChanges()'
                     }
                 ]
-            },
+            }
         ]
     },
     'singleplayer_game': {
