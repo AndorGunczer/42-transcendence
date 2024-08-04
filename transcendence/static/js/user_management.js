@@ -50,7 +50,7 @@ function load_next_step(json) {
   // CREATE CONTAINER
 
   json.menuItems.forEach((item) => {
-    let parent = document.getElementsByClassName("container")[0];
+    let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
     let element = document.createElement(item.type);
     if (item.type == "div" || item.type == "form")
       divLoader(element, item.content);
@@ -79,7 +79,7 @@ function load_next_step(json) {
 //   // CREATE CONTAINER
 
 //   json.menuItems.forEach((item) => {
-//     let parent = document.getElementsByClassName("container")[0];
+//     let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];;
 //     let element = document.createElement(item.type);
 //     if (item.type == "div" || item.type == "form")
 //       divLoader(element, item.content);
@@ -290,7 +290,8 @@ async function settings() {
     // CREATE CONTAINER
 
     json.menuItems.forEach((item) => {
-      let parent = document.getElementsByClassName("container")[0];
+      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+      console.log(parent);
       let element = document.createElement(item.type);
       if (item.type == "div" || item.type == "form" || item.type == "select")
         divLoader(element, item.content);
@@ -333,7 +334,7 @@ async function deleteUserStats(event) {
     // CREATE CONTAINER
 
     json.menuItems.forEach((item) => {
-      let parent = document.getElementsByClassName("container")[0];
+      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
       let element = document.createElement(item.type);
       if (item.type == "div" || item.type == "form" || item.type == "select")
         divLoader(element, item.content);
@@ -385,7 +386,7 @@ async function saveChanges() {
     // CREATE CONTAINER
 
     json.menuItems.forEach((item) => {
-      let parent = document.getElementsByClassName("container")[0];
+      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
       let element = document.createElement(item.type);
       if (item.type == "div" || item.type == "form" || item.type == "select")
         divLoader(element, item.content);
