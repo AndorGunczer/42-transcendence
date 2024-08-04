@@ -1,0 +1,5 @@
+2fa is active
+Preparing to connect to the SMTP server
+Connection to server was successful
+Login to the SMTP server was successful
+Email sent successfully

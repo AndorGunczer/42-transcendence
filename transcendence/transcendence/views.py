@@ -854,7 +854,7 @@ def login_check(request):
                             port = 465
                             smtp_server = "smtp.gmail.com"
                             sender_email = "ft.transcendence.2fa.42@gmail.com"
-                            receiver_email = "erfan.12.kordi@gmail.com"
+                            receiver_email = user.email
                             email_password = 'rwsv qnsl lqfa shic'
                             message = f"""\
                             Subject: Your OTP Code
