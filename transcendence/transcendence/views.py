@@ -44,10 +44,10 @@ class CustomTokenRefreshView(TokenRefreshView):
         refresh_token = request.COOKIES.get('refresh_token')
         if not refresh_token:
             return JsonResponse({"error": "Refresh token missing"}, status=401)
-        
+
         request.data['refresh'] = refresh_token
         response = super().post(request, *args, **kwargs)
-        
+
         if response.status_code == 200:
             data = response.data
             response = JsonResponse({"message": "Token refreshed"}, status=200)
@@ -83,7 +83,7 @@ def get_token_from_header(request):
         return None
 
 # Modify JSON Menus with Dynamic data
-    
+
 def modify_json_menu(menu_type, token):
     menu = copy.deepcopy(MENU_DATA.get(menu_type))
     user = get_user_from_token(token)
@@ -119,7 +119,6 @@ def modify_json_menu(menu_type, token):
     if token and menu['menuTitle'] == 'Main Menu Buttons':
         del menu['menuItems'][4]
         # menu['menuItems'][0]['content'][0]['class'] = 'menu-button'
-    
 
     return menu
 
@@ -134,7 +133,7 @@ def tournament_select_fill(menu):
         })
 
     print("tournament_select_fill(menu) called")
-    
+
     return menu
 
 from django.db.models import Q
@@ -275,7 +274,7 @@ def tournament_select_page_fill(menu, participants):
     print('tournament_select_page_fill() called')
     return {'menu': menu, 'game': first_game_with_empty_result.id if first_game_with_empty_result else None}
 
-    
+
 # VIEW FUNCTIONS
 
 # Initial Website Load
@@ -313,7 +312,7 @@ def indexPost(request, menu_type='main'):
     # # Validate the token
     # if not validate_token(token):
     #     return JsonResponse({'error': 'Unauthorized'}, status=401)
-    
+
     if menu is not None:
         return JsonResponse(menu)
     else:
@@ -574,8 +573,8 @@ def tournament_create_check(request, menu_type='main'):
             player1_db.save()
             player2_db = Players(player=player2, game=game_db)
             player2_db.save()
-    
-    
+
+
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
     else:
@@ -823,7 +822,7 @@ def generate_otp():
     return str(random.randint(100000, 999999))
 
 # Process Data From Login Form
-
+import smtplib, ssl
 import traceback
 
 @csrf_exempt
@@ -835,10 +834,10 @@ def login_check(request):
             print("PRINT THE LINE BEFORE")
             username = data.get('username')
             password = data.get('password')
-            
+
             if not username or not password:
                 return JsonResponse({'error': 'Username and password are required.'}, status=400)
-            
+
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 if user.allow_otp:
@@ -846,19 +845,51 @@ def login_check(request):
                     request.session['otp'] = otp
                     request.session['username'] = username
                     request.session['password'] = password
-                    print(f"Your OTP is: {otp}")
-                    
+
+                    with open('output.txt', 'w') as file:
+                        file.write("2fa is active\n")
+
+                        try:
+                            # Configuration
+                            port = 465
+                            smtp_server = "smtp.gmail.com"
+                            sender_email = "ft.transcendence.2fa.42@gmail.com"
+                            receiver_email = "erfan.12.kordi@gmail.com"
+                            email_password = 'rwsv qnsl lqfa shic'
+                            message = f"""\
+                            Subject: Your OTP Code
+
+                            Your OTP code is {otp}."""
+                            context = ssl.create_default_context()
+
+                            file.write("Preparing to connect to the SMTP server\n")
+                            with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+                                file.write("Connection to server was successful\n")
+                                server.login(sender_email, email_password)
+                                file.write("Login to the SMTP server was successful\n")
+                                server.sendmail(sender_email, receiver_email, message)
+                                file.write("Email sent successfully\n")
+
+                        except smtplib.SMTPException as e:
+                            file.write(f"SMTP error occurred: {e}\n")
+                            return JsonResponse({'error': 'Failed to send email'}, status=500)
+                        except Exception as e:
+                            file.write(f"An error occurred: {e}\n")
+                            return JsonResponse({'error': 'An unexpected error occurred'}, status=500)
+
                     return JsonResponse({'status': 'otp_sent'})
                 else:
                     login(request, user)
                     access_token = str(AccessToken.for_user(user))
+
+                    # Assuming modify_json_menu requires a token and modifies the menu accordingly
                     response_data = modify_json_menu('main', access_token)
-                    
+
                     response = JsonResponse(response_data)
                     response.set_cookie(
                         'access_token', access_token, httponly=True, secure=True, samesite='Strict'
                     )
-                    
+
                     return response
             else:
                 return JsonResponse({'error': 'Invalid username or password'}, status=401)
@@ -877,31 +908,31 @@ def verify_otp_view(request):
         try:
             data = json.loads(request.body)
             otp_input = data.get('otp')
-            
+
             if otp_input == request.session.get('otp'):
                 # OTP is correct, log the user in
                 username = request.session.get('username')
                 password = request.session.get('password')
-                
+
                 user = authenticate(request, username=username, password=password)
-                
+
                 if user is not None:
                     login(request, user)
                     access_token = str(AccessToken.for_user(user))
-                    
+
                     # Assuming modify_json_menu requires a token and modifies the menu accordingly
                     response_data = modify_json_menu('main', access_token)
-                    
+
                     response = JsonResponse(response_data)
                     response.set_cookie(
                         'access_token', access_token, httponly=True, secure=True, samesite='Strict'
                     )
-                    
+
                     # Clear session data
                     request.session.pop('otp', None)
                     request.session.pop('username', None)
                     request.session.pop('password', None)
-                    
+
                     return response
             return JsonResponse({'error': 'Invalid OTP'}, status=401)
         except Exception as e:
@@ -965,7 +996,7 @@ def upload_file(request):
             f.write(file_content)
 
         return JsonResponse({'message': 'File uploaded successfully', 'file_path': str(file_path)})
-    
+
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 # Load User Settings
