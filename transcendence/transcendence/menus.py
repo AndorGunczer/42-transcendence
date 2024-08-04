@@ -22,14 +22,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -55,21 +58,21 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
                 'text': 'PLAY',
                 'onclick': 'load_playMenu()'
             },
             {
                 'id': 3,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
                 'text': 'TOURNAMENT',
                 'onclick': 'load_tournament_main()'
             },
             {
                 'id': 4,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
                 'text': 'LEADERBOARD',
                 'onclick': 'load_leaderboard()'
             },
@@ -77,19 +80,19 @@ MENU_DATA = {
                 'id': 5,
                 'type': 'div',
                 'identifier': '',
-                'class': 'button-container',
+                'class': 'd-flex flex-row w-25 justify-content-center',
                 'content': [
                     {
                         'type': 'button',
                         'text': 'LOGIN',
-                        'class': 'menu-button-05',
+                        'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded bg-secondary bg-gradient text-white',
                         'identifier': 'button-login',
                         'onclick': 'load_login()'
                     },
                     {
                         'type': 'button',
                         'text': 'REGISTER',
-                        'class': 'menu-button-05',
+                        'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded bg-secondary bg-gradient text-white',
                         'identifier': 'button-register',
                         'onclick': 'load_register()'
                     }
@@ -111,14 +114,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -126,7 +132,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_main()'
             }
@@ -146,14 +152,14 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'SINGLEPLAYER',
                 'onclick': 'single_pregame()'
             },
             {
                 'id': 3,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'LOCAL',
                 'onclick': 'local_pregame()'
 
@@ -161,7 +167,7 @@ MENU_DATA = {
             {
                 'id': 4,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'ONLINE',
                 'onclick': 'online_pregame()'
             },
@@ -181,14 +187,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -196,7 +205,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_main()'
             }
@@ -236,14 +245,14 @@ MENU_DATA = {
                 'id': 2,
                 'type': 'button',
                 'text': 'CREATE TOURNAMENT',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'onclick': 'load_tournament_create()'
             },
             {
                 'id': 3,
                 'type': 'button',
                 'text': 'SELECT',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'onclick': 'load_tournament_select()'
             }
         ]
@@ -262,14 +271,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -277,7 +289,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_main()'
             }
@@ -290,43 +302,61 @@ MENU_DATA = {
                 'identifier': 'tournament_form',
                 'content': [
                     {
+                        'type': 'div',
+                        'class': 'form-group',
+                        'content': [
+                            {
+                                'type': 'label',
+                                'for': 'tournament_name',
+                                'class': 'text-white',
+                                'text': 'Tournament Name: '
+                            },
+                            {
+                                'type': 'input',
+                                'inputType': 'text',
+                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
+                                'identifier': 'tournament_name'
+                            },
+                        ]
+                    },
+                    {
+                        'type': 'div',
+                        'class': 'form-group',
+                        'content': [
+                            {
+                                'type': 'label',
+                                'for': 'player',
+                                'class': 'text-white',
+                                'text': 'Player Name: '
+                            },
+                            {
+                                'type': 'input',
+                                'inputType': 'text',
+                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
+                                'identifier': 'player'
+
+                            },
+                            {
+                                'type': 'input',
+                                'inputType': 'button',
+                                'value': 'Add Player',
+                                'onclick': 'tournament_player_add(event)'
+                            },
+                        ]
+                    },
+                    {
                         'type': 'ul',
                         'identifier': 'tournament_ul',
+                        'class': 'text-white',
                         'content': [
                             
                         ],
                     },
                     {
-                        'type': 'label',
-                        'for': 'tournament_name',
-                        'text': 'Tournament Name: '
-                    },
-                    {
-                        'type': 'input',
-                        'inputType': 'text',
-                        'identifier': 'tournament_name'
-                    },
-                    {
-                        'type': 'label',
-                        'for': 'player',
-                        'text': 'Player Name: '
-                    },
-                    {
-                        'type': 'input',
-                        'inputType': 'text',
-                        'identifier': 'player'
-
-                    },
-                    {
-                        'type': 'input',
-                        'inputType': 'button',
-                        'value': 'Add Player',
-                        'onclick': 'tournament_player_add(event)'
-                    },
-                    {
                         'type': 'input',
                         'inputType': 'button',
                         'value': 'Submit',
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                         'onclick': 'submit_tournament_create(event)'
                     }
                 ]
@@ -347,14 +377,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -362,7 +395,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_main()'
             }
@@ -371,36 +404,25 @@ MENU_DATA = {
             {
                 'id': 1,
                 'type': 'div',
-                # 'class': 'tournament_form',
+                'class': 'w-100 d-flex flex-column justify-content-center align-items-center',
                 'identifier': 'tournament_form',
                 'content': [
                     {
                         'type': 'div',
                         'class': 'participant_list',
                         'content': [
-                            {
-                                'type': 'div',
-                                'class': 'participant',
-                                'content': [
-                                    {
-                                        'type': 'p',
-                                        'text': 'name',
-                                    },
-                                    {
-                                        'type': 'p',
-                                        'text': 'points'
-                                    }
-                                ]
-                            },
+
                         ]
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'placeholder for next game'
                     },
                     {
                         'type': 'button',
                         'text': 'Play Game',
+                        'class': 'menu-items col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                         'onclick': 'load_tournament_localGame()'
                     }
                 ]
@@ -421,14 +443,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -436,7 +461,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_playMenu()'
             }
@@ -445,106 +470,12 @@ MENU_DATA = {
             {
                 'id': 1,
                 'type': 'div',
-                'class': 'players',
+                'class': 'players w-50 d-flex justify-content-center align-items-center',
                 'content': [
                     {
-                        'type': 'div',
-                        'class': 'player1',
-                        'content': [
-                            {
-                                'type': 'form',
-                                'action': '',
-                                'content': [
-                                    {
-                                        'type': 'div',
-                                        'content': [
-                                            {
-                                                'type': 'label',
-                                                'for': 'player1',
-                                                'text': 'username'
-                                            },
-                                            {
-                                                'type': 'input',
-                                                'inputType': 'text',
-                                                'identifier': 'player1'
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        'type': 'div',
-                                        'content': [
-                                            {
-                                                'type': 'label',
-                                                'for': 'password1',
-                                                'text': 'password'
-                                            },
-                                            {
-                                                'type': 'input',
-                                                'inputType': 'password',
-                                                'identifier': 'password1'
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        'type': 'button',
-                                        'class': 'menu-button',
-                                        'text': 'Submit'
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        'type': 'div',
-                        'class': 'player2',
-                        'content': [
-                            {
-                                'type': 'form',
-                                'action': '',
-                                'content': [
-                                    {
-                                        'type': 'div',
-                                        'content': [
-                                            {
-                                                'type': 'label',
-                                                'for': 'player2',
-                                                'text': 'username'
-                                            },
-                                            {
-                                                'type': 'input',
-                                                'inputType': 'text',
-                                                'identifier': 'player2'
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        'type': 'div',
-                                        'content': [
-                                            {
-                                                'type': 'label',
-                                                'for': 'password2',
-                                                'text': 'password'
-                                            },
-                                            {
-                                                'type': 'input',
-                                                'inputType': 'password',
-                                                'identifier': 'password2'
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        'type': 'button',
-                                        'class': 'menu-button',
-                                        'text': 'Submit'
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
                         'type': 'button',
-                        'class': 'menu-button',
-                        'text': 'play',
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-75 p-3 mt-4 rounded bg-secondary bg-gradient text-white',
+                        'text': 'PLAY',
                         'onclick': 'load_singleGame()'
                     }
                 ]
@@ -565,14 +496,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -580,7 +514,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_playMenu()'
             }
@@ -631,7 +565,7 @@ MENU_DATA = {
                                     },
                                     {
                                         'type': 'button',
-                                        'class': 'menu-button',
+                                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                                         'text': 'Submit'
                                     }
                                 ]
@@ -678,7 +612,7 @@ MENU_DATA = {
                                     },
                                     {
                                         'type': 'button',
-                                        'class': 'menu-button',
+                                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                                         'text': 'Submit'
                                     }
                                 ]
@@ -687,7 +621,7 @@ MENU_DATA = {
                     },
                     {
                         'type': 'button',
-                        'class': 'menu-button',
+                        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                         'text': 'play',
                         'onclick': 'load_onlineGame()'
                     }
@@ -709,14 +643,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -724,7 +661,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_playMenu()'
             }
@@ -745,15 +682,18 @@ MENU_DATA = {
                                 'content': [
                                     {
                                         'type': 'div',
+                                        'class': 'form-group',
                                         'content': [
                                             {
                                                 'type': 'label',
                                                 'for': 'player1',
+                                                'class': 'text-white',
                                                 'text': 'player 1: '
                                             },
                                             {
                                                 'type': 'input',
                                                 'inputType': 'text',
+                                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                                 'identifier': 'player1'
                                             }
                                         ]
@@ -792,15 +732,18 @@ MENU_DATA = {
                                 'content': [
                                     {
                                         'type': 'div',
+                                        'class': 'form-group',
                                         'content': [
                                             {
                                                 'type': 'label',
                                                 'for': 'player2',
+                                                'class': 'text-white',
                                                 'text': 'player 2: '
                                             },
                                             {
                                                 'type': 'input',
                                                 'inputType': 'text',
+                                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                                 'identifier': 'player2'
                                             }
                                         ]
@@ -831,7 +774,7 @@ MENU_DATA = {
                     },
                     {
                         'type': 'button',
-                        'class': 'menu-button',
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                         'text': 'play',
                         'onclick': 'submit_local_pregame(event)'
                     }
@@ -853,14 +796,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -868,7 +814,7 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_main()'
             }
@@ -886,14 +832,17 @@ MENU_DATA = {
                         'content': [
                             {
                                 'type': 'div',
+                                'class': 'form-group',
                                 'content': [
                                     {
                                         'type': 'label',
                                         'for': 'username',
-                                        'text': 'username: '
+                                        'class': 'text-white',
+                                        'text': 'Username '
                                     },
                                     {
                                         'type': 'input',
+                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                         'inputType': 'text',
                                         'identifier': 'username',
                                         'name': 'username'
@@ -902,14 +851,17 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'div',
+                                'class': 'form-group',
                                 'content': [
                                     {
                                         'type': 'label',
                                         'for': 'password',
-                                        'text': 'password: '
+                                        'class': 'text-white',
+                                        'text': 'Password '
                                     },
                                     {
                                         'type': 'input',
+                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                         'inputType': 'password',
                                         'identifier': 'password',
                                         'name': 'password'
@@ -918,14 +870,17 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'div',
+                                'class': 'form-group',
                                 'content': [
                                     {
                                         'type': 'label',
                                         'for': 'email',
-                                        'text': 'Email: '
+                                        'class': 'text-white',
+                                        'text': 'Email '
                                     },
                                     {
                                         'type': 'input',
+                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                         'inputType': 'text',
                                         'identifier': 'email',
                                         'name': 'email'
@@ -934,14 +889,17 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'div',
+                                'class': 'form-group',
                                 'content': [
                                     {
                                         'type': 'label',
                                         'for': 'avatar',
-                                        'text': 'Avatar'
+                                        'class': 'text-white',
+                                        'text': 'Avatar '
                                     },
                                     {
                                         'type': 'select',
+                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                         'name': 'avatar',
                                         'identifier': 'Avatar',
                                         'content': [
@@ -965,25 +923,30 @@ MENU_DATA = {
                                     {
                                         'type': 'img',
                                         'identifier': 'avatarPic',
+                                        'class': 'mb-3',
                                         'src': 'https://127.0.0.1:8000/static/images/question_mark.png',
                                     }
                                 ]
                             },
                             {
                                 'type': 'div',
+                                'class': 'form-group',
                                 'content': [
                                     {
                                         'type': 'label',
                                         'for': 'fileUpload',
-                                        'text': 'Upload Avatar: ',
+                                        'class': 'text-white',
+                                        'text': 'Upload Avatar ',
                                     },
                                     {
                                         'type': 'input',
+                                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                         'inputType': 'file',
                                         'identifier': 'fileUpload',
                                     },
                                     {
                                         'type': 'button',
+                                        'class': 'btn col-md-12 mt-2 w-100 h-10 p-3 m-10 rounded bg-secondary bg-gradient text-white',
                                         'text': 'Upload',
                                         'onclick': 'uploadAvatar()'
                                     },
@@ -991,14 +954,17 @@ MENU_DATA = {
                             },
                             {
                                 'type': 'div',
+                                'class': 'form-group d-flex flex-row mt-2',
                                 'content': [
                                     {
                                         'type': 'label',
                                         'for': 'twofa',
-                                        'text': 'Two-Factor Authentication: '
+                                        'class': 'd-block mr-2 text-white',
+                                        'text': 'Two-Factor Authentication '
                                     },
                                     {
                                         'type': 'input',
+                                        'class': 'form-check',
                                         'inputType': 'checkbox',
                                         'identifier': 'twofa',
                                         'name': 'twofa'
@@ -1008,7 +974,9 @@ MENU_DATA = {
                             {
                                 'type': 'input',
                                 'inputType': 'button',
+                                'class': 'btn btn-primary col-md-12 mt-2 w-100 h-10 p-3 m-10 rounded bg-secondary bg-gradient text-white',
                                 'form': 'registration_form',
+                                'value': 'SUBMIT',
                                 'onclick': 'submit_registration_form(event)'
                             }
                         ]
@@ -1031,14 +999,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -1046,97 +1017,99 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_main()'
             }
         ],
         'menuItems': [
             {
-                'type': 'div',
-                'class': 'container',
+                'type': 'form',
+                # 'action': '',
+                # 'method': 'POST',
+                'identifier': 'login_form',
                 'content': [
                     {
-                        'type': 'form',
-                        # 'action': '',
-                        # 'method': 'POST',
-                        'identifier': 'login_form',
+                        'type': 'div',
+                        'class': 'form-group',
                         'content': [
                             {
-                                'type': 'div',
-                                'content': [
-                                    {
-                                        'type': 'label',
-                                        'for': 'username',
-                                        'text': 'username: '
-                                    },
-                                    {
-                                        'type': 'input',
-                                        'inputType': 'text',
-                                        'identifier': 'username',
-                                        'name': 'username'
-                                    }
-                                ]
-                            },
-                            {
-                                'type': 'div',
-                                'content': [
-                                    {
-                                        'type': 'label',
-                                        'for': 'password',
-                                        'text': 'password: '
-                                    },
-                                    {
-                                        'type': 'input',
-                                        'inputType': 'password',
-                                        'identifier': 'password',
-                                        'name': 'password'
-                                    }
-                                ]
+                                'type': 'label',
+                                'for': 'username',
+                                'class': 'text-white',
+                                'text': 'username'
                             },
                             {
                                 'type': 'input',
-                                'inputType': 'button',
-                                'form': 'login_form',
-                                'onclick': 'submit_login_form(event)'
+                                'inputType': 'text',
+                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
+                                'identifier': 'username',
+                                'name': 'username'
                             }
                         ]
                     },
                     {
                         'type': 'div',
-                        'identifier': 'otpPopup',
+                        'class': 'form-group',
                         'content': [
                             {
-                                'type': 'h2',
-                                'text': 'Enter OTP',
+                                'type': 'label',
+                                'for': 'password',
+                                'class': 'text-white',
+                                'text': 'password '
                             },
                             {
-                                'type': 'form',
-                                # 'action': '',
-                                # 'method': 'POST',
-                                'identifier': 'otpForm',
-                                'content': [
-                                    {
-                                        'type': 'input',
-                                        'inputType': 'text',
-                                        'identifier': 'otp',
-                                        'name': 'top',
-                                        'placeholder': 'OTP',
-                                        'required': 'True'
-                                    },
-                                    {
-                                        'type': 'input',
-                                        'inputType': 'button',
-                                        'form': 'otpForm',
-                                        'text': 'Verify',
-                                        'onclick': 'verify_otp(event)'
-                                    }
-                                ]
+                                'type': 'input',
+                                'inputType': 'password',
+                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
+                                'identifier': 'password',
+                                'name': 'password'
+                            }
+                        ]
+                    },
+                    {
+                        'type': 'input',
+                        'inputType': 'button',
+                        'class': 'menu-button col-md-12 mt-2 w-100 p-3 rounded bg-secondary bg-gradient text-white',
+                        'value': 'SUBMIT',
+                        'form': 'login_form',
+                        'onclick': 'submit_login_form(event)'
+                    }
+                ]
+            },
+            {
+                'type': 'div',
+                'identifier': 'otpPopup',
+                'content': [
+                    {
+                        'type': 'h2',
+                        'text': 'Enter OTP',
+                    },
+                    {
+                        'type': 'form',
+                        # 'action': '',
+                        # 'method': 'POST',
+                        'identifier': 'otpForm',
+                        'content': [
+                            {
+                                'type': 'input',
+                                'inputType': 'text',
+                                'identifier': 'otp',
+                                'name': 'top',
+                                'placeholder': 'OTP',
+                                'required': 'True'
+                            },
+                            {
+                                'type': 'input',
+                                'inputType': 'button',
+                                'form': 'otpForm',
+                                'text': 'Verify',
+                                'onclick': 'verify_otp(event)'
                             }
                         ]
                     }
                 ]
-            },
+            }
         ]
     },
     'settings': {
@@ -1153,14 +1126,17 @@ MENU_DATA = {
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'logged in as PLACEHOLDER'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'wins'
                     },
                     {
                         'type': 'p',
+                        'class': 'text-white',
                         'text': 'losses'
                     }
                 ]
@@ -1168,50 +1144,73 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'BACK',
                 'onclick': 'load_main()'
             }
         ],
         'menuItems': [
             {
-                'type': 'div',
-                'class': 'container',
+                'type': 'form',
+                # 'action': '',
+                # 'method': 'POST',
+                'class': 'd-flex flex-column',
+                'identifier': 'settings_form',
                 'content': [
                     {
-                        'type': 'form',
-                        # 'action': '',
-                        # 'method': 'POST',
-                        'identifier': 'settings_form',
+                        'type': 'div',
+                        'class': 'form-group',
                         'content': [
+                            {
+                                'type': 'label',
+                                'for': 'username',
+                                'class': 'text-white',
+                                'text': 'Choose New Username '
+                            },
                             {
                                 'type': 'input',
                                 'inputType': 'text',
                                 'identifier': 'username',
+                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                 'value': 'placeholder'
+                            },
+                        ]
+                    },
+                    {
+                        'type': 'div',
+                        'class': 'form-group',
+                        'content': [
+                            {
+                                'type': 'label',
+                                'for': 'avatar',
+                                'class': 'text-white',
+                                'text': 'Select New Avatar'
                             },
                             {
                                 'type': 'select',
                                 'name': 'avatar',
+                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                                 'identifier': 'avatar',
                                 'content': [
 
                                 ]
                             },
-                            {
-                                'type': 'button',
-                                'text': 'Delete User Statistics',
-                                'onclick': 'deleteUserStats(event)',
-                            },
-                            {
-                                'type': 'button',
-                                'text': 'Save',
-                                'onclick': 'saveChanges()'
-                            }
                         ]
+                    },
+                    {
+                        'type': 'button',
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                        'text': 'Delete User Statistics',
+                        'onclick': 'deleteUserStats(event)',
+                    },
+                    {
+                        'type': 'button',
+                        'class': 'menu-button col-md-12 mt-4 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                        'text': 'Save',
+                        'onclick': 'saveChanges()'
                     }
                 ]
-            },
+            }
         ]
     },
     'singleplayer_game': {

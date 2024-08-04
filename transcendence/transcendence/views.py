@@ -97,7 +97,7 @@ def modify_json_menu(menu_type, token):
     menu['headerItems'].append({
         'id': 2,
         'type': 'button',
-        'class': 'menu-button',
+        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
         'text': 'SETTINGS',
         'onclick': 'settings()',
     })
@@ -105,7 +105,7 @@ def modify_json_menu(menu_type, token):
     menu['headerItems'].append({
                 'id': 3,
                 'type': 'button',
-                'class': 'menu-button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'LOGOUT',
                 'onclick': 'logout()'
     })
@@ -113,13 +113,12 @@ def modify_json_menu(menu_type, token):
     menu['headerItems'][0]['content'].append({
                 'type': 'img',
                 'src': f'{user.avatarDirect}',
-                'identifier': 'avatarHeaderPic'
+                'identifier': 'avatarPic'
     })
 
     if token and menu['menuTitle'] == 'Main Menu Buttons':
-        del menu['menuItems'][4]['content'][0]
-        menu['menuItems'][4]['content'][0]['class'] = 'menu-button'
-
+        del menu['menuItems'][4]
+        # menu['menuItems'][0]['content'][0]['class'] = 'menu-button'
 
     return menu
 
@@ -142,21 +141,105 @@ from django.db.models import Q
 from django.db.models import Q
 
 def tournament_select_page_fill(menu, participants):
-    for participant in participants:
-        menu['menuItems'][0]['content'][0]['content'].append({
-            'type': 'div',
-            'class': 'participant',
+    # for participant in participants:
+    #     menu['menuItems'][0]['content'][0]['content'].append({
+    #         'type': 'div',
+    #         'class': 'participant',
+    #         'content': [
+    #             {
+    #                 'type': 'p',
+    #                 'text': participant.player.username,
+    #             },
+    #             {
+    #                 'type': 'p',
+    #                 'text': f'{participant.points}'
+    #             }
+    #         ]
+    #     })
+
+    menu['menuItems'][0]['content'][0]['content'].append({
+        'type': 'table',
+        'class': 'w-100 d-flex flex-column justify-content-center align-items-center',
+        'content': [
+            {
+                'type': 'thead',
+                'class': 'thead-dark text-white w-100 d-flex flex-row justify-content-center gap-4',
+                'content': [
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': '#'
+                    },
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': 'Player'
+                    },
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': f'Points'
+                    }                    
+                ]
+            }
+        ]
+    })
+
+    table = menu['menuItems'][0]['content'][0]['content'][0]['content']
+
+    for i,participant in enumerate(participants):
+        table.append({
+            'type': 'tr',
+            'class': 'participant text-white',
             'content': [
                 {
-                    'type': 'p',
+                    'type': 'td',
+                    'class': 'text-white',
+                    'text': f'{i}'
+                },
+                {
+                    'type': 'td',
+                    'class': 'text-white',
                     'text': participant.player.username,
                 },
                 {
-                    'type': 'p',
+                    'type': 'td',
+                    'class': 'text-white',
                     'text': f'{participant.points}'
                 }
             ]
         })
+
+#     <table class="table">
+#   <thead class="thead-dark">
+#     <tr>
+#       <th scope="col">#</th>
+#       <th scope="col">First</th>
+#       <th scope="col">Last</th>
+#       <th scope="col">Handle</th>
+#     </tr>
+#   </thead>
+#   <tbody>
+#     <tr>
+#       <th scope="row">1</th>
+#       <td>Mark</td>
+#       <td>Otto</td>
+#       <td>@mdo</td>
+#     </tr>
+#     <tr>
+#       <th scope="row">2</th>
+#       <td>Jacob</td>
+#       <td>Thornton</td>
+#       <td>@fat</td>
+#     </tr>
+#     <tr>
+#       <th scope="row">3</th>
+#       <td>Larry</td>
+#       <td>the Bird</td>
+#       <td>@twitter</td>
+#     </tr>
+#   </tbody>
+# </table>
 
     if participants:
         # Assuming all participants are from the same tournament
@@ -740,11 +823,15 @@ def generate_otp():
 
 # Process Data From Login Form
 import smtplib, ssl
+import traceback
+
 @csrf_exempt
 def login_check(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
+            print(data)
+            print("PRINT THE LINE BEFORE")
             username = data.get('username')
             password = data.get('password')
 
@@ -754,7 +841,6 @@ def login_check(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 if user.allow_otp:
-                    # Generate OTP and save it to the session
                     otp = generate_otp()
                     request.session['otp'] = otp
                     request.session['username'] = username
@@ -791,10 +877,8 @@ def login_check(request):
                             file.write(f"An error occurred: {e}\n")
                             return JsonResponse({'error': 'An unexpected error occurred'}, status=500)
 
-
                     return JsonResponse({'status': 'otp_sent'})
                 else:
-                    # Directly log the user in without OTP
                     login(request, user)
                     access_token = str(AccessToken.for_user(user))
 
@@ -810,6 +894,8 @@ def login_check(request):
             else:
                 return JsonResponse({'error': 'Invalid username or password'}, status=401)
         except Exception as e:
+            print("Exception occurred:", e)
+            traceback.print_exc()
             return JsonResponse({'error': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Only POST method is allowed.'}, status=405)
@@ -926,17 +1012,17 @@ def settings(request, menu_type='settings'):
         print(avatars)
         i = 0
         for avatar in avatars:
-            menu['menuItems'][0]['content'][0]['content'][1]['content'].append({
+            menu['menuItems'][0]['content'][1]['content'][1]['content'].append({
                 'type': 'option',
                 'value': avatar.name,
                 'text': avatar.name
             })
 
             if avatar.name == user.avatarDirect.rsplit('/', 1)[1]:
-                menu['menuItems'][0]['content'][0]['content'][1]['content'][i]['selected'] = user.avatarDirect.rsplit('/', 1)[1]
+                menu['menuItems'][0]['content'][1]['content'][1]['content'][1]['selected'] = user.avatarDirect.rsplit('/', 1)[1]
             i = i + 1
 
-        menu['menuItems'][0]['content'][0]['content'][0]['value'] = user.username
+        menu['menuItems'][0]['content'][0]['value'] = user.username
 
         # menu['menuItems'][0]['content'][0]['content'][1]['selected'] = user.avatarDirect.rsplit('/', 1)[1]
         print(menu)

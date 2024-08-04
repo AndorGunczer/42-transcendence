@@ -3,6 +3,39 @@
     box-sizing: border-box;
 }
 
+html {
+    height: 100vh;
+  }
+  body {
+    min-height: 100vh;
+  }
+
+body {
+    background-color: #180161 !important;
+}
+
+ul {
+    background-color: #180161 !important;
+}
+
+/* div {
+    background-color: #180161 !important;
+} */
+
+/* div {
+    background-color: #61a57d;
+} */
+
+img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.bg-secondary {
+    background-color: #FB773C !important;
+}
+
 .header {
     /* Removed the height property */
     /* Consider using padding instead to maintain the layout */
@@ -22,13 +55,17 @@
     padding: 24px 0;
 }
 
-.button-container {
+.mr-2 {
+    margin-right: 10px;
+}
+
+/* .button-container {
     display: flex;
     gap: 12px;
     width: 200px;
     justify-content: space-between;
     /* Consider using padding instead of height for the buttons */
-}
+/* }  */
 
 #container-logo {
     /* Removed the height property */
