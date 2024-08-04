@@ -9,10 +9,10 @@ async function submit_registration_form(event) {
   // formData.append("username", document.getElementById("username").value);
   // formData.append("password", document.getElementById("password").value);
 
-  let username = document.getElementById("username").value;
-  let password = document.getElementById("password").value;
+  let username = sanitizeInput(document.getElementById("username").value);
+  let password = sanitizeInput(document.getElementById("password").value);
   let avatar = document.getElementById("Avatar").value;
-  let email = document.getElementById('email').value;
+  let email = sanitizeInput(document.getElementById('email').value);
   let twofa = document.getElementById('twofa').checked;
 
   console.log('twofa value: ' + twofa);
@@ -95,8 +95,8 @@ async function submit_login_form(event) {
   console.log('submit login form called');
 
   const csrfToken = await getCsrfToken();
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+  const username = sanitizeInput(document.getElementById("username").value);
+  const password = sanitizeInput(document.getElementById("password").value);
 
   fetch("/login_check", {
       method: "POST",
@@ -357,8 +357,8 @@ async function saveChanges() {
 
   let url = '/save_changes';
 
-  let username = document.getElementById('username').value;
-  let avatar = document.getElementById('avatar').value;
+  let username = sanitizeInput(document.getElementById('username').value);
+  let avatar = sanitizeInput(document.getElementById('avatar').value);
 
   console.log("selected avatar: " + avatar);
 
