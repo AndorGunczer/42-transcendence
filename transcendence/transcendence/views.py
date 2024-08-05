@@ -995,13 +995,18 @@ def upload_file(request):
         with open(file_path, 'wb') as f:
             f.write(file_content)
 
+        Avatar.objects.create(
+                    name=file_name,
+                    path=file_path
+                )
+
         return JsonResponse({'message': 'File uploaded successfully', 'file_path': str(file_path)})
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 # Load User Settings
 
-def settings(request, menu_type='settings'):
+def load_settings(request, menu_type='settings'):
     token = get_token_from_header(request)
     user = get_user_from_token(token)
     if (token == None) or (not validate_token(token)):

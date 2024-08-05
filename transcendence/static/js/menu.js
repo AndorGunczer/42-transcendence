@@ -483,6 +483,11 @@ function load_onlineGame() {
       let new_li = document.createElement('li');
       new_li.textContent = player_input.value; // Make sure to set the text content of the new list item
 
+      if (player_list.includes(player_input.value)) {
+        alert("Player already in the tournament");
+        return ;
+      }
+
       player_list.push(sanitizeInput(player_input.value));
       player_input.value = "";
       player_list_dom.appendChild(new_li);
@@ -494,6 +499,13 @@ function load_onlineGame() {
 
     async function submit_tournament_create(event) {
       event.preventDefault();
+
+      let validation = validate_tournament_create();
+
+      if (!validation) {
+        // player_list = [];
+        return ;
+      }
 
       let tournament_name = document.getElementById('tournament_name').value;
 
@@ -511,6 +523,8 @@ function load_onlineGame() {
         }),
         credentials: "include",
       }).then((response) => {
+        if (response.ok)
+          player_list = [];
         console.log('tournament created');
         return response.json();
       }).then((json) => {
@@ -520,8 +534,23 @@ function load_onlineGame() {
       })
 
       console.log('submit_tournament_create(event) called');
-      player_list = [];
     }
+
+function validate_tournament_create() {
+  let tournament_name = document.getElementById('tournament_name').value;
+
+  if (!tournament_name) {
+    alert("Please give tournament name");
+    return false;
+  }
+
+  if (player_list.length < 3) {
+    alert("Please add at least 3 players to your tournament");
+    return false;
+  }
+
+  return true;
+}
 
 let gameId;
 

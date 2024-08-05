@@ -53,7 +53,7 @@ urlpatterns = [
     path('api/token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
     path('api/csrf-token/', views.get_csrf_token, name='csrf-token'),
     path('logout', views.logout, name='logout'),
-    path('settings', views.settings, name='settings'),
+    path('settings', views.load_settings, name='settings'),
     path('delete_user_stats', views.delete_user_stats, name='delete_user_stats'),
     path('save_changes', views.save_changes, name='save_changes'),
 ]
