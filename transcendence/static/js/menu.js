@@ -2,6 +2,14 @@
 
 // HELPER FUNCTIONS
 
+function sanitizeInput(input) {
+  return input.replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#039;");
+}
+
 function changeSelectFunction(callback, dependencies) {
   // This is a placeholder function. Adjust as necessary for your actual use case.
   // It should return a function that handles events as per the requirements.
@@ -208,8 +216,15 @@ function local_pregame() {
 async function submit_local_pregame(event) {
   event.preventDefault()
 
-  player1 = document.getElementById('player1').value;
-  player2 = document.getElementById('player2').value;
+  let validation = validate_local_pregame();
+
+  if (!validation)
+    return ;
+
+  player1 = sanitizeInput(document.getElementById('player1').value);
+  player2 = sanitizeInput(document.getElementById('player2').value);
+
+  console.log(player1);
 
   const csrfToken = await getCsrfToken();
 
@@ -231,6 +246,22 @@ async function submit_local_pregame(event) {
       console.log(json.player1)
       load_localGame(json);
     })
+}
+
+function validate_local_pregame() {
+  player1 = document.getElementById('player1').value;
+  player2 = document.getElementById('player2').value;
+
+  if (player1 == "") {
+    alert("Player1 must be filled out");
+    return false;
+  }
+  else if (player2 == "") {
+    alert("Player2 must be filled out");
+    return false;
+  }
+
+  return true
 }
 
 function online_pregame() {
@@ -452,7 +483,12 @@ function load_onlineGame() {
       let new_li = document.createElement('li');
       new_li.textContent = player_input.value; // Make sure to set the text content of the new list item
 
-      player_list.push(player_input.value);
+      if (player_list.includes(player_input.value)) {
+        alert("Player already in the tournament");
+        return ;
+      }
+
+      player_list.push(sanitizeInput(player_input.value));
       player_input.value = "";
       player_list_dom.appendChild(new_li);
 
@@ -463,6 +499,13 @@ function load_onlineGame() {
 
     async function submit_tournament_create(event) {
       event.preventDefault();
+
+      let validation = validate_tournament_create();
+
+      if (!validation) {
+        // player_list = [];
+        return ;
+      }
 
       let tournament_name = document.getElementById('tournament_name').value;
 
@@ -480,6 +523,8 @@ function load_onlineGame() {
         }),
         credentials: "include",
       }).then((response) => {
+        if (response.ok)
+          player_list = [];
         console.log('tournament created');
         return response.json();
       }).then((json) => {
@@ -489,8 +534,23 @@ function load_onlineGame() {
       })
 
       console.log('submit_tournament_create(event) called');
-      player_list = [];
     }
+
+function validate_tournament_create() {
+  let tournament_name = document.getElementById('tournament_name').value;
+
+  if (!tournament_name) {
+    alert("Please give tournament name");
+    return false;
+  }
+
+  if (player_list.length < 3) {
+    alert("Please add at least 3 players to your tournament");
+    return false;
+  }
+
+  return true;
+}
 
 let gameId;
 

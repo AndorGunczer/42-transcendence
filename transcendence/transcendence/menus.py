@@ -948,7 +948,7 @@ MENU_DATA = {
                                         'type': 'button',
                                         'class': 'btn col-md-12 mt-2 w-100 h-10 p-3 m-10 rounded bg-secondary bg-gradient text-white',
                                         'text': 'Upload',
-                                        'onclick': 'uploadAvatar()'
+                                        'onclick': 'uploadAvatar(event)'
                                     },
                                 ]
                             },

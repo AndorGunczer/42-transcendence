@@ -1,6 +1,12 @@
 async function submit_registration_form(event) {
   event.preventDefault(); // Prevent default form submission
 
+  let validation = validate_registration_form();
+
+  if (!validation) {
+    return ; 
+  }
+
   const csrfToken = await getCsrfToken();
 
   console.log(document.getElementById("username").value);
@@ -9,10 +15,10 @@ async function submit_registration_form(event) {
   // formData.append("username", document.getElementById("username").value);
   // formData.append("password", document.getElementById("password").value);
 
-  let username = document.getElementById("username").value;
-  let password = document.getElementById("password").value;
+  let username = sanitizeInput(document.getElementById("username").value);
+  let password = sanitizeInput(document.getElementById("password").value);
   let avatar = document.getElementById("Avatar").value;
-  let email = document.getElementById('email').value;
+  let email = sanitizeInput(document.getElementById('email').value);
   let twofa = document.getElementById('twofa').checked;
 
   console.log('twofa value: ' + twofa);
@@ -35,6 +41,32 @@ async function submit_registration_form(event) {
     .catch((error) =>
       console.error("Error submitting registration form:", error)
     );
+}
+
+function validate_registration_form() {
+  let email = document.getElementById('email').value;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(email)) {
+    alert("Please provide a valid Email address");
+    return false;
+  }
+
+  let username = document.getElementById('username').value;
+
+  if (!username) {
+    alert("Please provide a username");
+    return false;
+  }
+
+  let password = document.getElementById('password').value;
+
+  if (!password) {
+    alert("Please provide a password");
+    return false;
+  }
+
+  return true;
 }
 
 function load_next_step(json) {
@@ -92,11 +124,16 @@ function load_next_step(json) {
 async function submit_login_form(event) {
   event.preventDefault(); // Prevent default form submission
 
+  let validation = validate_login_form();
+
+  if (!validation)
+    return ;
+
   console.log('submit login form called');
 
   const csrfToken = await getCsrfToken();
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
+  const username = sanitizeInput(document.getElementById("username").value);
+  const password = sanitizeInput(document.getElementById("password").value);
 
   fetch("/login_check", {
       method: "POST",
@@ -119,6 +156,24 @@ async function submit_login_form(event) {
       
   })
   .catch((error) => console.error("Error submitting login form:", error));
+}
+
+function validate_login_form(){
+  const username = sanitizeInput(document.getElementById("username").value);
+
+  if (!username) {
+    alert("Please enter a username");
+    return false;
+  }
+
+  const password = sanitizeInput(document.getElementById("password").value);
+
+  if (!password) {
+    alert("Please enter a password");
+    return false;
+  }
+
+  return true;
 }
 
 async function verify_otp(event) {
@@ -217,7 +272,8 @@ async function getCsrfToken() {
   return data.csrfToken;
 }
 
-async function uploadAvatar() {
+async function uploadAvatar(event) {
+  event.preventDefault();
   const csrfToken = await getCsrfToken();
 
   const fileInput = document.getElementById('fileUpload');
@@ -357,8 +413,8 @@ async function saveChanges() {
 
   let url = '/save_changes';
 
-  let username = document.getElementById('username').value;
-  let avatar = document.getElementById('avatar').value;
+  let username = sanitizeInput(document.getElementById('username').value);
+  let avatar = sanitizeInput(document.getElementById('avatar').value);
 
   console.log("selected avatar: " + avatar);
 
