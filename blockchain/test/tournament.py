@@ -126,9 +126,6 @@ contract_abi = [
 ]
 
 contract_address = '0x7a9f3aA1EEF757421BE6692aefa97132ac210249'
-# f = open("/app/contractAddress.txt", "r")
-# contract_address = (f.read()).strip()
-# print(contract_address)
 
 # Initialize contract
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
@@ -248,79 +245,17 @@ def test_get_tournament_index_by_name():
     tournament_index = get_tournament_index_by_name(name)
     print(f"Tournament index: {tournament_index}")
 
+# Example usage
+def main():
+    # test_add_tournament()
+    # test_add_participant()
+    test_increment_score()
+    # test_set_winner()
+    # test_get_tournament_count()
+    # test_get_tournament()
+    test_get_participant_score()
+    # test_get_participant_list()
+    # test_get_tournament_index_by_name()
 
-
-
-
-##############
-##############
-##############
-##############
-
-# def test_add_tournament():
-#     name = "Test Tournament"
-#     winner = "Winner A"
-#     receipt = add_tournament(name, winner)
-#     print(f"addTournament transaction successful with hash: {receipt.transactionHash.hex()}")
-
-# def test_add_participant():
-#     index = 0
-#     participant = "Participant A"
-#     receipt = add_participant(index, participant)
-#     participant = "Participant B"
-#     receipt2 = add_participant(index, participant)
-#     print(f"addParticipant transaction successful with hash: {receipt.transactionHash.hex()}")
-
-# def test_increment_score():
-#     index = 0
-#     participant = "Participant A"
-#     score = 10
-#     receipt = increment_score(index, participant, score)
-#     increment_score(index, "Participant B", 3)
-#     print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
-
-# def test_set_winner():
-#     index = 0
-#     winner = "Winner B"
-#     receipt = set_winner(index, winner)
-#     print(f"setWinner transaction successful with hash: {receipt.transactionHash.hex()}")
-
-# def test_get_tournament_count():
-#     count = get_tournament_count()
-#     print(f"Total number of tournaments: {count}")
-
-# def test_get_tournament():
-#     index = 0
-#     tournament_details = get_tournament(index)
-#     print(f"Tournament details: {tournament_details}")
-
-# def test_get_participant_score():
-#     index = 0
-#     participant = "Participant B"
-#     participant_score = get_participant_score(index, participant)
-#     print(f"Participant score: {participant_score}")
-
-# def test_get_participant_list():
-#     index = 0
-#     participant_list = get_participant_list(index)
-#     print(f"Participant list: {participant_list}")
-
-# def test_get_tournament_index_by_name():
-#     name = "Test Tournament"
-#     tournament_index = get_tournament_index_by_name(name)
-#     print(f"Tournament index: {tournament_index}")
-
-# # Example usage
-# def main():
-#     test_add_tournament()
-#     test_add_participant()
-#     test_increment_score()
-#     test_set_winner()
-#     test_get_tournament_count()
-#     test_get_tournament()
-#     test_get_participant_score()
-#     test_get_participant_list()
-#     test_get_tournament_index_by_name()
-
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()

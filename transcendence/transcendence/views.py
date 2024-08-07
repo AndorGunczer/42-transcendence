@@ -18,7 +18,7 @@ import copy
 from django.middleware.csrf import get_token
 import json
 import random
-from transcendence.web3_utils import add_tournament_to_blockchain, query_blockchain
+from transcendence.web3_utils import add_tournament, add_participant, increment_score, set_winner, get_tournament_count, get_tournament, get_participant_score, get_participant_list, get_tournament_index_by_name  
 from .menus import MENU_DATA
 
 # Initial Load of Site
@@ -638,12 +638,21 @@ def close_tournament_game(request, menu_type='main'):
     try:
         token = get_token_from_header(request)
 
+        # database
+
         data = json.loads(request.body)
         player1 = data.get('player1')
         player2 = data.get('player2')
         game_id = data.get('game').get('game_id')
         print(game_id)
         game_db = Games.objects.get(id=game_id)
+
+        # blockchain
+        print(game_db.tournament.name)
+        # blockchain_tournament = get_tournament_index_by_name(game_db.tournament.name)
+        # print(blockchain_tournament)
+
+        # blockchain end
 
         if player1.get('status') == 'winner':
             player1_db = Users2.objects.get(username=player1.get('name'))
@@ -713,8 +722,9 @@ def close_tournament_game(request, menu_type='main'):
         if not first_game_with_empty_result:
             tournament = Tournaments.objects.get(id=game.tournament.id)
             tournament_winner = Participants.objects.filter(tournament=tournament.id).order_by('-points').first()
-            if tournament_winner:
-                add_tournament_to_blockchain(tournament.name, tournament_winner.player.username)
+            # ADD TOURNAMENT
+            # if tournament_winner:
+            #     add_tournament_to_blockchain(tournament.name, tournament_winner.player.username)
 
         # Determine the menu based on the token
         if (token is None) or (not validate_token(token)):
