@@ -125,7 +125,7 @@ contract_abi = [
     }
 ]
 
-contract_address = '0x7a9f3aA1EEF757421BE6692aefa97132ac210249'
+contract_address = '0x29BF7B8cF81B1AE3bbA6d49C05aC6616C544f8b0'
 
 # Initialize contract
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
@@ -225,7 +225,7 @@ def test_get_tournament_count():
     print(f"Total number of tournaments: {count}")
 
 def test_get_tournament():
-    index = 0
+    index = get_tournament_index_by_name("test_t1")
     tournament_details = get_tournament(index)
     print(f"Tournament details: {tournament_details}")
 
@@ -236,9 +236,12 @@ def test_get_participant_score():
     print(f"Participant score: {participant_score}")
 
 def test_get_participant_list():
-    index = 0
+    index = get_tournament_index_by_name("test_t1")
     participant_list = get_participant_list(index)
     print(f"Participant list: {participant_list}")
+    for participant in participant_list:
+        participant_score = get_participant_score(index, participant)
+        print(f"Participant {participant} score: {participant_score}")
 
 def test_get_tournament_index_by_name():
     name = "Test Tournament"
@@ -249,12 +252,12 @@ def test_get_tournament_index_by_name():
 def main():
     # test_add_tournament()
     # test_add_participant()
-    test_increment_score()
+    # test_increment_score()
     # test_set_winner()
     # test_get_tournament_count()
-    # test_get_tournament()
+    test_get_tournament()
+    test_get_participant_list()
     test_get_participant_score()
-    # test_get_participant_list()
     # test_get_tournament_index_by_name()
 
 if __name__ == "__main__":

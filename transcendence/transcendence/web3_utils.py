@@ -125,7 +125,7 @@ contract_abi = [
     }
 ]
 
-contract_address = '0x7a9f3aA1EEF757421BE6692aefa97132ac210249'
+contract_address = '0x29BF7B8cF81B1AE3bbA6d49C05aC6616C544f8b0'
 # f = open("/app/contractAddress.txt", "r")
 # contract_address = (f.read()).strip()
 # print(contract_address)
@@ -242,12 +242,15 @@ def test_get_participant_list():
     index = 0
     participant_list = get_participant_list(index)
     print(f"Participant list: {participant_list}")
+    # for participant in participant_list:
+    #     participant_score = get_participant_score(index, participant)
+
 
 def test_get_tournament_index_by_name():
     name = "Test Tournament"
     tournament_index = get_tournament_index_by_name(name)
     print(f"Tournament index: {tournament_index}")
-
+    
 
 
 
