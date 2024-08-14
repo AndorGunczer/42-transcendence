@@ -1,0 +1,48 @@
+Ganache CLI v6.12.2 (ganache-core: 2.13.2)
+(node:34916) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Available Accounts
+==================
+(0) 0xf280b4c1E6AC1459230189c77e68d300b12f2B00 (100 ETH)
+(1) 0x8F663eF4d3CA9B3fe5dc4dc4AE97DfE7Bd2F61Ef (100 ETH)
+(2) 0x74fB8260f1bA7DdF2D546d568cf4033F1C30Ab91 (100 ETH)
+(3) 0x505D15995398CB863A9AA453ceeB802409CAd660 (100 ETH)
+(4) 0x221d0A880676c90b64FCecA7e8Acf3B0ac58BCf1 (100 ETH)
+(5) 0xCf4860243719179051BD7C90210d1BCD73994BB5 (100 ETH)
+(6) 0x509Ec3584C073Cf71Ef8A8767e749bdcF07d5878 (100 ETH)
+(7) 0x4494c9615C00807bdd046f20dE7833b5da3A7920 (100 ETH)
+(8) 0xd1B8655c7D552FEE5f0048E9Cc42bfE68ADCC321 (100 ETH)
+(9) 0x39eF0852b70B7f983E6717D6754ae80b31c75EfF (100 ETH)
+
+Private Keys
+==================
+(0) 0xab02adc7cd18bd299c53efde448ba7a6e4db82d4a072a9488653c2139a31000c
+(1) 0x4ab8ed57624bd47567c906839f48a34c4c3e20512400a9939718aa6ec3315ab7
+(2) 0xf73aa6a2b215a199b37e1f0604189833990e7ca0d4cd917cd574b6a9e55c31e4
+(3) 0x7b1282caedf75bd947027cbfd76ea57d0b69415439d483a70d86541950bd9a98
+(4) 0x52f6af1a8ba9d6bc213c10d54643baa204ba84c98c81868c7238cdedc55f9929
+(5) 0x85d8d81e4bcac74787e46a4596e3f06e167fc7811eb792cbbe7ba43d92b73b05
+(6) 0xcfe4c021818d0c026049fdfbe0fbbda2e4e6844f8cf3d0ecb7a2aa13c77703ad
+(7) 0xe2458648e1062c0e7ea71bcc6bde12eb9364299a68dcb4d6be48f42b8f2e5bbe
+(8) 0x15374eb4eed9bc83af5444f359c8c3dca594e820da48836c375fb31e86dfbaa7
+(9) 0x9f617663fdc25c51ff4ff8f37a1c80e76a00985e4ebbd070caf4c251dc29551e
+
+HD Wallet
+==================
+Mnemonic:      transcendence
+Base HD Path:  m/44'/60'/0'/0/{account_index}
+
+Gas Price
+==================
+20000000000
+
+Gas Limit
+==================
+8000000
+
+Call Gas Limit
+==================
+9007199254740991
+
+Listening on 127.0.0.1:7545

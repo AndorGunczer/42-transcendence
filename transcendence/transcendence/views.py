@@ -18,7 +18,7 @@ import copy
 from django.middleware.csrf import get_token
 import json
 import random
-from transcendence.web3_utils import add_tournament_to_blockchain, query_blockchain
+from transcendence.web3_utils import add_tournament, add_participant, increment_score, set_winner, get_tournament_count, get_tournament, get_participant_score, get_participant_list, get_tournament_index_by_name  
 from .menus import MENU_DATA
 
 # Initial Load of Site
@@ -187,7 +187,7 @@ def tournament_select_page_fill(menu, participants):
 
     table = menu['menuItems'][0]['content'][0]['content'][0]['content']
 
-    for i,participant in enumerate(participants):
+    for i,participant in enumerate(participants.keys()):
         table.append({
             'type': 'tr',
             'class': 'participant text-white',
@@ -200,12 +200,12 @@ def tournament_select_page_fill(menu, participants):
                 {
                     'type': 'td',
                     'class': 'text-white',
-                    'text': participant.player.username,
+                    'text': participant,
                 },
                 {
                     'type': 'td',
                     'class': 'text-white',
-                    'text': f'{participant.points}'
+                    'text': f'{participants[participant]}'
                 }
             ]
         })
@@ -242,12 +242,26 @@ def tournament_select_page_fill(menu, participants):
 # </table>
 
     if participants:
-        # Assuming all participants are from the same tournament
-        tournament_id = participants[0].tournament_id
+        # Get first key of participants stored on the blockchain
+        username = list(participants.keys())[0]
+
+        # Retrieve the Users2 object
+        user = Users2.objects.get(username=username)
+
+        # Retrieve the Participants object based on the user
+        participant = Participants.objects.get(player=user)
+
+        # Get the tournament associated with the participant
+        tournament = participant.tournament
+        # print(tournament.name)
+
+
+        # tournament_id = (Participants.objects.get(player=list(participants.items())[0])).tournament # participants[0].tournament_id # (original)
+        # print(f'tournament id: {tournament_id}') get_tournament_index_by_name(game_db.tournament.name)
 
         # Correctly formed query to get the first Game where result is either None or 'Not Set' and matches the given tournament_id
         first_game_with_empty_result = Games.objects.filter(
-            (Q(result__isnull=True) | Q(result='Not Set')) & Q(tournament_id=tournament_id)
+            (Q(result__isnull=True) | Q(result='Not Set')) & Q(tournament_id=tournament.id)
         ).order_by('id').first()
 
 
@@ -256,15 +270,16 @@ def tournament_select_page_fill(menu, participants):
             if len(players_of_game) >= 2:
                 menu['menuItems'][0]['content'][1]['text'] = f'{players_of_game[0].player.username} vs {players_of_game[1].player.username}'
             else:
-                top_participant = Participants.objects.filter(tournament=tournament_id).order_by('-points').first()
+                # Display winner of tournament (blockchain)
+                top_participant = get_tournament(get_tournament_index_by_name(tournament.name))[1]
                 if top_participant:
-                    menu['menuItems'][0]['content'][1]['text'] = f'Winner: {top_participant.player.username}'
+                    menu['menuItems'][0]['content'][1]['text'] = f'Winner: {top_participant}'
                 else:
                     menu['menuItems'][0]['content'][1]['text'] = 'Winner: Unknown'
         else:
-            top_participant = Participants.objects.filter(tournament=tournament_id).order_by('-points').first()
+            top_participant = get_tournament(get_tournament_index_by_name(tournament.name))[1]
             if top_participant:
-                menu['menuItems'][0]['content'][1]['text'] = f'Winner: {top_participant.player.username}'
+                menu['menuItems'][0]['content'][1]['text'] = f'Winner: {top_participant}'
             else:
                 menu['menuItems'][0]['content'][1]['text'] = 'Winner: Unknown'
             del menu['menuItems'][0]['content'][2]
@@ -550,14 +565,23 @@ def tournament_create_check(request, menu_type='main'):
 
     print(schedule)
 
+    # Create Tournament in the Database
     tournament_db = Tournaments(name=tournament_name)
     tournament_db.save()
+
+    # Create Tournament on the Blockchain
+    receipt = add_tournament(tournament_name, "No Winner Yet")
+    print(f"addTournament transaction successful with hash: {receipt.transactionHash.hex()}")
 
     for participant in participants:
         try:
             user = Users2.objects.get(username=participant)
+            # Create Participants in Database
             participant_db = Participants(player=user, tournament=tournament_db)
             participant_db.save()
+            # Add Participants to Blockchain
+            receipt = add_participant(get_tournament_index_by_name(tournament_name), user.username)
+            print(f"addParticipant transaction successful with hash: {receipt.transactionHash.hex()}")
         except Users2.DoesNotExist:
             print(f"User {participant} does not exist")
             continue
@@ -594,10 +618,29 @@ def tournament_select(request, menu_type='tournament_select'):
     else:
         data = json.loads(request.body)
         tournament_name = data.get("tournament_name")
+        # REWORK WITH BLOCKCHAIN
+
+        # Database Implementation
         participants = Participants.objects.filter(tournament__name=tournament_name).order_by('-points')
         print(participants)
+
+        # Blockchain Implementation
+        participants_b = {}
+        index = get_tournament_index_by_name(tournament_name)
+        p_list = get_participant_list(index)
+
+        for participant in p_list:
+            print("ROUND")
+            participants_b[participant] = get_participant_score(index, participant)
+
+        # Sort Dictionary in Reverse order based on Values
+
+        participants_b = {key: val for key, val in sorted(participants_b.items(), key = lambda ele: ele[1], reverse = True)}
+
+        print(participants_b)
+
         menu = modify_json_menu(menu_type, token)
-        response_data = tournament_select_page_fill(menu, participants)
+        response_data = tournament_select_page_fill(menu, participants_b)
 
     if menu is not None:
         return JsonResponse(response_data)
@@ -638,12 +681,21 @@ def close_tournament_game(request, menu_type='main'):
     try:
         token = get_token_from_header(request)
 
+        # database
+
         data = json.loads(request.body)
         player1 = data.get('player1')
         player2 = data.get('player2')
         game_id = data.get('game').get('game_id')
         print(game_id)
         game_db = Games.objects.get(id=game_id)
+
+        # blockchain
+        print(game_db.tournament.name)
+        # blockchain_tournament = get_tournament_index_by_name(game_db.tournament.name)
+        # print(blockchain_tournament)
+
+        # blockchain end
 
         if player1.get('status') == 'winner':
             player1_db = Users2.objects.get(username=player1.get('name'))
@@ -664,10 +716,14 @@ def close_tournament_game(request, menu_type='main'):
                 game.result = player1.get('name')
                 game.save()
 
-                # Update Participants.points for the winner
+                # Update Participants.points for the winner in Database
                 participant = Participants.objects.get(player=player1_db, tournament=game.tournament)
                 participant.points += 1
                 participant.save()
+
+                # Update Participants.points for the winner on the Blockchain
+                receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.player.username, 1)
+                print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
             except Players.DoesNotExist:
                 return JsonResponse({'error': 'Player 1 not found'}, status=404)
             except Games.DoesNotExist:
@@ -694,10 +750,14 @@ def close_tournament_game(request, menu_type='main'):
                 game.result = player2.get('name')
                 game.save()
 
-                # Update Participants.points for the winner
+                # Update Participants.points for the winner in Database
                 participant = Participants.objects.get(player=player2_db, tournament=game.tournament)
                 participant.points += 1
                 participant.save()
+
+                # Update Participants.points for the winner on the Blockchain
+                receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.player.username, 1)
+                print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
             except Players.DoesNotExist:
                 return JsonResponse({'error': 'Player 1 not found'}, status=404)
             except Games.DoesNotExist:
@@ -713,8 +773,8 @@ def close_tournament_game(request, menu_type='main'):
         if not first_game_with_empty_result:
             tournament = Tournaments.objects.get(id=game.tournament.id)
             tournament_winner = Participants.objects.filter(tournament=tournament.id).order_by('-points').first()
-            if tournament_winner:
-                add_tournament_to_blockchain(tournament.name, tournament_winner.player.username)
+            # Set Tournament Winner on the Blockchain
+            set_winner(get_tournament_index_by_name(game_db.tournament.name), tournament_winner.player.username)
 
         # Determine the menu based on the token
         if (token is None) or (not validate_token(token)):
