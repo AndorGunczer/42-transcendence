@@ -86,7 +86,7 @@ class Participants(models.Model):
     id = models.AutoField(primary_key=True)
     player = models.ForeignKey(Users2, null=True, on_delete=models.SET_NULL)
     guest_name = models.CharField(max_length=128, null=True)
-    tournament = models.ForeignKey(Tournaments, null=True, on_delete=models.SET_CASCADE)
+    tournament = models.ForeignKey(Tournaments, null=True, on_delete=models.CASCADE)
     points = models.IntegerField(default=0)
 
 class Players(models.Model):

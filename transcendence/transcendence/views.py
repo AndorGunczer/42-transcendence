@@ -242,18 +242,24 @@ def tournament_select_page_fill(menu, participants):
 # </table>
 
     if participants:
-        # Get first key of participants stored on the blockchain
         username = list(participants.keys())[0]
-
-        # Retrieve the Users2 object
-        user = Users2.objects.get(username=username)
-
-        # Retrieve the Participants object based on the user
-        participant = Participants.objects.get(player=user)
-
-        # Get the tournament associated with the participant
-        tournament = participant.tournament
-        # print(tournament.name)
+        user = None
+        participant = None
+        tournament = None
+        try:
+            # First, try to retrieve the Users2 object
+            user = Users2.objects.get(username=username)
+            
+            # Retrieve the Participants object based on the user
+            participant = Participants.objects.get(player=user)
+            
+        except Users2.DoesNotExist:
+            # If the user does not exist, look for a participant with the guest name
+            participant = Participants.objects.filter(guest_name=username).first()
+        
+        if participant is not None:
+            # Get the tournament associated with the participant
+            tournament = participant.tournament
 
 
         # tournament_id = (Participants.objects.get(player=list(participants.items())[0])).tournament # participants[0].tournament_id # (original)
@@ -267,8 +273,21 @@ def tournament_select_page_fill(menu, participants):
 
         if first_game_with_empty_result:
             players_of_game = Players.objects.filter(game=first_game_with_empty_result.id)
+            player1 = None
+            player2 = None
+            # player1 TO BE CONTINUED
+            if players_of_game[0].player:
+                player1 = players_of_game[0].player.username
+            else:
+                player1 = players_of_game[0].guest_name
+
+            if players_of_game[1].player:
+                player2 = players_of_game[1].player.username
+            else:
+                player2 = players_of_game[1].guest_name
+
             if len(players_of_game) >= 2:
-                menu['menuItems'][0]['content'][1]['text'] = f'{players_of_game[0].player.username} vs {players_of_game[1].player.username}'
+                menu['menuItems'][0]['content'][1]['text'] = f'{player1} vs {player2}'
             else:
                 # Display winner of tournament (blockchain)
                 top_participant = get_tournament(get_tournament_index_by_name(tournament.name))[1]
@@ -586,7 +605,9 @@ def tournament_create_check(request, menu_type='main'):
     print(f"addTournament transaction successful with hash: {receipt.transactionHash.hex()}")
 
     for participant in participants:
+        if participant == None: continue
         try:
+            print(f'try participant: {participant}')
             user = Users2.objects.get(username=participant)
             # Create Participants in Database
             participant_db = Participants(player=user, tournament=tournament_db)
@@ -595,20 +616,34 @@ def tournament_create_check(request, menu_type='main'):
             receipt = add_participant(get_tournament_index_by_name(tournament_name), user.username)
             print(f"addParticipant transaction successful with hash: {receipt.transactionHash.hex()}")
         except Users2.DoesNotExist:
-            print(f"User {participant} does not exist")
+            print(f'except participant: {participant}')
+            user = participant
+            participant_db = Participants(tournament=tournament_db, guest_name=user)
+            participant_db.save()
+            receipt = add_participant(get_tournament_index_by_name(tournament_name), user)
+            print(f"addParticipant transaction successful with hash: {receipt.transactionHash.hex()}")
             continue
 
     for rounds in schedule:
         for matches in rounds:
-            player1 = Users2.objects.get(username=matches[0])
-            player2 = Users2.objects.get(username=matches[1])
-
             game_db = Games(tournament=tournament_db)
             game_db.save()
-            player1_db = Players(player=player1, game=game_db)
-            player1_db.save()
-            player2_db = Players(player=player2, game=game_db)
-            player2_db.save()
+
+            player1 = matches[0]
+            player2 = matches[1]
+
+            try:
+                player1_db = Players(player=Users2.objects.get(username=player1), game=game_db)
+                player1_db.save()
+            except Users2.DoesNotExist:
+                player1_db = Players(game=game_db, guest_name=player1)
+                player1_db.save()
+            try:
+                player2_db = Players(player=Users2.objects.get(username=player2), game=game_db)
+                player2_db.save()
+            except Users2.DoesNotExist:
+                player2_db = Players(game=game_db, guest_name=player2)
+                player2_db.save()
 
 
     if (token == None) or (not validate_token(token)):
@@ -676,10 +711,22 @@ def tournament_game_check(request, menu_type="local_game"):
 
 
     players = Players.objects.filter(game=data['game_id'])
-    print(players[0].player.username)
+    player1 = ""
+    player2 = ""
+    if players[0].player:
+        player1 = players[0].player.username
+    else:
+        player1 = players[0].guest_name
+
+    if players[1].player:
+        player2 = players[1].player.username
+    else:
+        player2 = players[1].guest_name
+        
+    # print(players[0].player.username)
     print(players)
 
-    response_data = {'menu': menu, 'game_id': data['game_id'], 'player1': players[0].player.username, 'player1_id': players[0].id, 'player2': players[1].player.username, 'player2_id': players[1].id}
+    response_data = {'menu': menu, 'game_id': data['game_id'], 'player1': player1, 'player1_id': players[0].id, 'player2': players2, 'player2_id': players[1].id}
 
     if menu is not None:
         return JsonResponse(response_data)
