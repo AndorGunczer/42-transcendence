@@ -140,7 +140,7 @@ from django.db.models import Q
 
 from django.db.models import Q
 
-def tournament_select_page_fill(menu, participants):
+def tournament_select_page_fill(menu, participants, tournament_name):
     # for participant in participants:
     #     menu['menuItems'][0]['content'][0]['content'].append({
     #         'type': 'div',
@@ -242,24 +242,7 @@ def tournament_select_page_fill(menu, participants):
 # </table>
 
     if participants:
-        username = list(participants.keys())[0]
-        user = None
-        participant = None
-        tournament = None
-        try:
-            # First, try to retrieve the Users2 object
-            user = Users2.objects.get(username=username)
-            
-            # Retrieve the Participants object based on the user
-            participant = Participants.objects.get(player=user)
-            
-        except Users2.DoesNotExist:
-            # If the user does not exist, look for a participant with the guest name
-            participant = Participants.objects.filter(guest_name=username).first()
-        
-        if participant is not None:
-            # Get the tournament associated with the participant
-            tournament = participant.tournament
+        tournament = Tournaments.objects.get(name=tournament_name)
 
 
         # tournament_id = (Participants.objects.get(player=list(participants.items())[0])).tournament # participants[0].tournament_id # (original)
@@ -687,7 +670,7 @@ def tournament_select(request, menu_type='tournament_select'):
         print(participants_b)
 
         menu = modify_json_menu(menu_type, token)
-        response_data = tournament_select_page_fill(menu, participants_b)
+        response_data = tournament_select_page_fill(menu, participants_b, tournament_name)
 
     if menu is not None:
         return JsonResponse(response_data)
@@ -726,7 +709,7 @@ def tournament_game_check(request, menu_type="local_game"):
     # print(players[0].player.username)
     print(players)
 
-    response_data = {'menu': menu, 'game_id': data['game_id'], 'player1': player1, 'player1_id': players[0].id, 'player2': players2, 'player2_id': players[1].id}
+    response_data = {'menu': menu, 'game_id': data['game_id'], 'player1': player1, 'player1_id': players[0].id, 'player2': player2, 'player2_id': players[1].id}
 
     if menu is not None:
         return JsonResponse(response_data)
@@ -748,41 +731,63 @@ def close_tournament_game(request, menu_type='main'):
         game_id = data.get('game').get('game_id')
         print(game_id)
         game_db = Games.objects.get(id=game_id)
+        tournament = game_db.tournament
 
         # blockchain
-        print(game_db.tournament.name)
+        # print(game_db.tournament.name)
         # blockchain_tournament = get_tournament_index_by_name(game_db.tournament.name)
         # print(blockchain_tournament)
 
         # blockchain end
 
         if player1.get('status') == 'winner':
-            player1_db = Users2.objects.get(username=player1.get('name'))
-            player1_db.wins += 1
-            player1_db.save()
+            try:
+                player1_db = Users2.objects.get(username=player1.get('name'))
+                player1_db.wins += 1
+                player1_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
-            player2_db = Users2.objects.get(username=player2.get('name'))
-            player2_db.losses += 1
-            player2_db.save()
+            try:
+                player2_db = Users2.objects.get(username=player2.get('name'))
+                player2_db.losses += 1
+                player2_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
             player_id = player1.get('id')
             if player_id is None:
                 return JsonResponse({'error': 'Player 1 ID not provided'}, status=400)
 
+            # Update Winner in the Game
+            game_db.result = player1.get('name')
+            game_db.save()
+
+            # Update Participants.points for the winner in Database
             try:
-                player = Players.objects.get(id=player_id)
-                game = Games.objects.get(id=player.game.id)
-                game.result = player1.get('name')
-                game.save()
+                # Try to retrieve a Users2 object using the identifier (assuming it's a username)
+                user = Users2.objects.get(username=player1.get('name'))
+                player = user
+                participant = Participants.objects.get(player=player, tournament=tournament)
 
-                # Update Participants.points for the winner in Database
-                participant = Participants.objects.get(player=player1_db, tournament=game.tournament)
-                participant.points += 1
-                participant.save()
+                if participant:
+                    participant.points += 1
+                    participant.save()
+                    # Update Participants.points for the winner on the Blockchain
+                    receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.player.username, 1)
+                    print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
+            
+            except Users2.DoesNotExist:
+                # If the user doesn't exist, try to find the participant by guest name
+                participant = Participants.objects.get(guest_name=player1.get('name'), tournament=tournament)
+                
+                if participant:
+                    participant.points += 1
+                    participant.save()
+                    # Update Participants.points for the winner on the Blockchain
+                    receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.guest_name, 1)
+                    print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
 
-                # Update Participants.points for the winner on the Blockchain
-                receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.player.username, 1)
-                print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
             except Players.DoesNotExist:
                 return JsonResponse({'error': 'Player 1 not found'}, status=404)
             except Games.DoesNotExist:
@@ -791,32 +796,51 @@ def close_tournament_game(request, menu_type='main'):
                 return JsonResponse({'error': 'Participant not found'}, status=404)
 
         else:
-            player1_db = Users2.objects.get(username=player1.get('name'))
-            player1_db.losses += 1
-            player1_db.save()
+            try:
+                player1_db = Users2.objects.get(username=player1.get('name'))
+                player1_db.losses += 1
+                player1_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
-            player2_db = Users2.objects.get(username=player2.get('name'))
-            player2_db.wins += 1
-            player2_db.save()
+            try:
+                player2_db = Users2.objects.get(username=player2.get('name'))
+                player2_db.wins += 1
+                player2_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
             player_id = player1.get('id')
             if player_id is None:
                 return JsonResponse({'error': 'Player 1 ID not provided'}, status=400)
 
+            game_db.result = player2.get('name')
+            game_db.save()
+
+            # Update Participants.points for the winner in Database
             try:
-                player = Players.objects.get(id=player_id)
-                game = Games.objects.get(id=player.game.id)
-                game.result = player2.get('name')
-                game.save()
+                # Try to retrieve a Users2 object using the identifier (assuming it's a username)
+                user = Users2.objects.get(username=player2.get('name'))
+                player = user
+                participant = Participants.objects.get(player=player, tournament=tournament)
 
-                # Update Participants.points for the winner in Database
-                participant = Participants.objects.get(player=player2_db, tournament=game.tournament)
-                participant.points += 1
-                participant.save()
-
-                # Update Participants.points for the winner on the Blockchain
-                receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.player.username, 1)
-                print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
+                if participant:
+                    participant.points += 1
+                    participant.save()
+                    # Update Participants.points for the winner on the Blockchain
+                    receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.player.username, 1)
+                    print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
+            
+            except Users2.DoesNotExist:
+                # If the user doesn't exist, try to find the participant by guest name
+                participant = Participants.objects.get(guest_name=player2.get('name'), tournament=tournament)
+                
+                if participant:
+                    participant.points += 1
+                    participant.save()
+                    # Update Participants.points for the winner on the Blockchain
+                    receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.guest_name, 1)
+                    print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
             except Players.DoesNotExist:
                 return JsonResponse({'error': 'Player 1 not found'}, status=404)
             except Games.DoesNotExist:
@@ -826,14 +850,18 @@ def close_tournament_game(request, menu_type='main'):
 
         #TBC
         first_game_with_empty_result = Games.objects.filter(
-            (Q(result__isnull=True) | Q(result='Not Set')) & Q(tournament_id=game.tournament)
+            (Q(result__isnull=True) | Q(result='Not Set')) & Q(tournament_id=game_db.tournament)
         ).order_by('id').first()
 
         if not first_game_with_empty_result:
-            tournament = Tournaments.objects.get(id=game.tournament.id)
+            tournament = Tournaments.objects.get(id=game_db.tournament.id)
             tournament_winner = Participants.objects.filter(tournament=tournament.id).order_by('-points').first()
             # Set Tournament Winner on the Blockchain
-            set_winner(get_tournament_index_by_name(game_db.tournament.name), tournament_winner.player.username)
+            try:
+                set_winner(get_tournament_index_by_name(game_db.tournament.name), tournament_winner.player.username)
+            except:
+                set_winner(get_tournament_index_by_name(game_db.tournament.name), tournament_winner.guest_name)
+
 
         # Determine the menu based on the token
         if (token is None) or (not validate_token(token)):
