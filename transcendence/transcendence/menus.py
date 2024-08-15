@@ -903,21 +903,7 @@ MENU_DATA = {
                                         'name': 'avatar',
                                         'identifier': 'Avatar',
                                         'content': [
-                                            {
-                                                'type': 'option',
-                                                'value': 'frog_avatar.jpg',
-                                                'text': 'Frog'
-                                            },
-                                            {
-                                                'type': 'option',
-                                                'value': 'dog_avatar.jpg',
-                                                'text': 'Dog'
-                                            },
-                                            {
-                                                'type': 'option',
-                                                'value': 'cat_avatar.jpg',
-                                                'text': 'Cat'
-                                            },
+
                                         ]
                                     },
                                     {
