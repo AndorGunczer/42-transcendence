@@ -25,14 +25,6 @@ psql -v ON_ERROR_STOP=1 --username "postgres" <<-EOSQL
     ALTER DATABASE transcendence OWNER TO project;
 EOSQL
 
-cd ../transcendence
-
-python3 manage.py makemigrations
-python3 manage.py migrate
-
-# Run Django server in the background
-nohup python3 manage.py runserver_plus 0.0.0.0:8000 --cert-file /app/cert.crt --key-file /app/key.pem &
-
 # # Change directory to blockchain
 cd ../blockchain
 
@@ -47,6 +39,18 @@ npm install
 nohup ganache-cli --port 7545 --hostname 127.0.0.1 --gasLimit 8000000 --mnemonic "transcendence" &> ganache.log &
 sleep 5
 node scripts/deploy.js | grep "0x" | cut -c 31- > /app/contractAddress.txt
+
+# Change the directory to transcendence
+
+cd ../transcendence
+
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py populate_avatars
+
+# Run Django server in the background
+nohup python3 manage.py runserver_plus 0.0.0.0:8000 --cert-file /app/cert.crt --key-file /app/key.pem &
+
 
 # Keep the script running
 tail -f /dev/null
