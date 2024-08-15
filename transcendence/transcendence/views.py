@@ -383,29 +383,32 @@ def local_check(request, menu_type='local_game'):
     player1 = data.get("player1")
     player2 = data.get("player2")
 
-    if not Users2.objects.get(username=player1):
-        JsonResponse({'error': str(e)}, status=403)
-    elif not Users2.objects.get(username=player2):
-        JsonResponse({'error': str(e)}, status=403)
-    else:
-        # create game database instance and 2 player instances joined into game
-        game_db = Games()
-        game_db.save()
+    # Users2.objects.get(username=player1)
+    # create game database instance and 2 player instances joined into game
+    game_db = Games()
+    game_db.save()
+
+    try:
         player1_db = Players(player=Users2.objects.get(username=player1), game=game_db)
-        player1_db.save()
+    except Users2.DoesNotExist:
+        player1_db = Players(game=game_db, guest_name=player1)
+    player1_db.save()
+    try:
         player2_db = Players(player=Users2.objects.get(username=player2), game=game_db)
-        player2_db.save()
+    except Users2.DoesNotExist:
+        player2_db = Players(game=game_db, guest_name=player2)
+    player2_db.save()
 
-        # if (token == None) or (not validate_token(token)):
-        menu = copy.deepcopy(MENU_DATA.get(menu_type))
-        # else:
-        #     menu = modify_json_menu(menu_type, token)
+    # if (token == None) or (not validate_token(token)):
+    menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    # else:
+    #     menu = modify_json_menu(menu_type, token)
 
-        if menu is not None:
-            response_data = {'player1': player1, 'player2': player2, 'player1_id': player1_db.id, 'player2_id': player2_db.id}
-            return JsonResponse(response_data, status=200)
-        else:
-            return JsonResponse({'error': 'Menu type not found'}, status=404)
+    if menu is not None:
+        response_data = {'player1': player1, 'player2': player2, 'player1_id': player1_db.id, 'player2_id': player2_db.id}
+        return JsonResponse(response_data, status=200)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
 
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -420,13 +423,19 @@ def close_local(request, menu_type='main'):
         player2 = data.get('player2')
 
         if player1.get('status') == 'winner':
-            player1_db = Users2.objects.get(username=player1.get('name'))
-            player1_db.wins += 1
-            player1_db.save()
+            try:
+                player1_db = Users2.objects.get(username=player1.get('name'))
+                player1_db.wins += 1
+                player1_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
-            player2_db = Users2.objects.get(username=player2.get('name'))
-            player2_db.losses += 1
-            player2_db.save()
+            try:
+                player2_db = Users2.objects.get(username=player2.get('name'))
+                player2_db.losses += 1
+                player2_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
             player_id = player1.get('id')
             if player_id is None:
@@ -443,13 +452,19 @@ def close_local(request, menu_type='main'):
                 return JsonResponse({'error': 'Game not found'}, status=404)
 
         else:
-            player1_db = Users2.objects.get(username=player1.get('name'))
-            player1_db.losses += 1
-            player1_db.save()
+            try:
+                player1_db = Users2.objects.get(username=player1.get('name'))
+                player1_db.losses += 1
+                player1_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
-            player2_db = Users2.objects.get(username=player2.get('name'))
-            player2_db.wins += 1
-            player2_db.save()
+            try:
+                player2_db = Users2.objects.get(username=player2.get('name'))
+                player2_db.wins += 1
+                player2_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
             player_id = player1.get('id')
             if player_id is None:
@@ -476,9 +491,6 @@ def close_local(request, menu_type='main'):
             return JsonResponse(menu)
         else:
             return JsonResponse({'error': 'Menu type not found'}, status=404)
-
-    except Users2.DoesNotExist:
-        return JsonResponse({'error': 'User not found'}, status=404)
 
     except ObjectDoesNotExist as e:
         return JsonResponse({'error': str(e)}, status=404)

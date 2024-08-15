@@ -4,7 +4,7 @@ from web3 import Web3
 web3 = Web3(Web3.HTTPProvider('http://localhost:7545'))
 
 # Ensure connection is successful
-if not web3.is_connected():
+if not web3.isConnected():
     raise Exception("Failed to connect to Ethereum node")
 
 # Contract ABI and address (replace with your contract's ABI and address)
@@ -125,10 +125,10 @@ contract_abi = [
     }
 ]
 
-# contract_address = '0x29BF7B8cF81B1AE3bbA6d49C05aC6616C544f8b0'
-f = open("/app/contractAddress.txt", "r")
-contract_address = (f.read()).strip()
-print(contract_address)
+contract_address = '0x7a9f3aA1EEF757421BE6692aefa97132ac210249'
+# f = open("/app/contractAddress.txt", "r")
+# contract_address = (f.read()).strip()
+# print(contract_address)
 
 # Initialize contract
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
@@ -137,47 +137,47 @@ contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 from_address = web3.eth.accounts[0]
 
 def add_tournament(name, winner):
-    transaction = contract.functions.addTournament(name, winner).build_transaction({
+    transaction = contract.functions.addTournament(name, winner).buildTransaction({
         'from': from_address,
-        'nonce': web3.eth.get_transaction_count(from_address),
+        'nonce': web3.eth.getTransactionCount(from_address),
         'gas': 2000000,
-        'gasPrice': web3.to_wei('20', 'gwei')
+        'gasPrice': web3.toWei('20', 'gwei')
     })
-    txn_hash = web3.eth.send_transaction(transaction)
-    txn_receipt = web3.eth.wait_for_transaction_receipt(txn_hash)
+    txn_hash = web3.eth.sendTransaction(transaction)
+    txn_receipt = web3.eth.waitForTransactionReceipt(txn_hash)
     return txn_receipt
 
 def add_participant(index, participant):
-    transaction = contract.functions.addParticipant(index, participant).build_transaction({
+    transaction = contract.functions.addParticipant(index, participant).buildTransaction({
         'from': from_address,
-        'nonce': web3.eth.get_transaction_count(from_address),
+        'nonce': web3.eth.getTransactionCount(from_address),
         'gas': 2000000,
-        'gasPrice': web3.to_wei('20', 'gwei')
+        'gasPrice': web3.toWei('20', 'gwei')
     })
-    txn_hash = web3.eth.send_transaction(transaction)
-    txn_receipt = web3.eth.wait_for_transaction_receipt(txn_hash)
+    txn_hash = web3.eth.sendTransaction(transaction)
+    txn_receipt = web3.eth.waitForTransactionReceipt(txn_hash)
     return txn_receipt
 
 def increment_score(index, participant, score):
-    transaction = contract.functions.incrementScore(index, participant, score).build_transaction({
+    transaction = contract.functions.incrementScore(index, participant, score).buildTransaction({
         'from': from_address,
-        'nonce': web3.eth.get_transaction_count(from_address),
+        'nonce': web3.eth.getTransactionCount(from_address),
         'gas': 2000000,
-        'gasPrice': web3.to_wei('20', 'gwei')
+        'gasPrice': web3.toWei('20', 'gwei')
     })
     txn_hash = web3.eth.send_transaction(transaction)
     txn_receipt = web3.eth.wait_for_transaction_receipt(txn_hash)
     return txn_receipt
 
 def set_winner(index, winner):
-    transaction = contract.functions.setWinner(index, winner).build_transaction({
+    transaction = contract.functions.setWinner(index, winner).buildTransaction({
         'from': from_address,
-        'nonce': web3.eth.get_transaction_count(from_address),
+        'nonce': web3.eth.getTransactionCount(from_address),
         'gas': 2000000,
-        'gasPrice': web3.to_wei('20', 'gwei')
+        'gasPrice': web3.toWei('20', 'gwei')
     })
-    txn_hash = web3.eth.send_transaction(transaction)
-    txn_receipt = web3.eth.wait_for_transaction_receipt(txn_hash)
+    txn_hash = web3.eth.sendTransaction(transaction)
+    txn_receipt = web3.eth.waitForTransactionReceipt(txn_hash)
     return txn_receipt
 
 def get_tournament_count():
