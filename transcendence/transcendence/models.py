@@ -84,10 +84,12 @@ class Users2(AbstractBaseUser, PermissionsMixin):
 
 class Participants(models.Model):
     id = models.AutoField(primary_key=True)
-    player = models.ForeignKey(Users2, null=True, on_delete=models.CASCADE)
+    player = models.ForeignKey(Users2, null=True, on_delete=models.SET_NULL)
+    guest_name = models.CharField(max_length=128, null=True)
     tournament = models.ForeignKey(Tournaments, null=True, on_delete=models.CASCADE)
     points = models.IntegerField(default=0)
 
 class Players(models.Model):
-        player = models.ForeignKey(Users2, null=True, on_delete=models.CASCADE)
-        game = models.ForeignKey(Games, null=True, on_delete=models.CASCADE)
+    player = models.ForeignKey(Users2, null=True, on_delete=models.SET_NULL)
+    game = models.ForeignKey(Games, null=True, on_delete=models.CASCADE)
+    guest_name = models.CharField(max_length=128, null=True)

@@ -26,6 +26,7 @@ urlpatterns = [
     path('', views.index, name="index"),
     path('indexPost', views.indexPost, name="indexPost"),
     path('play', views.play, name="play"),
+    path('match_history', views.match_history, name="match_history"),
     # GAMES
     path('singleplayer_menu', views.singleplayer_menu, name="singleplayer_menu"),
     path('singleplayer_game', views.singleplayer_game, name="singleplayer_game"),

@@ -73,8 +73,8 @@ MENU_DATA = {
                 'id': 4,
                 'type': 'button',
                 'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
-                'text': 'LEADERBOARD',
-                'onclick': 'load_leaderboard()'
+                'text': 'MATCH HISTORY',
+                'onclick': 'loadHistory()'
             },
             {
                 'id': 5,
@@ -170,6 +170,54 @@ MENU_DATA = {
                 'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                 'text': 'ONLINE',
                 'onclick': 'online_pregame()'
+            },
+        ]
+    },
+    'match_history': {
+        'menuTitle': 'Match History',
+        'headerItems': [
+            {
+                'id': 1,
+                'type': 'div',
+                'class': 'player-info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'text-white',
+                        'text': 'logged in as PLACEHOLDER'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'text-white',
+                        'text': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'text-white',
+                        'text': 'losses'
+                    }
+                ]
+            },
+            {
+                'id': 2,
+                'type': 'button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'text': 'BACK',
+                'onclick': 'load_main()'
+            }
+        ],
+        'menuItems': [
+            {
+                'id': 1,
+                'type': 'div',
+                'identifier': 'table-container',
+                'content': [
+                    
+                ]
             },
         ]
     },
@@ -903,21 +951,7 @@ MENU_DATA = {
                                         'name': 'avatar',
                                         'identifier': 'Avatar',
                                         'content': [
-                                            {
-                                                'type': 'option',
-                                                'value': 'frog_avatar.jpg',
-                                                'text': 'Frog'
-                                            },
-                                            {
-                                                'type': 'option',
-                                                'value': 'dog_avatar.jpg',
-                                                'text': 'Dog'
-                                            },
-                                            {
-                                                'type': 'option',
-                                                'value': 'cat_avatar.jpg',
-                                                'text': 'Cat'
-                                            },
+
                                         ]
                                     },
                                     {

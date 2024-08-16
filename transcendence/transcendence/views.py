@@ -118,7 +118,9 @@ def modify_json_menu(menu_type, token):
 
     if token and menu['menuTitle'] == 'Main Menu Buttons':
         del menu['menuItems'][4]
-        # menu['menuItems'][0]['content'][0]['class'] = 'menu-button'
+        
+    # Add Friendlist
+    
 
     return menu
 
@@ -140,7 +142,7 @@ from django.db.models import Q
 
 from django.db.models import Q
 
-def tournament_select_page_fill(menu, participants):
+def tournament_select_page_fill(menu, participants, tournament_name):
     # for participant in participants:
     #     menu['menuItems'][0]['content'][0]['content'].append({
     #         'type': 'div',
@@ -242,18 +244,7 @@ def tournament_select_page_fill(menu, participants):
 # </table>
 
     if participants:
-        # Get first key of participants stored on the blockchain
-        username = list(participants.keys())[0]
-
-        # Retrieve the Users2 object
-        user = Users2.objects.get(username=username)
-
-        # Retrieve the Participants object based on the user
-        participant = Participants.objects.get(player=user)
-
-        # Get the tournament associated with the participant
-        tournament = participant.tournament
-        # print(tournament.name)
+        tournament = Tournaments.objects.get(name=tournament_name)
 
 
         # tournament_id = (Participants.objects.get(player=list(participants.items())[0])).tournament # participants[0].tournament_id # (original)
@@ -267,8 +258,21 @@ def tournament_select_page_fill(menu, participants):
 
         if first_game_with_empty_result:
             players_of_game = Players.objects.filter(game=first_game_with_empty_result.id)
+            player1 = None
+            player2 = None
+            # player1 TO BE CONTINUED
+            if players_of_game[0].player:
+                player1 = players_of_game[0].player.username
+            else:
+                player1 = players_of_game[0].guest_name
+
+            if players_of_game[1].player:
+                player2 = players_of_game[1].player.username
+            else:
+                player2 = players_of_game[1].guest_name
+
             if len(players_of_game) >= 2:
-                menu['menuItems'][0]['content'][1]['text'] = f'{players_of_game[0].player.username} vs {players_of_game[1].player.username}'
+                menu['menuItems'][0]['content'][1]['text'] = f'{player1} vs {player2}'
             else:
                 # Display winner of tournament (blockchain)
                 top_participant = get_tournament(get_tournament_index_by_name(tournament.name))[1]
@@ -345,6 +349,88 @@ def play(request, menu_type='play_menu'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
+def match_history(request, menu_type='match_history'):
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    else:
+        user = get_user_from_token(token)
+        menu = modify_json_menu(menu_type, token)
+        menu = match_history_fill(menu, user)
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+def match_history_fill(menu, user):
+    match_history = Games.objects.filter(players__player=user).order_by('-date_of_game')
+    print(match_history)
+
+    menu['menuItems'][0]['content'].append({
+        'type': 'table',
+        'class': 'w-100 d-flex flex-column justify-content-center align-items-center',
+        'content': [
+            {
+                'type': 'thead',
+                'class': 'thead-dark text-white w-100 d-flex flex-row justify-content-center gap-4',
+                'content': [
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': 'Date'
+                    },
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': 'Opponent'
+                    },
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': f'Winner'
+                    }                    
+                ]
+            }
+        ]
+    })
+
+    table = menu['menuItems'][0]['content'][0]['content']
+
+    for match in match_history:
+        opponent = (Players.objects.filter(game=match).exclude(player=user))[0]
+        opponent_name = None
+
+        if opponent.player is not None:
+            opponent_name = opponent.player.username
+            print(f"Opponent: {opponent.player.username}")
+        else:
+            opponent_name = opponent.guest_name
+            print(f"Opponent: {opponent.guest_name}")
+
+        table.append({
+            'type': 'tr',
+            'class': 'participant text-white',
+            'content': [
+                {
+                    'type': 'td',
+                    'class': 'text-white',
+                    'text': f'{match.date_of_game}'
+                },
+                {
+                    'type': 'td',
+                    'class': 'text-white',
+                    'text': opponent_name,
+                },
+                {
+                    'type': 'td',
+                    'class': 'text-white',
+                    'text': f'{match.result}'
+                }
+            ]
+        })
+
+    return menu
+
 def singleplayer_menu(request, menu_type='singleplayer_menu'):
     token = get_token_from_header(request)
     if (token == None) or (not validate_token(token)):
@@ -383,29 +469,32 @@ def local_check(request, menu_type='local_game'):
     player1 = data.get("player1")
     player2 = data.get("player2")
 
-    if not Users2.objects.get(username=player1):
-        JsonResponse({'error': str(e)}, status=403)
-    elif not Users2.objects.get(username=player2):
-        JsonResponse({'error': str(e)}, status=403)
-    else:
-        # create game database instance and 2 player instances joined into game
-        game_db = Games()
-        game_db.save()
+    # Users2.objects.get(username=player1)
+    # create game database instance and 2 player instances joined into game
+    game_db = Games()
+    game_db.save()
+
+    try:
         player1_db = Players(player=Users2.objects.get(username=player1), game=game_db)
-        player1_db.save()
+    except Users2.DoesNotExist:
+        player1_db = Players(game=game_db, guest_name=player1)
+    player1_db.save()
+    try:
         player2_db = Players(player=Users2.objects.get(username=player2), game=game_db)
-        player2_db.save()
+    except Users2.DoesNotExist:
+        player2_db = Players(game=game_db, guest_name=player2)
+    player2_db.save()
 
-        # if (token == None) or (not validate_token(token)):
-        menu = copy.deepcopy(MENU_DATA.get(menu_type))
-        # else:
-        #     menu = modify_json_menu(menu_type, token)
+    # if (token == None) or (not validate_token(token)):
+    menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    # else:
+    #     menu = modify_json_menu(menu_type, token)
 
-        if menu is not None:
-            response_data = {'player1': player1, 'player2': player2, 'player1_id': player1_db.id, 'player2_id': player2_db.id}
-            return JsonResponse(response_data, status=200)
-        else:
-            return JsonResponse({'error': 'Menu type not found'}, status=404)
+    if menu is not None:
+        response_data = {'player1': player1, 'player2': player2, 'player1_id': player1_db.id, 'player2_id': player2_db.id}
+        return JsonResponse(response_data, status=200)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
 
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -420,13 +509,19 @@ def close_local(request, menu_type='main'):
         player2 = data.get('player2')
 
         if player1.get('status') == 'winner':
-            player1_db = Users2.objects.get(username=player1.get('name'))
-            player1_db.wins += 1
-            player1_db.save()
+            try:
+                player1_db = Users2.objects.get(username=player1.get('name'))
+                player1_db.wins += 1
+                player1_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
-            player2_db = Users2.objects.get(username=player2.get('name'))
-            player2_db.losses += 1
-            player2_db.save()
+            try:
+                player2_db = Users2.objects.get(username=player2.get('name'))
+                player2_db.losses += 1
+                player2_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
             player_id = player1.get('id')
             if player_id is None:
@@ -443,13 +538,19 @@ def close_local(request, menu_type='main'):
                 return JsonResponse({'error': 'Game not found'}, status=404)
 
         else:
-            player1_db = Users2.objects.get(username=player1.get('name'))
-            player1_db.losses += 1
-            player1_db.save()
+            try:
+                player1_db = Users2.objects.get(username=player1.get('name'))
+                player1_db.losses += 1
+                player1_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
-            player2_db = Users2.objects.get(username=player2.get('name'))
-            player2_db.wins += 1
-            player2_db.save()
+            try:
+                player2_db = Users2.objects.get(username=player2.get('name'))
+                player2_db.wins += 1
+                player2_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
             player_id = player1.get('id')
             if player_id is None:
@@ -476,9 +577,6 @@ def close_local(request, menu_type='main'):
             return JsonResponse(menu)
         else:
             return JsonResponse({'error': 'Menu type not found'}, status=404)
-
-    except Users2.DoesNotExist:
-        return JsonResponse({'error': 'User not found'}, status=404)
 
     except ObjectDoesNotExist as e:
         return JsonResponse({'error': str(e)}, status=404)
@@ -574,7 +672,9 @@ def tournament_create_check(request, menu_type='main'):
     print(f"addTournament transaction successful with hash: {receipt.transactionHash.hex()}")
 
     for participant in participants:
+        if participant == None: continue
         try:
+            print(f'try participant: {participant}')
             user = Users2.objects.get(username=participant)
             # Create Participants in Database
             participant_db = Participants(player=user, tournament=tournament_db)
@@ -583,20 +683,34 @@ def tournament_create_check(request, menu_type='main'):
             receipt = add_participant(get_tournament_index_by_name(tournament_name), user.username)
             print(f"addParticipant transaction successful with hash: {receipt.transactionHash.hex()}")
         except Users2.DoesNotExist:
-            print(f"User {participant} does not exist")
+            print(f'except participant: {participant}')
+            user = participant
+            participant_db = Participants(tournament=tournament_db, guest_name=user)
+            participant_db.save()
+            receipt = add_participant(get_tournament_index_by_name(tournament_name), user)
+            print(f"addParticipant transaction successful with hash: {receipt.transactionHash.hex()}")
             continue
 
     for rounds in schedule:
         for matches in rounds:
-            player1 = Users2.objects.get(username=matches[0])
-            player2 = Users2.objects.get(username=matches[1])
-
             game_db = Games(tournament=tournament_db)
             game_db.save()
-            player1_db = Players(player=player1, game=game_db)
-            player1_db.save()
-            player2_db = Players(player=player2, game=game_db)
-            player2_db.save()
+
+            player1 = matches[0]
+            player2 = matches[1]
+
+            try:
+                player1_db = Players(player=Users2.objects.get(username=player1), game=game_db)
+                player1_db.save()
+            except Users2.DoesNotExist:
+                player1_db = Players(game=game_db, guest_name=player1)
+                player1_db.save()
+            try:
+                player2_db = Players(player=Users2.objects.get(username=player2), game=game_db)
+                player2_db.save()
+            except Users2.DoesNotExist:
+                player2_db = Players(game=game_db, guest_name=player2)
+                player2_db.save()
 
 
     if (token == None) or (not validate_token(token)):
@@ -640,7 +754,7 @@ def tournament_select(request, menu_type='tournament_select'):
         print(participants_b)
 
         menu = modify_json_menu(menu_type, token)
-        response_data = tournament_select_page_fill(menu, participants_b)
+        response_data = tournament_select_page_fill(menu, participants_b, tournament_name)
 
     if menu is not None:
         return JsonResponse(response_data)
@@ -664,10 +778,22 @@ def tournament_game_check(request, menu_type="local_game"):
 
 
     players = Players.objects.filter(game=data['game_id'])
-    print(players[0].player.username)
+    player1 = ""
+    player2 = ""
+    if players[0].player:
+        player1 = players[0].player.username
+    else:
+        player1 = players[0].guest_name
+
+    if players[1].player:
+        player2 = players[1].player.username
+    else:
+        player2 = players[1].guest_name
+        
+    # print(players[0].player.username)
     print(players)
 
-    response_data = {'menu': menu, 'game_id': data['game_id'], 'player1': players[0].player.username, 'player1_id': players[0].id, 'player2': players[1].player.username, 'player2_id': players[1].id}
+    response_data = {'menu': menu, 'game_id': data['game_id'], 'player1': player1, 'player1_id': players[0].id, 'player2': player2, 'player2_id': players[1].id}
 
     if menu is not None:
         return JsonResponse(response_data)
@@ -689,41 +815,63 @@ def close_tournament_game(request, menu_type='main'):
         game_id = data.get('game').get('game_id')
         print(game_id)
         game_db = Games.objects.get(id=game_id)
+        tournament = game_db.tournament
 
         # blockchain
-        print(game_db.tournament.name)
+        # print(game_db.tournament.name)
         # blockchain_tournament = get_tournament_index_by_name(game_db.tournament.name)
         # print(blockchain_tournament)
 
         # blockchain end
 
         if player1.get('status') == 'winner':
-            player1_db = Users2.objects.get(username=player1.get('name'))
-            player1_db.wins += 1
-            player1_db.save()
+            try:
+                player1_db = Users2.objects.get(username=player1.get('name'))
+                player1_db.wins += 1
+                player1_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
-            player2_db = Users2.objects.get(username=player2.get('name'))
-            player2_db.losses += 1
-            player2_db.save()
+            try:
+                player2_db = Users2.objects.get(username=player2.get('name'))
+                player2_db.losses += 1
+                player2_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
             player_id = player1.get('id')
             if player_id is None:
                 return JsonResponse({'error': 'Player 1 ID not provided'}, status=400)
 
+            # Update Winner in the Game
+            game_db.result = player1.get('name')
+            game_db.save()
+
+            # Update Participants.points for the winner in Database
             try:
-                player = Players.objects.get(id=player_id)
-                game = Games.objects.get(id=player.game.id)
-                game.result = player1.get('name')
-                game.save()
+                # Try to retrieve a Users2 object using the identifier (assuming it's a username)
+                user = Users2.objects.get(username=player1.get('name'))
+                player = user
+                participant = Participants.objects.get(player=player, tournament=tournament)
 
-                # Update Participants.points for the winner in Database
-                participant = Participants.objects.get(player=player1_db, tournament=game.tournament)
-                participant.points += 1
-                participant.save()
+                if participant:
+                    participant.points += 1
+                    participant.save()
+                    # Update Participants.points for the winner on the Blockchain
+                    receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.player.username, 1)
+                    print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
+            
+            except Users2.DoesNotExist:
+                # If the user doesn't exist, try to find the participant by guest name
+                participant = Participants.objects.get(guest_name=player1.get('name'), tournament=tournament)
+                
+                if participant:
+                    participant.points += 1
+                    participant.save()
+                    # Update Participants.points for the winner on the Blockchain
+                    receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.guest_name, 1)
+                    print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
 
-                # Update Participants.points for the winner on the Blockchain
-                receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.player.username, 1)
-                print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
             except Players.DoesNotExist:
                 return JsonResponse({'error': 'Player 1 not found'}, status=404)
             except Games.DoesNotExist:
@@ -732,32 +880,51 @@ def close_tournament_game(request, menu_type='main'):
                 return JsonResponse({'error': 'Participant not found'}, status=404)
 
         else:
-            player1_db = Users2.objects.get(username=player1.get('name'))
-            player1_db.losses += 1
-            player1_db.save()
+            try:
+                player1_db = Users2.objects.get(username=player1.get('name'))
+                player1_db.losses += 1
+                player1_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
-            player2_db = Users2.objects.get(username=player2.get('name'))
-            player2_db.wins += 1
-            player2_db.save()
+            try:
+                player2_db = Users2.objects.get(username=player2.get('name'))
+                player2_db.wins += 1
+                player2_db.save()
+            except Users2.DoesNotExist:
+                print("User is not found, probably a guest user is used")
 
             player_id = player1.get('id')
             if player_id is None:
                 return JsonResponse({'error': 'Player 1 ID not provided'}, status=400)
 
+            game_db.result = player2.get('name')
+            game_db.save()
+
+            # Update Participants.points for the winner in Database
             try:
-                player = Players.objects.get(id=player_id)
-                game = Games.objects.get(id=player.game.id)
-                game.result = player2.get('name')
-                game.save()
+                # Try to retrieve a Users2 object using the identifier (assuming it's a username)
+                user = Users2.objects.get(username=player2.get('name'))
+                player = user
+                participant = Participants.objects.get(player=player, tournament=tournament)
 
-                # Update Participants.points for the winner in Database
-                participant = Participants.objects.get(player=player2_db, tournament=game.tournament)
-                participant.points += 1
-                participant.save()
-
-                # Update Participants.points for the winner on the Blockchain
-                receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.player.username, 1)
-                print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
+                if participant:
+                    participant.points += 1
+                    participant.save()
+                    # Update Participants.points for the winner on the Blockchain
+                    receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.player.username, 1)
+                    print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
+            
+            except Users2.DoesNotExist:
+                # If the user doesn't exist, try to find the participant by guest name
+                participant = Participants.objects.get(guest_name=player2.get('name'), tournament=tournament)
+                
+                if participant:
+                    participant.points += 1
+                    participant.save()
+                    # Update Participants.points for the winner on the Blockchain
+                    receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.guest_name, 1)
+                    print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
             except Players.DoesNotExist:
                 return JsonResponse({'error': 'Player 1 not found'}, status=404)
             except Games.DoesNotExist:
@@ -767,14 +934,18 @@ def close_tournament_game(request, menu_type='main'):
 
         #TBC
         first_game_with_empty_result = Games.objects.filter(
-            (Q(result__isnull=True) | Q(result='Not Set')) & Q(tournament_id=game.tournament)
+            (Q(result__isnull=True) | Q(result='Not Set')) & Q(tournament_id=game_db.tournament)
         ).order_by('id').first()
 
         if not first_game_with_empty_result:
-            tournament = Tournaments.objects.get(id=game.tournament.id)
+            tournament = Tournaments.objects.get(id=game_db.tournament.id)
             tournament_winner = Participants.objects.filter(tournament=tournament.id).order_by('-points').first()
             # Set Tournament Winner on the Blockchain
-            set_winner(get_tournament_index_by_name(game_db.tournament.name), tournament_winner.player.username)
+            try:
+                set_winner(get_tournament_index_by_name(game_db.tournament.name), tournament_winner.player.username)
+            except:
+                set_winner(get_tournament_index_by_name(game_db.tournament.name), tournament_winner.guest_name)
+
 
         # Determine the menu based on the token
         if (token is None) or (not validate_token(token)):
