@@ -54,6 +54,7 @@ DOCKER SETUP:
 
     docker exec -it main_app /bin/bash
 
+
 Common Docker Error: transcendence.models.Users2.DoesNotExist: Users2 matching query does not exist.
     Solution 1: Delete migrations
 
@@ -62,7 +63,4 @@ Common Docker Error: transcendence.models.Users2.DoesNotExist: Users2 matching q
 
     
 Django error: Static images directory does not exist
-
-Error: Image size upon upload during registration is too big (401)
-
     
