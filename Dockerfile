@@ -19,7 +19,7 @@ ENV PIP_BREAK_SYSTEM_PACKAGES=1
 RUN pip3 install django djangorestframework django-cors-headers djangorestframework-simplejwt django-extensions pyOpenSSL Werkzeug
 
 # Install Solidity Web3 Module
-RUN pip3 install web3==5.25.0
+RUN pip3 install web3
 
 # Install PostgreSQL and dependencies
 RUN apt-get install -y python3-psycopg2 postgresql postgresql-contrib sudo
