@@ -118,6 +118,14 @@ def modify_json_menu(menu_type, token):
 
     if token and menu['menuTitle'] == 'Main Menu Buttons':
         del menu['menuItems'][4]
+        # del menu['menuItems'][3]
+        # menu['menuItems'].append({
+        #     'id': 4,
+        #     'type': 'button',
+        #     'class': 'col-md-12 mt-2 p-3 h-50 w-25 p-3 mb-4 rounded bg-secondary bg-gradient text-white',
+        #     'text': 'MATCH HISTORY',
+        #     'onclick': 'loadHistory()'
+        # })
         # menu['menuItems'][0]['content'][0]['class'] = 'menu-button'
 
     return menu
@@ -346,6 +354,88 @@ def play(request, menu_type='play_menu'):
         return JsonResponse(menu)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+def match_history(request, menu_type='match_history'):
+    token = get_token_from_header(request)
+    if (token == None) or (not validate_token(token)):
+        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    else:
+        user = get_user_from_token(token)
+        menu = modify_json_menu(menu_type, token)
+        menu = match_history_fill(menu, user)
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+def match_history_fill(menu, user):
+    match_history = Games.objects.filter(players__player=user).order_by('-date_of_game')
+    print(match_history)
+
+    menu['menuItems'][0]['content'].append({
+        'type': 'table',
+        'class': 'w-100 d-flex flex-column justify-content-center align-items-center',
+        'content': [
+            {
+                'type': 'thead',
+                'class': 'thead-dark text-white w-100 d-flex flex-row justify-content-center gap-4',
+                'content': [
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': 'Date'
+                    },
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': 'Opponent'
+                    },
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': f'Winner'
+                    }                    
+                ]
+            }
+        ]
+    })
+
+    table = menu['menuItems'][0]['content'][0]['content']
+
+    for match in match_history:
+        opponent = (Players.objects.filter(game=match).exclude(player=user))[0]
+        opponent_name = None
+
+        if opponent.player is not None:
+            opponent_name = opponent.player.username
+            print(f"Opponent: {opponent.player.username}")
+        else:
+            opponent_name = opponent.guest_name
+            print(f"Opponent: {opponent.guest_name}")
+
+        table.append({
+            'type': 'tr',
+            'class': 'participant text-white',
+            'content': [
+                {
+                    'type': 'td',
+                    'class': 'text-white',
+                    'text': f'{match.date_of_game}'
+                },
+                {
+                    'type': 'td',
+                    'class': 'text-white',
+                    'text': opponent_name,
+                },
+                {
+                    'type': 'td',
+                    'class': 'text-white',
+                    'text': f'{match.result}'
+                }
+            ]
+        })
+
+    return menu
 
 def singleplayer_menu(request, menu_type='singleplayer_menu'):
     token = get_token_from_header(request)
