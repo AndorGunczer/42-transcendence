@@ -11,10 +11,6 @@ async function submit_registration_form(event) {
 
   console.log(document.getElementById("username").value);
 
-  // let formData = new FormData();
-  // formData.append("username", document.getElementById("username").value);
-  // formData.append("password", document.getElementById("password").value);
-
   let username = sanitizeInput(document.getElementById("username").value);
   let password = sanitizeInput(document.getElementById("password").value);
   let avatar = document.getElementById("Avatar").value;
@@ -70,7 +66,6 @@ function validate_registration_form() {
 }
 
 function load_next_step(json) {
-  // Implement this function to handle the next step after successful registration
   console.log("Next step:");
   deleteHeader();
   deleteMain();
@@ -90,36 +85,7 @@ function load_next_step(json) {
     elementCustomize(element, item);
     parent.appendChild(element);
   });
-  // For example, load another part of your SPA based on the next step
 }
-
-// 'id': 1,
-// 'type': 'canvas',
-// 'identifier': 'pongCanvas',
-// 'width': 800,
-// 'height': 400
-
-// function load_game(json) {
-//   console.log("Next step:");
-//   deleteHeader();
-//   deleteMain();
-
-//   // CREATE HEADER
-
-//   // headerLoad(json);
-
-//   // CREATE CONTAINER
-
-//   json.menuItems.forEach((item) => {
-//     let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];;
-//     let element = document.createElement(item.type);
-//     if (item.type == "div" || item.type == "form")
-//       divLoader(element, item.content);
-
-//     elementCustomize(element, item);
-//     parent.appendChild(element);
-//   })
-// };
 
 async function submit_login_form(event) {
   event.preventDefault(); // Prevent default form submission
@@ -196,48 +162,6 @@ async function verify_otp(event) {
       load_main()
   })
   .catch((error) => console.error("Error verifying OTP:", error));
-}
-async function jwt_kriegen(event) {
-  event.preventDefault(); // Prevent default form submission behavior
-
-  const csrfToken = await getCsrfToken();
-
-  let username = document.getElementById("username").value;
-  let password = document.getElementById("password").value;
-
-  console.log("Starting fetch request...");
-
-  fetch("/api/token/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": csrfToken,
-      Accept: "application/json",
-    },
-    body: JSON.stringify({ username, password }),
-    credentials: "include",
-  })
-    .then((response) => {
-      console.log("response from Javascript Token process: " + response.ok);
-      console.log("response from Javascript Token process: " + response.status);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      console.log("Got to response");
-      return response.json();
-    })
-    .then((data) => {
-      console.log("Response data:", data);
-      if (data.message === "Token created") {
-        console.log("Tokens stored successfully in cookies.");
-        load_main();
-      } else {
-        console.error("Unexpected response:", data);
-      }
-    })
-    .catch((error) => {
-      console.error("There was an error: ", error);
-    });
 }
 
 async function logout(event) {

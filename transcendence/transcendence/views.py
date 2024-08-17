@@ -11,7 +11,6 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
-from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 import copy
@@ -22,22 +21,6 @@ from transcendence.web3_utils import add_tournament, add_participant, increment_
 from .menus import MENU_DATA
 
 # Initial Load of Site
-
-class CustomTokenObtainPairView(TokenObtainPairView):
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        if response.status_code == 200:
-            data = response.data
-            response = JsonResponse({"message": "Token created"}, status=200)
-            response.set_cookie(
-                'access_token', data['access'], httponly=True, secure=True, samesite='Strict'
-            )
-            print("Cookie Set in DJANGO")
-            response.set_cookie(
-                'refresh_token', data['refresh'], httponly=True, secure=True, samesite='Strict'
-            )
-            print("Refresh Cookie Set in DJANGO")
-        return response
 
 class CustomTokenRefreshView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
