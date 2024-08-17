@@ -1111,33 +1111,29 @@ def login_check(request):
 
                     return JsonResponse({'status': 'otp_sent'})
                 else:
-                    factory = APIRequestFactory()
-                    token_request = factory.post('/api/token/', {'username': username, 'password': password}, format='json')
+                    login(request, user)
+                    refresh = RefreshToken.for_user(user)
 
-                    # Use the TokenObtainPairView to get the tokens
-                    token_obtain_pair_view = TokenObtainPairView.as_view()
-                    token_response = token_obtain_pair_view(token_request)
+                    refresh_token = str(refresh)
+                    access_token = str(refresh.access_token)
 
-                    if token_response.status_code == 200:
-                        token_data = token_response.data
-                        access_token = token_data['access']
-                        refresh_token = token_data['refresh']
+                    # Assuming modify_json_menu requires a token and modifies the menu accordingly
+                    response_data = modify_json_menu('main', access_token)
 
-                        # Modify the response data using the access token
-                        response_data = modify_json_menu('main', access_token)
+                    response = JsonResponse(response_data)
+                    response.set_cookie(
+                        'access_token', access_token, httponly=True, secure=True, samesite='Strict'
+                    )
 
-                        # Set the tokens in cookies
-                        response = JsonResponse(response_data)
-                        response.set_cookie(
-                            'access_token', access_token, httponly=True, secure=True, samesite='Strict'
-                        )
-                        response.set_cookie(
-                            'refresh_token', refresh_token, httponly=True, secure=True, samesite='Strict'
-                        )
+                    response.set_cookie(
+                        'refresh_token', refresh_token, httponly=True, secure=True, samesite='Strict'
+                    )
 
-                        return response
-                    else:
-                        return JsonResponse({'error': 'Failed to generate tokens'}, status=500)
+                    # Clear session data
+                    request.session.pop('otp', None)
+                    request.session.pop('username', None)
+                    request.session.pop('password', None)
+                    return response
 
             else:
                 return JsonResponse({'error': 'Invalid username or password'}, status=401)
@@ -1166,7 +1162,10 @@ def verify_otp_view(request):
 
                 if user is not None:
                     login(request, user)
-                    access_token = str(AccessToken.for_user(user))
+                    refresh = RefreshToken.for_user(user)
+
+                    refresh_token = str(refresh)
+                    access_token = str(refresh.access_token)
 
                     # Assuming modify_json_menu requires a token and modifies the menu accordingly
                     response_data = modify_json_menu('main', access_token)
@@ -1174,6 +1173,10 @@ def verify_otp_view(request):
                     response = JsonResponse(response_data)
                     response.set_cookie(
                         'access_token', access_token, httponly=True, secure=True, samesite='Strict'
+                    )
+
+                    response.set_cookie(
+                        'refresh_token', refresh_token, httponly=True, secure=True, samesite='Strict'
                     )
 
                     # Clear session data

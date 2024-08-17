@@ -381,7 +381,6 @@ function load_login() {
       });
       document
         .getElementById("login_form")
-        .addEventListener("submit", jwt_kriegen, {once: true});
     }, {once: true});
 }
 
