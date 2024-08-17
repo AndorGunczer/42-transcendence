@@ -36,7 +36,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             response.set_cookie(
                 'refresh_token', data['refresh'], httponly=True, secure=True, samesite='Strict'
             )
-        print("Refresh Cookie Set in DJANGO")
+            print("Refresh Cookie Set in DJANGO")
         return response
 
 class CustomTokenRefreshView(TokenRefreshView):
@@ -1055,6 +1055,7 @@ def generate_otp():
 # Process Data From Login Form
 import smtplib, ssl
 import traceback
+from rest_framework.test import APIRequestFactory
 
 @csrf_exempt
 def login_check(request):
@@ -1110,18 +1111,34 @@ def login_check(request):
 
                     return JsonResponse({'status': 'otp_sent'})
                 else:
-                    login(request, user)
-                    access_token = str(AccessToken.for_user(user))
+                    factory = APIRequestFactory()
+                    token_request = factory.post('/api/token/', {'username': username, 'password': password}, format='json')
 
-                    # Assuming modify_json_menu requires a token and modifies the menu accordingly
-                    response_data = modify_json_menu('main', access_token)
+                    # Use the TokenObtainPairView to get the tokens
+                    token_obtain_pair_view = TokenObtainPairView.as_view()
+                    token_response = token_obtain_pair_view(token_request)
 
-                    response = JsonResponse(response_data)
-                    response.set_cookie(
-                        'access_token', access_token, httponly=True, secure=True, samesite='Strict'
-                    )
+                    if token_response.status_code == 200:
+                        token_data = token_response.data
+                        access_token = token_data['access']
+                        refresh_token = token_data['refresh']
 
-                    return response
+                        # Modify the response data using the access token
+                        response_data = modify_json_menu('main', access_token)
+
+                        # Set the tokens in cookies
+                        response = JsonResponse(response_data)
+                        response.set_cookie(
+                            'access_token', access_token, httponly=True, secure=True, samesite='Strict'
+                        )
+                        response.set_cookie(
+                            'refresh_token', refresh_token, httponly=True, secure=True, samesite='Strict'
+                        )
+
+                        return response
+                    else:
+                        return JsonResponse({'error': 'Failed to generate tokens'}, status=500)
+
             else:
                 return JsonResponse({'error': 'Invalid username or password'}, status=401)
         except Exception as e:
