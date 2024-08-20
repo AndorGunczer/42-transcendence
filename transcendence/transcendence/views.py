@@ -1038,7 +1038,6 @@ def generate_otp():
 # Process Data From Login Form
 import smtplib, ssl
 import traceback
-from rest_framework.test import APIRequestFactory
 
 @csrf_exempt
 def login_check(request):
