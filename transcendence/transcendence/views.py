@@ -103,6 +103,41 @@ def modify_json_menu(menu_type, token):
         del menu['menuItems'][4]
         
     # Add Friendlist
+    menu['menuItems'].append({
+        'id': len(menu['menuItems']),
+        'type': 'div',
+        'class': 'h-100 w-25 position-absolute top-25 end-0 border border-white',
+        'content': [
+            {
+                # add friend
+                'type': 'div',
+                'class': 'd-flex flex-column',
+                'content': [
+                    {
+                        'type': 'input',
+                        'inputType': 'text',
+                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
+                        'placeholder': 'add a friend...',
+                        'name': 'friend',
+                    },
+                    {
+                        'type': 'button',
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                        'text': 'ADD FRIEND',
+                        'onclick': 'add_friend_request',
+                    }
+                ]
+            },
+            {
+                # friendlist
+                'type': 'div',
+                'class': '',
+                'content': [
+
+                ]
+            }
+        ]
+    })
     
 
     return menu
