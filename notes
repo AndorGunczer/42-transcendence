@@ -43,6 +43,7 @@ TERMINOLOGY:
     Non-Prime attribute: Cannot identify a record uniquely (derived)
 
 to run server in secure mode: python3 manage.py runserver_plus --cert-file /Users/andorgunczer/WORK/SCHOOL/transcendence/files/cert.crt --key-file /Users/andorgunczer/WORK/SCHOOL/transcendence/files/key.pem
+to run blockchain: ganache-cli --port 7545 --hostname 127.0.0.1 --gasLimit 8000000 --mnemonic "transcendence"
 
 DOCKER SETUP:
 
