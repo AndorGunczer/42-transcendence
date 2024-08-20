@@ -8,20 +8,18 @@ https://docs.djangoproject.com/en/5.0/howto/deployment/asgi/
 """
 
 import os
-import django
 from django.core.asgi import get_asgi_application
-from django.core.management import call_command
+from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.auth import AuthMiddlewareStack
+from your_app_name.routing import websocket_urlpatterns
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'transcendence.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project_name.settings')
 
-# Setup Django before importing models or running commands
-django.setup()
-
-application = get_asgi_application()
-
-# Run the populate_avatars command
-try:
-    call_command('populate_avatars')
-except Exception as e:
-    print(f"Error populating avatars: {e}")
-
+application = ProtocolTypeRouter({
+    "http": get_asgi_application(),
+    "websocket": AuthMiddlewareStack(
+        URLRouter(
+            websocket_urlpatterns
+        )
+    ),
+})

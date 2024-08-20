@@ -37,6 +37,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'transcendence.apps.TranscendenceConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'django_extensions',
+    'channels',
 ]
 
 AUTH_USER_MODEL = "transcendence.Users2"
@@ -102,6 +104,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'transcendence.wsgi.application'
+ASGI_APPLICATION = 'transcendence.asgi.application'
 
 
 # Database
