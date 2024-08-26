@@ -1,0 +1,21 @@
+add
+to settings :
+INSTALLED_APPS = [
+'chat.apps.ChatConfig',
+'channels',
+
+to urls
+
+path("chat/", include("chat.urls")),
+
+
+
+
+transcendence.url'
+
+
+
+source ~/ts_env/bin/activate
+
+
+

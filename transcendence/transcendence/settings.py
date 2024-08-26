@@ -38,17 +38,22 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'transcendence.apps.TranscendenceConfig',
+	'chat.apps.ChatConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+	'uvicorn',
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
     'django_extensions',
+	'channels',
 ]
+
+ASGI_APPLICATION = 'transcendence.asgi.application'
 
 AUTH_USER_MODEL = "transcendence.Users2"
 
@@ -62,6 +67,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'transcendence.middleware.JWTAuthFromCookiesMiddleware',
+	'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -81,6 +87,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Ensure the /static/images directory exists
 os.makedirs(os.path.join(BASE_DIR, 'static', 'images'), exist_ok=True)

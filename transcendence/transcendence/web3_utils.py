@@ -126,7 +126,7 @@ contract_abi = [
 ]
 
 # contract_address = '0x7a9f3aA1EEF757421BE6692aefa97132ac210249'
-f = open("/app/contractAddress.txt", "r")
+f = open("/Users/mrubina/projects/transcendence/tr2/app/contractAddress.txt", "r")
 contract_address = (f.read()).strip()
 print(contract_address)
 

@@ -16,7 +16,7 @@ RUN ssh-keygen -A
 # Install Python and dependencies
 RUN apt-get install -y python3 python3-pip
 ENV PIP_BREAK_SYSTEM_PACKAGES=1
-RUN pip3 install django djangorestframework django-cors-headers djangorestframework-simplejwt django-extensions pyOpenSSL Werkzeug
+RUN pip3 install django djangorestframework django-cors-headers djangorestframework-simplejwt django-extensions pyOpenSSL Werkzeug channels uvicorn
 
 # Install Solidity Web3 Module
 RUN pip3 install web3

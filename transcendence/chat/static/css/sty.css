@@ -1,0 +1,41 @@
+* {
+    /* Reset box-sizing to border-box for consistency */
+    /* box-sizing: border-box; */
+}
+
+/* html {
+    height: 100vh;
+  }
+  body {
+    min-height: 100vh;
+  }
+
+body {
+    background-color: #180161 !important;
+}
+
+ul {
+    background-color: #180161 !important;
+} */
+
+
+/* .header { */
+    /* Removed the height property */
+    /* Consider using padding instead to maintain the layout */
+    /* display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding-bottom: 50px; */
+/* } */
+
+/* .container { */
+    /* display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 24px; */
+    /* Consider using padding for vertical spacing */
+    /* padding: 24px 0; */
+/* } */
+
+
