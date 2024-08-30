@@ -1,0 +1,228 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-16 15:13+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: English <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: templates/menu_general/index.html:9
+msgid "Transcendence"
+msgstr "Transcendence"
+
+#: templates/menu_general/index.html:18
+msgid "Logged in as"
+msgstr "Logged in as"
+
+#: templates/menu_general/index.html:19
+msgid "Wins"
+msgstr "Wins"
+
+#: templates/menu_general/index.html:20
+msgid "Losses"
+msgstr "Losses"
+
+#: templates/menu_general/index.html:37
+#: transcendence/menus.py:64 transcendence/menus.py:480
+msgid "PLAY"
+msgstr "PLAY"
+
+#: templates/menu_general/index.html:38
+#: transcendence/menus.py:71
+msgid "TOURNAMENT"
+msgstr "TOURNAMENT"
+
+#: templates/menu_general/index.html:39
+#: transcendence/menus.py:78
+msgid "LEADERBOARD"
+msgstr "LEADERBOARD"
+
+#: templates/menu_general/index.html:41
+#: transcendence/menus.py:89
+msgid "LOGIN"
+msgstr "LOGIN"
+
+#: templates/menu_general/index.html:42
+#: transcendence/menus.py:96
+msgid "REGISTER"
+msgstr "REGISTER"
+
+#: transcendence/menus.py:28 transcendence/menus.py:120
+#: transcendence/menus.py:193 transcendence/menus.py:277
+#: transcendence/menus.py:383 transcendence/menus.py:449
+#: transcendence/menus.py:502 transcendence/menus.py:649
+#: transcendence/menus.py:802 transcendence/menus.py:1005
+#: transcendence/menus.py:1132
+msgid "logged in as PLACEHOLDER"
+msgstr "logged in as PLACEHOLDER"
+
+#: transcendence/menus.py:33 transcendence/menus.py:125
+#: transcendence/menus.py:198 transcendence/menus.py:282
+#: transcendence/menus.py:388 transcendence/menus.py:454
+#: transcendence/menus.py:507 transcendence/menus.py:654
+#: transcendence/menus.py:807 transcendence/menus.py:1010
+#: transcendence/menus.py:1137
+msgid "wins"
+msgstr "wins"
+
+#: transcendence/menus.py:38 transcendence/menus.py:130
+#: transcendence/menus.py:203 transcendence/menus.py:287
+#: transcendence/menus.py:393 transcendence/menus.py:459
+#: transcendence/menus.py:512 transcendence/menus.py:659
+#: transcendence/menus.py:812 transcendence/menus.py:1015
+#: transcendence/menus.py:1142
+msgid "losses"
+msgstr "losses"
+
+#: transcendence/menus.py:56 transcendence/menus.py:150
+msgid "PONG"
+msgstr "PONG"
+
+#: transcendence/menus.py:138 transcendence/menus.py:211
+#: transcendence/menus.py:295 transcendence/menus.py:401
+#: transcendence/menus.py:467 transcendence/menus.py:520
+#: transcendence/menus.py:667 transcendence/menus.py:820
+#: transcendence/menus.py:1023 transcendence/menus.py:1150
+msgid "BACK"
+msgstr "BACK"
+
+#: transcendence/menus.py:158
+msgid "SINGLEPLAYER"
+msgstr "SINGLEPLAYER"
+
+#: transcendence/menus.py:165
+msgid "LOCAL"
+msgstr "LOCAL"
+
+#: transcendence/menus.py:173
+msgid "ONLINE"
+msgstr "ONLINE"
+
+#: transcendence/menus.py:249
+msgid "CREATE TOURNAMENT"
+msgstr "CREATE TOURNAMENT"
+
+#: transcendence/menus.py:256
+msgid "SELECT"
+msgstr "SELECT"
+
+#: transcendence/menus.py:314
+msgid "Tournament Name: "
+msgstr "Tournament Name: "
+
+#: transcendence/menus.py:332
+msgid "Player Name: "
+msgstr "Player Name: "
+
+#: transcendence/menus.py:422
+msgid "placeholder for next game"
+msgstr "placeholder for next game"
+
+#: transcendence/menus.py:426
+msgid "Play Game"
+msgstr "Play Game"
+
+#: transcendence/menus.py:544 transcendence/menus.py:591
+#: transcendence/menus.py:1042
+msgid "username"
+msgstr "username"
+
+#: transcendence/menus.py:559 transcendence/menus.py:606
+msgid "password"
+msgstr "password"
+
+#: transcendence/menus.py:571 transcendence/menus.py:618
+msgid "Submit"
+msgstr "Submit"
+
+#: transcendence/menus.py:627 transcendence/menus.py:780
+msgid "play"
+msgstr "play"
+
+#: transcendence/menus.py:693
+msgid "player 1: "
+msgstr "player 1: "
+
+#: transcendence/menus.py:743
+msgid "player 2: "
+msgstr "player 2: "
+
+#: transcendence/menus.py:843
+msgid "Username "
+msgstr "Username "
+
+#: transcendence/menus.py:862
+msgid "Password "
+msgstr "Password "
+
+#: transcendence/menus.py:881
+msgid "Email "
+msgstr "Email "
+
+#: transcendence/menus.py:900
+msgid "Avatar "
+msgstr "Avatar "
+
+#: transcendence/menus.py:911
+msgid "Frog"
+msgstr "Frog"
+
+#: transcendence/menus.py:916
+msgid "Dog"
+msgstr "Dog"
+
+#: transcendence/menus.py:921
+msgid "Cat"
+msgstr "Cat"
+
+#: transcendence/menus.py:941
+msgid "Upload Avatar "
+msgstr "Upload Avatar "
+
+#: transcendence/menus.py:952
+msgid "Upload"
+msgstr "Upload"
+
+#: transcendence/menus.py:965
+msgid "Two-Factor Authentication "
+msgstr "Two-Factor Authentication "
+
+#: transcendence/menus.py:1061
+msgid "password "
+msgstr "password "
+
+#: transcendence/menus.py:1088
+msgid "Enter OTP"
+msgstr "Enter OTP"
+
+#: transcendence/menus.py:1108
+msgid "Verify"
+msgstr "Verify"
+
+#: transcendence/menus.py:1170
+msgid "Choose New Username "
+msgstr "Choose New Username "
+
+#: transcendence/menus.py:1189
+msgid "Select New Avatar"
+msgstr "Select New Avatar"
+
+#: transcendence/menus.py:1205
+msgid "Delete User Statistics"
+msgstr "Delete User Statistics"
+
+#: transcendence/menus.py:1211
+msgid "Save"
+msgstr "Save"

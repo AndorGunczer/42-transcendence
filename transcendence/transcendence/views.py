@@ -20,6 +20,9 @@ import json
 import random
 from transcendence.web3_utils import add_tournament_to_blockchain, query_blockchain
 from .menus import MENU_DATA
+from django.shortcuts import redirect
+from django.utils import translation
+from django.http import JsonResponse
 
 # Initial Load of Site
 
@@ -81,6 +84,15 @@ def get_token_from_header(request):
         return auth_header.split(' ')[1]  # Get the token part after 'Bearer'
     else:
         return None
+
+def get_language_from_cookies(request):
+    # Extract the language from the 'Cookie' header
+    cookies = request.headers.get('Cookie', '')
+    for cookie in cookies.split(';'):
+        cookie = cookie.strip()
+        if cookie.startswith('django_language='):
+            return cookie.split('=')[1]
+    return None
 
 # Modify JSON Menus with Dynamic data
 
@@ -179,7 +191,7 @@ def tournament_select_page_fill(menu, participants):
                         'type': 'td',
                         'class': 'text-white',
                         'text': f'Points'
-                    }                    
+                    }
                 ]
             }
         ]
@@ -302,6 +314,9 @@ def index(request):
 
 def indexPost(request, menu_type='main'):
     token = get_token_from_header(request)
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
         print(menu)
@@ -321,6 +336,11 @@ def indexPost(request, menu_type='main'):
 # GAMES
 def play(request, menu_type='play_menu'):
     token = get_token_from_header(request)
+
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
+
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
     else:
@@ -332,6 +352,9 @@ def play(request, menu_type='play_menu'):
 
 def singleplayer_menu(request, menu_type='singleplayer_menu'):
     token = get_token_from_header(request)
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
     else:
@@ -351,6 +374,9 @@ def singleplayer_game(request, menu_type='singleplayer_game'):
 
 def local_menu(request, menu_type='local_menu'):
     token = get_token_from_header(request)
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
     else:
@@ -363,6 +389,9 @@ def local_menu(request, menu_type='local_menu'):
 
 def local_check(request, menu_type='local_game'):
     token = get_token_from_header(request)
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
 
     data = json.loads(request.body)
     player1 = data.get("player1")
@@ -399,6 +428,9 @@ from django.core.exceptions import ObjectDoesNotExist
 def close_local(request, menu_type='main'):
     try:
         token = get_token_from_header(request)
+        language = get_language_from_cookies(request)
+        if language:
+            menu_type = f"{menu_type}_{language}"
 
         data = json.loads(request.body)
         player1 = data.get('player1')
@@ -474,6 +506,9 @@ def close_local(request, menu_type='main'):
 
 def online_menu(request, menu_type='online_menu'):
     token = get_token_from_header(request)
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
     else:
@@ -497,6 +532,9 @@ def local_game(request, menu_type='local_game'):
 
 def tournament_main(request, menu_type='tournament_main'):
     token = get_token_from_header(request)
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
     print("tournament_main is loading")
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
@@ -513,6 +551,9 @@ def tournament_main(request, menu_type='tournament_main'):
 
 def tournament_create(request, menu_type='tournament_create'):
     token = get_token_from_header(request)
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
     else:
@@ -528,6 +569,9 @@ def tournament_create(request, menu_type='tournament_create'):
 
 def tournament_create_check(request, menu_type='main'):
     token = get_token_from_header(request)
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
 
     data = json.loads(request.body)
     tournament_name = data.get("tournament_name")
@@ -589,6 +633,9 @@ def tournament_create_check(request, menu_type='main'):
 
 def tournament_select(request, menu_type='tournament_select'):
     token = get_token_from_header(request)
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
     else:
@@ -608,6 +655,9 @@ def tournament_select(request, menu_type='tournament_select'):
 
 def tournament_game_check(request, menu_type="local_game"):
     token = get_token_from_header(request)
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
 
     data = json.loads(request.body)
 
@@ -637,6 +687,9 @@ def tournament_game_check(request, menu_type="local_game"):
 def close_tournament_game(request, menu_type='main'):
     try:
         token = get_token_from_header(request)
+        language = get_language_from_cookies(request)
+        if language:
+            menu_type = f"{menu_type}_{language}"
 
         data = json.loads(request.body)
         player1 = data.get('player1')
@@ -742,9 +795,33 @@ def close_tournament_game(request, menu_type='main'):
 
 # Load Login Form
 
+def set_language(request):
+    user_language = request.POST.get('language')
+    translation.activate(user_language)
+    response = redirect(request.META.get('HTTP_REFERER', '/'))
+    response.set_cookie(settings.LANGUAGE_COOKIE_NAME, user_language)
+    return response
+
+# def login(request, warning: str = None, menu_type='login'):
+#     set_language(request)
+#     token = get_token_from_header(request)
+#     if (token == None) or (not validate_token(token)):
+#         menu = copy.deepcopy(MENU_DATA.get(menu_type))
+#     else:
+#         menu = modify_json_menu(menu_type, token)
+
+#     if menu is not None:
+#         return JsonResponse(menu)
+#     else:
+#         return JsonResponse({'error': 'Menu type not found'}, status=404)
+
 def login(request, warning: str = None, menu_type='login'):
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
+
     token = get_token_from_header(request)
-    if (token == None) or (not validate_token(token)):
+    if (token is None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
     else:
         menu = modify_json_menu(menu_type, token)
@@ -753,11 +830,14 @@ def login(request, warning: str = None, menu_type='login'):
         return JsonResponse(menu)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
-
+# Load Registration Form
 # Load Registration Form
 
 def register(request, warning: str = None, menu_type='register'):
     token = get_token_from_header(request)
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
         avatars = Avatar.objects.all()
@@ -846,36 +926,27 @@ def login_check(request):
                     request.session['username'] = username
                     request.session['password'] = password
 
-                    with open('output.txt', 'w') as file:
-                        file.write("2fa is active\n")
+                    try:
+                        # Configuration
+                        port = 465
+                        smtp_server = "smtp.gmail.com"
+                        sender_email = "ft.transcendence.2fa.42@gmail.com"
+                        receiver_email = user.email
+                        email_password = 'rwsv qnsl lqfa shic'
+                        message = f"""\
+                        Subject: Your OTP Code
 
-                        try:
-                            # Configuration
-                            port = 465
-                            smtp_server = "smtp.gmail.com"
-                            sender_email = "ft.transcendence.2fa.42@gmail.com"
-                            receiver_email = user.email
-                            email_password = 'rwsv qnsl lqfa shic'
-                            message = f"""\
-                            Subject: Your OTP Code
+                        Your OTP code is {otp}."""
+                        context = ssl.create_default_context()
 
-                            Your OTP code is {otp}."""
-                            context = ssl.create_default_context()
+                        with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+                            server.login(sender_email, email_password)
+                            server.sendmail(sender_email, receiver_email, message)
 
-                            file.write("Preparing to connect to the SMTP server\n")
-                            with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-                                file.write("Connection to server was successful\n")
-                                server.login(sender_email, email_password)
-                                file.write("Login to the SMTP server was successful\n")
-                                server.sendmail(sender_email, receiver_email, message)
-                                file.write("Email sent successfully\n")
-
-                        except smtplib.SMTPException as e:
-                            file.write(f"SMTP error occurred: {e}\n")
-                            return JsonResponse({'error': 'Failed to send email'}, status=500)
-                        except Exception as e:
-                            file.write(f"An error occurred: {e}\n")
-                            return JsonResponse({'error': 'An unexpected error occurred'}, status=500)
+                    except smtplib.SMTPException as e:
+                        return JsonResponse({'error': 'Failed to send email'}, status=500)
+                    except Exception as e:
+                        return JsonResponse({'error': 'An unexpected error occurred'}, status=500)
 
                     return JsonResponse({'status': 'otp_sent'})
                 else:
@@ -1008,6 +1079,9 @@ def upload_file(request):
 
 def load_settings(request, menu_type='settings'):
     token = get_token_from_header(request)
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
     user = get_user_from_token(token)
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
@@ -1042,6 +1116,9 @@ def load_settings(request, menu_type='settings'):
 
 def delete_user_stats(request, menu_type='main'):
     token = get_token_from_header(request)
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
     user = get_user_from_token(token)
 
     user.wins = 0
@@ -1062,6 +1139,9 @@ def delete_user_stats(request, menu_type='main'):
 
 def save_changes(request, menu_type='main'):
     token = get_token_from_header(request)
+    language = get_language_from_cookies(request)
+    if language:
+        menu_type = f"{menu_type}_{language}"
     user = get_user_from_token(token)
 
     try:
@@ -1088,3 +1168,4 @@ def save_changes(request, menu_type='main'):
         return JsonResponse(menu)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
+

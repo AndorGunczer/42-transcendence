@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from .views import CustomTokenObtainPairView, CustomTokenRefreshView
+from django.urls import path
+from . import views
 
 urlpatterns = [
     # ADMIN
@@ -56,4 +58,5 @@ urlpatterns = [
     path('settings', views.load_settings, name='settings'),
     path('delete_user_stats', views.delete_user_stats, name='delete_user_stats'),
     path('save_changes', views.save_changes, name='save_changes'),
+    path('i18n/setlang/', views.set_language, name='set_language'),
 ]
