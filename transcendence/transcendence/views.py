@@ -118,13 +118,14 @@ def modify_json_menu(menu_type, token):
                         'inputType': 'text',
                         'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
                         'placeholder': 'add a friend...',
+                        'identifier': 'friend-name',
                         'name': 'friend',
                     },
                     {
                         'type': 'button',
                         'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                         'text': 'ADD FRIEND',
-                        'onclick': 'add_friend_request',
+                        'onclick': 'send_friend_request(event)',
                     }
                 ]
             },
@@ -1044,7 +1045,7 @@ def registration_check(request):
             if username == '': raise Exception("username_not_specified")
             password = data.get('password')
             if password == '': raise Exception("password_not_specified")
-            pre = "https://127.0.0.1:8000/static/images/"
+            pre = "https://127.0.0.1/static/images/"
             print(data.get("avatar"))
             avatar = pre + data.get('avatar')
             print(avatar)
@@ -1253,8 +1254,8 @@ def upload_file(request):
         file_content = base64.b64decode(file_data)
 
         # Construct the file path
-        static_images_dir = Path(settings.BASE_DIR) / 'static' / 'images'
-        file_path = static_images_dir / file_name
+        static_images_dir = 'static/images'
+        file_path = f'{static_images_dir}/{file_name}'
 
         # Ensure the directory exists
         os.makedirs(static_images_dir, exist_ok=True)
@@ -1336,7 +1337,7 @@ def save_changes(request, menu_type='main'):
         data = json.loads(request.body)
         username = data.get('username')
         avatar = data.get('avatar')
-        pre = "https://127.0.0.1:8000/static/images/"
+        pre = "https://127.0.0.1/static/images/"
         print(data.get("avatar"))
         avatar = pre + data.get('avatar')
 

@@ -1,0 +1,30 @@
+NGINX ERROR JOURNAL:
+    Nginx startup(brew services start/reload nginx)
+    Nginx status check (brew services info nginx)
+        probably error with configuration file
+
+        log : /System/Volumes/Data/opt/homebrew/var/log/nginx || /opt/homebrew/etc/nginx/nginx.conf
+        conf: /System/Volumes/Data/opt/homebrew/etc/nginx/nginx.conf || /opt/homebrew/var/log/nginx
+
+        Error1: server cannot come before http
+        Solution: Revert to default conf file, apply custom server expressions
+
+        Error2: password protected private.key file
+        Solution: recreate crt with a not password protected .key file
+            # Generate an unencrypted private key
+            openssl genpkey -algorithm RSA -out private.key
+
+            # Generate a CSR
+            openssl req -new -key private.key -out request.csr
+
+            # Generate a self-signed certificate
+            openssl x509 -req -in request.csr -signkey private.key -out selfsigned.crt -days 365
+
+Error x:
+    Error: Images are not forwarded
+    Description: 404 - ERROR_NET_TIMED_OUT
+    Root Cause Analysis:    - filepath on server in db is static with :8000 as port, requests are made to IP_ADDRESS:8000, while server listens at IP_ADDRESS:443
+                            - ADDRESS_IP:PORT are saved static into the database
+    Probable Quick Fix:     - Remove :8000 from static paths
+                            - Re create database entries with correct addresses
+    Solution: Make paths dynamic

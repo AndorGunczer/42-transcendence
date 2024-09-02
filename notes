@@ -30,7 +30,7 @@ macos-things:
 
     Insert without console -> psql -d transcendence -U andorgunczer -c "INSERT INTO transcendence_avatar (path, name) VALUES ('/Users/andorgunczer/WORK/SCHOOL/transcendence/development/transcendence/files/dog_avatar.jpg', 'dog');"
 
-    export PATH=/opt/homebrew/Cellar/postgresql@16/16.3/bin:$PATH
+    export PATH=/opt/homebrew/Cellar/postgresql@16/16.4/bin:$PATH
     DELETE FROM transcendence_users2;
 
     PROBLEM:
@@ -75,3 +75,39 @@ Error: Image size upon upload during registration is too big (401)
 ImportError: cannot import name 'getargspec' from 'inspect' (/usr/lib/python3.12/inspect.py). Did you mean: 'getargs'?
 
     
+
+NEW NGINX SETUP:
+    Install NGINX:
+        LINUX:  sudo apt-get update
+                sudo apt-get install nginx
+
+        MACOS:  brew install nginx
+
+        (LOCATION:  MACOS: /opt/homebrew/etc/nginx/nginx.conf
+                    LINUX: )
+
+    Update Config File:
+        (open file in text editor from terminal on macos (open -e /opt/homebrew/etc/nginx/nginx.conf))
+
+
+NGINX ERROR JOURNAL:
+    Nginx startup(brew services start/reload nginx)
+    Nginx status check (brew services info nginx)
+        probably error with configuration file
+
+        log : /System/Volumes/Data/opt/homebrew/var/log/nginx || /opt/homebrew/etc/nginx/nginx.conf
+        conf: /System/Volumes/Data/opt/homebrew/etc/nginx/nginx.conf || /opt/homebrew/var/log/nginx
+
+        Error1: server cannot come before http
+        Solution: Revert to default conf file, apply custom server expressions
+
+        Error2: password protected private.key file
+        Solution: recreate crt with a not password protected .key file
+            # Generate an unencrypted private key
+            openssl genpkey -algorithm RSA -out private.key
+
+            # Generate a CSR
+            openssl req -new -key private.key -out request.csr
+
+            # Generate a self-signed certificate
+            openssl x509 -req -in request.csr -signkey private.key -out selfsigned.crt -days 365
