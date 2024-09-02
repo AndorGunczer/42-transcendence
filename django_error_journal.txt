@@ -7,3 +7,9 @@ No Path /wss/communication (socket failure):
     Root Cause Analysis:    - Socket communication uses socket.send() on the front end instead of fetch()
     Fix: Replace fetch() with socket.send() in socket related functions
 
+Calling Sync function from an Async Context(Channels consumer) error (SynchronousOnlyOperation):
+    Description: Trying to issue an ORM call from within a Consumer fires up the above mentioned error.
+    Root Cause Analysis: x
+    Fix:    - Wrap sync function into async one (using sync to asyc)
+            or 
+            - 

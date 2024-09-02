@@ -74,6 +74,7 @@ def modify_json_menu(menu_type, token):
     print(menu['headerItems'][0]['content'][1]['text'] )
 
     menu['headerItems'][0]['content'][1]['text'] = f'LOGGED IN AS {user}'
+    menu['headerItems'][0]['content'][1]['identifier'] = 'user'
     menu['headerItems'][0]['content'][2]['text'] = f'wins: {user.wins}'
     menu['headerItems'][0]['content'][3]['text'] = f'losses: {user.losses}'
 

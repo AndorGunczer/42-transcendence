@@ -34,6 +34,7 @@ function handleFriendRequest(message) {
 
 function handleNotification(message) {
     console.log('New notification:', message);
+    alert(message.message);
 }
 
 // Onclick Functions
@@ -42,10 +43,12 @@ function send_friend_request(event) {
     event.preventDefault();
     console.log("SEND FRIEND REQUEST CLIENT SIDE CALL");
 
-    const friendName = document.getElementById("friend-name").value;
+    const receiver = document.getElementById("friend-name").value;
+    const sender = (document.getElementById("user").innerHTML).split(" ").pop();
 
     const message = JSON.stringify({
-        receiver: friendName,
+        receiver: receiver,
+        sender: sender,
         type: "friend_request",
     });
 
