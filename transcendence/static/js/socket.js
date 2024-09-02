@@ -1,6 +1,6 @@
-console.log('wss://' + window.location.host + '/wss/communication/');
+console.log('wss://' + window.location.host + '/ws/communication/');
 
-const socket = new WebSocket('wss://' + window.location.host + '/wss/communication/');
+const socket = new WebSocket('wss://' + window.location.host + '/ws/communication/');
 
 socket.onmessage = function(event) {
     const data = JSON.parse(event.data);
@@ -38,27 +38,16 @@ function handleNotification(message) {
 
 // Onclick Functions
 
-async function send_friend_request(event) {
-    event.preventDefault()
-
-    const csrfToken = await getCsrfToken();
+function send_friend_request(event) {
+    event.preventDefault();
+    console.log("SEND FRIEND REQUEST CLIENT SIDE CALL");
 
     const friendName = document.getElementById("friend-name").value;
-    // const url = "/wss/communication/"
 
-    fetch(socket, {
-        method: "POST",
-        headers: {
-            "content-type": "application/json",
-            "X-CSRFToken": csrfToken,
-        },
-        body: JSON.stringify({
-            receiver: friendName,
-            type: "friend_request",
-        }),
-        credentials: "include",
-    }).then((response) => {
-        if (response.ok)
-            alert("Friend Request Sent");
-    })
+    const message = JSON.stringify({
+        receiver: friendName,
+        type: "friend_request",
+    });
+
+    socket.send(message);
 }

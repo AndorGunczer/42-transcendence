@@ -4,4 +4,6 @@ CSRF requests fail upon introducing code to production infrastructure:
 No Path /wss/communication (socket failure):
     Descripton: socket related urls are declared in routing.py, normal http related urls are at urls.py
         upon requests to socket urls, I get the 404 not found error, because only urls.py is checked.
-        
+    Root Cause Analysis:    - Socket communication uses socket.send() on the front end instead of fetch()
+    Fix: Replace fetch() with socket.send() in socket related functions
+

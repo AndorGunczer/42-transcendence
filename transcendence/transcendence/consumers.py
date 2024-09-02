@@ -38,8 +38,7 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
         print("handle_chat_message is called")
 
     async def handle_friend_request(self, data):
-        # Logic to handle incoming friend request
-        pass
+        print("handle_friend_request is called")
 
     async def handle_notification(self, data):
         # Logic to handle incoming notification
