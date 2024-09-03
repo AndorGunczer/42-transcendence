@@ -2,31 +2,65 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 # from transcendence.models import Users2 #returns error
+from django.contrib.auth import get_user_model
+from channels.db import database_sync_to_async
+from django.contrib.auth.models import AnonymousUser
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.tokens import AccessToken
+from django.conf import settings
+import jwt
+
+from transcendence.models import Users2  # Adjust the import based on your project structure
 
 class CommunicationConsumer(AsyncWebsocketConsumer):
+
     async def connect(self):
-        # Accept the WebSocket connection
-        await self.accept()
-        
-        # Optionally, add user to a group for broadcast messages
-        self.user = self.scope["user"]
+        # Retrieve token from cookies
+        token = self.scope['cookies'].get('access_token', None)
+
+        # If token is not in cookies, check query parameters (fallback)
+        if not token:
+            query_string = self.scope['query_string'].decode('utf-8')
+            params = dict(param.split('=') for param in query_string.split('&') if '=' in param)
+            token = params.get('access_token', None)
+
+        self.user = await self.get_user_from_token(token)
+
+        # Debug: Print user information
+        print(f"User in connect: {self.user} (Authenticated: {self.user.is_authenticated})")
+
         if self.user.is_authenticated:
-            group_name = f"user_{self.user.id}"
             await self.channel_layer.group_add(
-                group_name,
+                f"user_{self.user.id}",
                 self.channel_name
             )
-            print(f"User {self.user.username} added to group {group_name}")
+            await self.accept()
         else:
-            print("User not authenticated")
+            await self.close()
+    
+    @sync_to_async
+    def get_user_from_token(self, token):
+        token = AccessToken(token)
+        user_id = token.payload['user_id']
+        user = Users2.objects.get(id=user_id)
+
+        return user
 
     async def disconnect(self, close_code):
-        # Optionally, remove user from group
         if self.user.is_authenticated:
             await self.channel_layer.group_discard(
                 f"user_{self.user.id}",
                 self.channel_name
             )
+
+    # @database_sync_to_async
+    # def get_user(self):
+    #     user = self.scope.get("user", None)
+    #     if user is not None:
+    #         print(f"User in scope: {user}, Authenticated: {user.is_authenticated}")
+    #         if user.is_authenticated:
+    #             return user
+    #     return AnonymousUser()
 
     async def receive(self, text_data):
         data = json.loads(text_data)

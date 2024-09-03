@@ -36,19 +36,25 @@ function new_friend_request(friend) {
     newNode.setAttribute('class', 'd-flex flex-column');
     // appendChild
 
-    let p = (document.createElement('p')).innerHTML(`new friend request from ${friend}`);
+    let p = document.createElement('p');
+    p.innerHTML = `new friend request from ${friend}`;
     newNode.appendChild(p);
 
-    let buttonDiv = (document.createElement('div')).setAttribute('class', 'd-flex flex-column');
+    let buttonDiv = document.createElement('div');
+    buttonDiv.setAttribute('class', 'd-flex flex-column');
     newNode.appendChild(buttonDiv);
 
-    let accept = (document.createElement('button')).setAttribute('onclick', 'accept_friend_request()');
-    accept.innerHTML('Accept');
+    let accept = document.createElement('button');
+    accept.setAttribute('onclick', 'accept_friend_request()');
+    accept.innerHTML = 'Accept';
     buttonDiv.appendChild(accept);
 
-    let decline = (document.createElement('button')).setAttribute('onclick', 'decline_friend_request()');
-    decline.innerHTML('Decline');
+    let decline = document.createElement('button');
+    decline.setAttribute('onclick', 'decline_friend_request()');
+    decline.innerHTML = 'Decline';
     buttonDiv.appendChild(decline);
+
+    console.log(newNode);
 
     return newNode;
 }

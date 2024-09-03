@@ -18,7 +18,7 @@ from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from django.urls import path
-from transcendence import consumers
+# from transcendence import consumers
 
 
 import os
@@ -92,6 +92,8 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = ["https://127.0.0.1", "https://localhost"]
 
 ROOT_URLCONF = 'transcendence.urls'
+
+SESSION_COOKIE_NAME = 'sessionid'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [

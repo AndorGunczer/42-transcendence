@@ -21,3 +21,16 @@ AttributeError: 'NoneType' object has no attribute 'group_send'
     Description: channel_layer is none 
     Root Cause Analysis:    In the settings, there is no defined backend for django channels to run on.
     Fix:    - Set a backend for django channels to use in settings.py ()
+
+ASGI: apps aren't loaded yet:
+    Description: imports of installed apps are made before asgi_app is initialized
+    Root Cause Analysis: above
+    Fix:    - Make sure imports happen after the wsgi and asgi initialized, not before
+            (settings.py file there was an import of consumers that created the error)
+
+Hardships with extracting the user during socket communication
+    Methods tried:
+        - database (get_user() from the Users2 model)
+        - Session (Doesn't work because we use Access Tokens)
+        - JWT Access tokens (working solution)
+        
