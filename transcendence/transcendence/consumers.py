@@ -11,10 +11,14 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
         # Optionally, add user to a group for broadcast messages
         self.user = self.scope["user"]
         if self.user.is_authenticated:
+            group_name = f"user_{self.user.id}"
             await self.channel_layer.group_add(
-                f"user_{self.user.id}",
+                group_name,
                 self.channel_name
             )
+            print(f"User {self.user.username} added to group {group_name}")
+        else:
+            print("User not authenticated")
 
     async def disconnect(self, close_code):
         # Optionally, remove user from group
@@ -43,27 +47,31 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
         print("handle_friend_request is called")
         from transcendence.models import Users2
 
-        sender_username = self.user.username  # Get the sender's username from the WebSocket connection
+        sender_username = self.user.username
         receiver_username = data.get("receiver")
 
         try:
-            # Try to get the receiver user object
             receiver = await sync_to_async(Users2.objects.get)(username=receiver_username)
 
-            # Send a notification to the receiver's WebSocket group
+            # Debug print to verify group name and content of the message
+            print(f"Sending friend request from {sender_username} to {receiver_username} in group user_{receiver.id}")
+            
             await self.channel_layer.group_send(
                 f"user_{receiver.id}",
                 {
-                    'type': 'notification',
+                    'type': 'send_friend_request',
+                    'sender': sender_username,
                     'message': f"You have a friend request from {sender_username}.",
                 }
             )
+            print("Message sent successfully")
+            
         except Users2.DoesNotExist:
-            # If the receiver does not exist, send a message back to the sender
             await self.send(text_data=json.dumps({
                 'type': 'notification',
                 'message': f"User {receiver_username} does not exist.",
             }))
+
 
         
 

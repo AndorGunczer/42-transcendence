@@ -133,9 +133,20 @@ def modify_json_menu(menu_type, token):
             {
                 # friendlist
                 'type': 'div',
-                'class': '',
+                'class': 'd-flex flex-column',
                 'content': [
-
+                    {
+                        'type': 'div',
+                        'identifier': 'friend-requests',
+                        'class': 'd-flex flex-column',
+                        'content': [
+                            {
+                                'type': 'h3',
+                                'class': 'text-white',
+                                'text': 'Friend Requests'
+                            }
+                        ]
+                    },
                 ]
             }
         ]

@@ -13,3 +13,11 @@ Calling Sync function from an Async Context(Channels consumer) error (Synchronou
     Fix:    - Wrap sync function into async one (using sync to asyc)
             or 
             - 
+
+
+AttributeError: 'NoneType' object has no attribute 'group_send'
+    await self.channel_layer.group_send(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    Description: channel_layer is none 
+    Root Cause Analysis:    In the settings, there is no defined backend for django channels to run on.
+    Fix:    - Set a backend for django channels to use in settings.py ()
