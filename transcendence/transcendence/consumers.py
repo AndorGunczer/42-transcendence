@@ -71,6 +71,10 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
             await self.handle_chat_message(data)
         elif message_type == 'friend_request':
             await self.handle_friend_request(data)
+        elif message_type == 'friend_acceptance':
+            await self.handle_friend_acceptance(data)
+        elif message_type == 'friend_declination':
+            await self.handle_friend_declination(data)
         elif message_type == 'notification':
             await self.handle_notification(data)
 
@@ -94,7 +98,7 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
                 f"user_{receiver.id}",
                 {
                     'type': 'send_friend_request',
-                    'sender': sender_username,
+                    'sender': f"{sender_username}",
                     'message': f"You have a friend request from {sender_username}.",
                 }
             )
@@ -105,6 +109,30 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
                 'type': 'notification',
                 'message': f"User {receiver_username} does not exist.",
             }))
+
+    async def handle_friend_acceptance(self, data):
+        acceptor = data.get('acceptor')
+        accepted = await sync_to_async(Users2.objects.get)(username=data.get('accepted'))
+
+        await self.channel_layer.group_send(
+                f"user_{accepted.id}",
+                {
+                    'type': 'send_friend_acceptance_notification',
+                    'message': f"Your friend request to {acceptor} has been accepted.",
+                }
+            )
+
+    async def handle_friend_declination(self, data):
+        decliner = data.get('decliner')
+        declined = await sync_to_async(Users2.objects.get)(username=data.get('declined'))
+
+        await self.channel_layer.group_send(
+                f"user_{declined.id}",
+                {
+                    'type': 'send_friend_declination_notification',
+                    'message': f"Your friend request to {decliner} has been declined.",
+                }
+            )
 
 
         
@@ -126,11 +154,24 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
     async def send_friend_request(self, event):
         await self.send(text_data=json.dumps({
             'type': 'friend_request',
+            'sender': event['sender'],
             'message': event['message'],
         }))
 
     async def send_notification(self, event):
         await self.send(text_data=json.dumps({
             'type': 'notification',
+            'message': event['message'],
+        }))
+
+    async def send_friend_acceptance_notification(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'friend_acceptance_notification',
+            'message': event['message'],
+        }))
+
+    async def send_friend_declination_notification(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'friend_declination_notification',
             'message': event['message'],
         }))

@@ -90,24 +90,12 @@ NEW NGINX SETUP:
         (open file in text editor from terminal on macos (open -e /opt/homebrew/etc/nginx/nginx.conf))
 
 
-NGINX ERROR JOURNAL:
-    Nginx startup(brew services start/reload nginx)
-    Nginx status check (brew services info nginx)
-        probably error with configuration file
-
-        log : /System/Volumes/Data/opt/homebrew/var/log/nginx || /opt/homebrew/etc/nginx/nginx.conf
-        conf: /System/Volumes/Data/opt/homebrew/etc/nginx/nginx.conf || /opt/homebrew/var/log/nginx
-
-        Error1: server cannot come before http
-        Solution: Revert to default conf file, apply custom server expressions
-
-        Error2: password protected private.key file
-        Solution: recreate crt with a not password protected .key file
-            # Generate an unencrypted private key
-            openssl genpkey -algorithm RSA -out private.key
-
-            # Generate a CSR
-            openssl req -new -key private.key -out request.csr
-
-            # Generate a self-signed certificate
-            openssl x509 -req -in request.csr -signkey private.key -out selfsigned.crt -days 365
+{    
+    
+    let accept = document.createElement('button');
+    accept.setAttribute('onclick', `accept_friend_request(this.id)`);
+    accept.setAttribute('id', `${friend}`);
+    accept.innerHTML = 'Accept';
+    buttonDiv.appendChild(accept);  
+    
+    }
