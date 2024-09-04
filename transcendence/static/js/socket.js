@@ -21,6 +21,9 @@ socket.onmessage = function(event) {
         case 'friend_declination_notification':
             handleFriendDeclinationNotification(data);
             break;
+        case 'friend_duplication_notification':
+            handleFriendDuplicateNotification(data);
+            break;
         default:
             console.error('Unknown message type:', data.type);
     }
@@ -94,6 +97,11 @@ function handleFriendAcceptanceNotification(data) {
 }
 
 function handleFriendDeclinationNotification(data) {
+    console.log('New notification:', data.message);
+    alert(data.message);
+}
+
+function handleFriendDuplicateNotification(data) {
     console.log('New notification:', data.message);
     alert(data.message);
 }

@@ -21,6 +21,9 @@ socket.onmessage = function(event) {
         case 'friend_declination_notification':
             handleFriendDeclinationNotification(data);
             break;
+        case 'friend_duplication_notification':
+            handleFriendDuplicateNotification(data);
+            break;
         default:
             console.error('Unknown message type:', data.type);
     }
@@ -30,6 +33,10 @@ socket.onmessage = function(event) {
 socket.onclose = function(e) {
     console.error('WebSocket closed unexpectedly');
 };
+
+
+
+// Handle Incoming 
 
 function handleChatMessage(data) {
     console.log('New chat message:', data);
@@ -94,6 +101,13 @@ function handleFriendDeclinationNotification(data) {
     alert(data.message);
 }
 
+function handleFriendDuplicateNotification(data) {
+    console.log('New notification:', data.message);
+    alert(data.message);
+}
+
+
+// Handle Outgoing
 // Onclick Functions
 
 function send_friend_request(event) {

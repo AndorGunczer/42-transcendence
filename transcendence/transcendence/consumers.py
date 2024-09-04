@@ -10,7 +10,7 @@ from rest_framework_simplejwt.tokens import AccessToken
 from django.conf import settings
 import jwt
 
-from transcendence.models import Users2  # Adjust the import based on your project structure
+from transcendence.models import Users2, Friends  # Adjust the import based on your project structure
 
 class CommunicationConsumer(AsyncWebsocketConsumer):
 
@@ -90,19 +90,41 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
 
         try:
             receiver = await sync_to_async(Users2.objects.get)(username=receiver_username)
+            # receiver = await sync_to_async(Users2.objects.get)(username=sender_username)
+            try:
+                await sync_to_async(Friends.objects.get)(friend1=self.user, friend2=receiver, state="pending")
+                print("Friendship has already been created")
 
-            # Debug print to verify group name and content of the message
-            print(f"Sending friend request from {sender_username} to {receiver_username} in group user_{receiver.id}")
-            
-            await self.channel_layer.group_send(
-                f"user_{receiver.id}",
-                {
-                    'type': 'send_friend_request',
-                    'sender': f"{sender_username}",
-                    'message': f"You have a friend request from {sender_username}.",
-                }
-            )
-            print("Message sent successfully")
+                await self.channel_layer.group_send(
+                    f"user_{self.user.id}",
+                    {
+                        'type': 'send_duplicate_friendship_notification',
+                        'receiver': f"{receiver_username}",
+                        'message': f"Friend request has already been sent {receiver_username}.",
+                    }
+                )
+            except Friends.DoesNotExist:
+                friendship = await sync_to_async(Friends)(friend1=self.user, friend2=receiver, state="pending")
+                await sync_to_async(friendship.save)()
+
+                try:
+                    success_check = await sync_to_async(Friends.objects.get)(friend1=self.user, friend2=receiver, state="pending")
+                    print(success_check)
+                except Friends.DoesNotExist:
+                    print(f'ERROR: Friends are not created in the database')
+
+                # Debug print to verify group name and content of the message
+                print(f"Sending friend request from {sender_username} to {receiver_username} in group user_{receiver.id}")
+                
+                await self.channel_layer.group_send(
+                    f"user_{receiver.id}",
+                    {
+                        'type': 'send_friend_request',
+                        'sender': f"{sender_username}",
+                        'message': f"You have a friend request from {sender_username}.",
+                    }
+                )
+                print("Message sent successfully")
             
         except Users2.DoesNotExist:
             await self.send(text_data=json.dumps({
@@ -123,6 +145,18 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
             )
 
     async def handle_friend_declination(self, data):
+        decliner = data.get('decliner')
+        declined = await sync_to_async(Users2.objects.get)(username=data.get('declined'))
+
+        await self.channel_layer.group_send(
+                f"user_{declined.id}",
+                {
+                    'type': 'send_friend_declination_notification',
+                    'message': f"Your friend request to {decliner} has been declined.",
+                }
+            )
+
+    async def handle_duplicate_friendship(self, data):
         decliner = data.get('decliner')
         declined = await sync_to_async(Users2.objects.get)(username=data.get('declined'))
 
@@ -173,5 +207,11 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
     async def send_friend_declination_notification(self, event):
         await self.send(text_data=json.dumps({
             'type': 'friend_declination_notification',
+            'message': event['message'],
+        }))
+    
+    async def send_duplicate_friendship_notification(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'friend_duplication_notification',
             'message': event['message'],
         }))
