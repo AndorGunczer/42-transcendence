@@ -9,6 +9,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import AccessToken
 from django.conf import settings
 import jwt
+from django.db.models import Q
 
 from transcendence.models import Users2, Friends  # Adjust the import based on your project structure
 
@@ -92,7 +93,11 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
             receiver = await sync_to_async(Users2.objects.get)(username=receiver_username)
             # receiver = await sync_to_async(Users2.objects.get)(username=sender_username)
             try:
-                await sync_to_async(Friends.objects.get)(friend1=self.user, friend2=receiver, state="pending")
+                await sync_to_async(Friends.objects.get)(
+                    Q(state="pending") | Q(state="accepted"),
+                    friend1=self.user,
+                    friend2=receiver
+                )
                 print("Friendship has already been created")
 
                 await self.channel_layer.group_send(
@@ -133,20 +138,40 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
             }))
 
     async def handle_friend_acceptance(self, data):
-        acceptor = data.get('acceptor')
+        acceptor = await sync_to_async(Users2.objects.get)(username=data.get('acceptor'))
         accepted = await sync_to_async(Users2.objects.get)(username=data.get('accepted'))
+
+        friendship = await sync_to_async(Friends.objects.get)(friend1=accepted, friend2=acceptor, state="pending")
+        friendship.state = "accepted"
+        await sync_to_async(friendship.save)()
 
         await self.channel_layer.group_send(
                 f"user_{accepted.id}",
                 {
                     'type': 'send_friend_acceptance_notification',
-                    'message': f"Your friend request to {acceptor} has been accepted.",
+                    'acceptor': acceptor.username,
+                    'accepted': accepted.username,
+                    'message': f"Your friend request to {acceptor.username} has been accepted.",
                 }
             )
 
+        await self.channel_layer.group_send(
+            f"user_{acceptor.id}",
+            {
+                'type': 'send_friend_acceptance_notification',
+                'acceptor': acceptor.username,
+                'accepted': accepted.username,
+                'message': f"Your friend request to {acceptor.username} has been accepted.",
+            }
+        )
+
     async def handle_friend_declination(self, data):
-        decliner = data.get('decliner')
+        decliner = await sync_to_async(Users2.objects.get)(username=data.get('decliner'))
         declined = await sync_to_async(Users2.objects.get)(username=data.get('declined'))
+
+        friendship = await sync_to_async(Friends.objects.get)(friend1=declined, friend2=decliner, state="pending")
+        friendship.state = "declined"
+        await sync_to_async(friendship.delete)()
 
         await self.channel_layer.group_send(
                 f"user_{declined.id}",
@@ -201,6 +226,8 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
     async def send_friend_acceptance_notification(self, event):
         await self.send(text_data=json.dumps({
             'type': 'friend_acceptance_notification',
+            'acceptor': event['acceptor'],
+            'accepted': event['accepted'],
             'message': event['message'],
         }))
 

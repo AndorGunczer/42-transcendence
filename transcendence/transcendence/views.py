@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from . import models
-from transcendence.models import Users2, Tournaments, Participants, Players, Games, Avatar
+from transcendence.models import Users2, Tournaments, Participants, Players, Games, Avatar, Friends
 from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -19,6 +19,7 @@ import json
 import random
 from transcendence.web3_utils import add_tournament, add_participant, increment_score, set_winner, get_tournament_count, get_tournament, get_participant_score, get_participant_list, get_tournament_index_by_name  
 from .menus import MENU_DATA
+from django.db.models import Q
 
 # Initial Load of Site
 
@@ -131,7 +132,7 @@ def modify_json_menu(menu_type, token):
                 ]
             },
             {
-                # friendlist
+                # friend request list
                 'type': 'div',
                 'class': 'd-flex flex-column',
                 'content': [
@@ -144,13 +145,109 @@ def modify_json_menu(menu_type, token):
                                 'type': 'h3',
                                 'class': 'text-white',
                                 'text': 'Friend Requests'
-                            }
+                            },
+                        ]
+                    },
+                ]
+            },
+            {
+                # friendlist
+                'type': 'div',
+                'class': 'd-flex flex-column',
+                'content': [
+                    {
+                        'type': 'div',
+                        'identifier': 'friends',
+                        'class': 'd-flex flex-column',
+                        'content': [
+                            {
+                                'type': 'h3',
+                                'class': 'text-white',
+                                'text': 'Friends'
+                            },
                         ]
                     },
                 ]
             }
         ]
     })
+
+    friend_requests_div = menu['menuItems'][len(menu['menuItems'])-1]['content'][1]['content']
+    friends_div = menu['menuItems'][len(menu['menuItems'])-1]['content'][2]['content']
+
+    friend_requests_db = Friends.objects.filter(
+        Q(friend1__username=user.username) | Q(friend2__username=user.username),
+        state="pending"
+    )
+
+    friends_db = Friends.objects.filter(
+        Q(friend1__username=user.username) | Q(friend2__username=user.username),
+        state="accepted"
+    )
+
+    for request in friend_requests_db:
+        if (request.friend2.username == user.username):
+            friend_requests_div.append({
+                'type': 'div',
+                'class': 'd-flex flex-column',
+                'content': [
+                    {
+                        'type': 'p',
+                        'class': 'text-white',
+                        'text': f"new friend request from {request.friend1.username if user.username == request.friend2.username else request.friend2.username}",
+                    },
+                    {
+                        'type': 'div',
+                        'class': 'd-flex flex-column',
+                        'content': [
+                            {
+                                'type': 'button',
+                                'onclick': f"accept_friend_request(this.id)",
+                                'identifier': f"{request.friend1.username if user.username == request.friend2.username else request.friend2.username}",
+                                'text': 'ACCEPT'
+                            },
+                            {
+                                'type': 'button',
+                                'onclick': f"accept_friend_request(this.id)",
+                                'identifier': f"{request.friend1.username if user.username == request.friend2.username else request.friend2.username}",
+                                'text': 'DECLINE'
+                            }
+                        ]
+                    }
+                ]
+            })
+
+    for friend in friends_db:
+        # if (request.friend2.username == user.username):
+        friends_div.append({
+            'type': 'div',
+            'class': 'd-flex flex-column',
+            'content': [
+                {
+                    'type': 'p',
+                    'class': 'text-white',
+                    'text': f"{friend.friend1.username if user.username == friend.friend2.username else friend.friend2.username}",
+                },
+                {
+                    'type': 'div',
+                    'class': 'd-flex flex-column',
+                    'content': [
+                        {
+                            'type': 'button',
+                            'onclick': f"chat(this.id)",
+                            'identifier': f"{friend.friend1.username if user.username == friend.friend2.username else friend.friend2.username}",
+                            'text': 'CHAT'
+                        },
+                        {
+                            'type': 'button',
+                            'onclick': f"checkProfile(this.id)",
+                            'identifier': f"{friend.friend1.username if user.username == friend.friend2.username else friend.friend2.username}",
+                            'text': 'PROFILE'
+                        }
+                    ]
+                }
+            ]
+        })
     
 
     return menu
@@ -169,9 +266,7 @@ def tournament_select_fill(menu):
 
     return menu
 
-from django.db.models import Q
 
-from django.db.models import Q
 
 def tournament_select_page_fill(menu, participants, tournament_name):
     # for participant in participants:
@@ -1364,6 +1459,106 @@ def save_changes(request, menu_type='main'):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
     else:
         menu = modify_json_menu(menu_type, token)
+
+    if menu is not None:
+        return JsonResponse(menu)
+    else:
+        return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+# FRIENDS
+
+def fill_profile_with_user_data(menu, user):
+    print(f"fill_profile_with_user_data: {user}")
+    menu['menuItems'][0]['content'][1]['text'] = f'User: {user.username}'
+    menu['menuItems'][0]['content'][2]['text'] = f'Wins: {user.wins}'
+    menu['menuItems'][0]['content'][3]['text'] = f'Losses: {user.losses}'
+    menu['menuItems'][0]['content'].append({
+        'type': 'img',
+        'src': f'{user.avatarDirect}',
+        'identifier': 'avatarPic'
+    })
+
+    match_history = Games.objects.filter(players__player=user).order_by('-date_of_game')
+    print(match_history)
+
+    menu['menuItems'][1]['content'].append({
+        'type': 'table',
+        'class': 'w-100 d-flex flex-column justify-content-center align-items-center',
+        'content': [
+            {
+                'type': 'thead',
+                'class': 'thead-dark text-white w-100 d-flex flex-row justify-content-center gap-4',
+                'content': [
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': 'Date'
+                    },
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': 'Opponent'
+                    },
+                    {
+                        'type': 'td',
+                        'class': 'text-white',
+                        'text': f'Winner'
+                    }                    
+                ]
+            }
+        ]
+    })
+
+    table = menu['menuItems'][1]['content'][0]['content']
+
+    for match in match_history:
+        opponent = (Players.objects.filter(game=match).exclude(player=user))[0]
+        opponent_name = None
+
+        if opponent.player is not None:
+            opponent_name = opponent.player.username
+            print(f"Opponent: {opponent.player.username}")
+        else:
+            opponent_name = opponent.guest_name
+            print(f"Opponent: {opponent.guest_name}")
+
+        table.append({
+            'type': 'tr',
+            'class': 'participant text-white',
+            'content': [
+                {
+                    'type': 'td',
+                    'class': 'text-white',
+                    'text': f'{match.date_of_game}'
+                },
+                {
+                    'type': 'td',
+                    'class': 'text-white',
+                    'text': opponent_name,
+                },
+                {
+                    'type': 'td',
+                    'class': 'text-white',
+                    'text': f'{match.result}'
+                }
+            ]
+        })
+
+    return menu
+
+def profile(request, menu_type='profile'):
+    token = get_token_from_header(request)
+
+    data = json.loads(request.body)
+    user_of_profile = Users2.objects.get(username=data.get("user_of_profile"))
+    print(f"USER_OF_PROFILE: {user_of_profile.wins}")
+    user_of_query = Users2.objects.get(username=data.get("user_of_query"))
+
+    if (token == None) or (not validate_token(token)):
+        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+    else:
+        menu = modify_json_menu(menu_type, token)
+        menu = fill_profile_with_user_data(menu, user_of_profile)
 
     if menu is not None:
         return JsonResponse(menu)

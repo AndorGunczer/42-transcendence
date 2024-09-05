@@ -221,6 +221,80 @@ MENU_DATA = {
             },
         ]
     },
+    'profile': {
+        'menuTitle': 'profile',
+        'headerItems': [
+            {
+                'id': 1,
+                'type': 'div',
+                'class': 'player-info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'text-white',
+                        'text': 'logged in as PLACEHOLDER'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'text-white',
+                        'text': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'text-white',
+                        'text': 'losses'
+                    }
+                ]
+            },
+            {
+                'id': 2,
+                'type': 'button',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'text': 'BACK',
+                'onclick': 'load_main()'
+            }
+        ],
+        'menuItems': [
+            {
+                'id': 1,
+                'type': 'div',
+                'class': 'profile_info',
+                'content': [
+                    {
+                        'type': 'div',
+                        'class': 'placeholder_player_image'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'text-white',
+                        'text': 'User: '
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'text-white',
+                        'text': 'Wins: '
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'text-white',
+                        'text': 'Losses: '
+                    }
+                ]
+            },
+            {
+                'id': 2,
+                'type': 'div',
+                'identifier': 'table-container',
+                'content': [
+                    
+                ]
+            },
+        ]
+    },
     'tournament_main': {
         'menuTitle': 'Tournament Main Menu',
         'headerItems': [

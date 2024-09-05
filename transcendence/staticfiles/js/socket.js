@@ -61,13 +61,46 @@ function new_friend_request(friend) {
     let accept = document.createElement('button');
     accept.setAttribute('onclick', `accept_friend_request(this.id)`);
     accept.setAttribute('id', `${friend}`);
-    accept.innerHTML = 'Accept';
+    accept.innerHTML = 'ACCEPT';
     buttonDiv.appendChild(accept);
 
     let decline = document.createElement('button');
     decline.setAttribute('onclick', 'decline_friend_request(this.id)');
     decline.setAttribute('id', `${friend}`);
-    decline.innerHTML = 'Decline';
+    decline.innerHTML = 'DECLINE';
+    buttonDiv.appendChild(decline);
+
+    console.log(newNode);
+
+    return newNode;
+}
+
+function new_friend(friend) {
+    let newNode;
+
+    newNode = document.createElement('div');
+    newNode.setAttribute('class', 'd-flex flex-column');
+    // appendChild
+
+    let p = document.createElement('p');
+    p.setAttribute('class', 'text-white');
+    p.innerHTML = `${friend}`;
+    newNode.appendChild(p);
+
+    let buttonDiv = document.createElement('div');
+    buttonDiv.setAttribute('class', 'd-flex flex-column');
+    newNode.appendChild(buttonDiv);
+
+    let accept = document.createElement('button');
+    accept.setAttribute('onclick', `chat(this.id)`);
+    accept.setAttribute('id', `${friend}`);
+    accept.innerHTML = 'CHAT';
+    buttonDiv.appendChild(accept);
+
+    let decline = document.createElement('button');
+    decline.setAttribute('onclick', 'checkProfile(this.id)');
+    decline.setAttribute('id', `${friend}`);
+    decline.innerHTML = 'PROFILE';
     buttonDiv.appendChild(decline);
 
     console.log(newNode);
@@ -93,7 +126,25 @@ function handleNotification(data) {
 
 function handleFriendAcceptanceNotification(data) {
     console.log('New notification:', data.message);
-    alert(data.message);
+    
+    try {
+        // if fails then its the sender
+        console.log('Looking for element with ID:', data.accepted);
+        const elementToRemove = (document.getElementById(data.accepted).parentElement).parentElement;
+        elementToRemove.remove();
+        console.log('receiver');
+        const parent = document.getElementById('friends');
+        const newNode = new_friend(data.accepted);
+        parent.appendChild(newNode);
+    } catch (error) {
+        console.log(error);
+        console.log('sender');
+        const parent = document.getElementById('friends');
+        const newNode = new_friend(data.acceptor);
+        parent.appendChild(newNode);
+
+    }
+    // alert(data.message);
 }
 
 function handleFriendDeclinationNotification(data) {
@@ -132,6 +183,11 @@ function accept_friend_request(accepted_user) {
     const acceptor_user = (document.getElementById("user").innerHTML).split(" ").pop();
     accepted_user = accepted_user;
 
+
+    // Move to after ack function
+    // const elementToRemove = document.getElementById(accepted_user).parentElement.parentElement;
+    // elementToRemove.remove();
+
     const message = JSON.stringify({
         acceptor: acceptor_user,
         accepted: accepted_user,
@@ -146,6 +202,10 @@ function decline_friend_request(declined_user) {
 
     const decliner_user = (document.getElementById("user").innerHTML).split(" ").pop();
     declined_user = declined_user;
+
+    // Move to after ack function
+    // const elementToRemove = document.getElementById(declined_user).parentElement.parentElement;
+    // elementToRemove.remove();
 
     const message = JSON.stringify({
         decliner: decliner_user,

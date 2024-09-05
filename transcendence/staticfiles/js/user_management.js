@@ -381,3 +381,46 @@ async function saveChanges() {
       console.error('Error:', error);
   });
 }
+
+async function checkProfile(profile_name) {
+  const csrfToken = await getCsrfToken();
+  const user_of_query = (document.getElementById("user").innerHTML).split(" ").pop();
+  let url = "/profile";
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({
+      'user_of_profile': profile_name,
+      'user_of_query': user_of_query,
+    }),
+    credentials: 'include'
+  }).then((response) => {
+    if (!response.ok) console.log("yeaah");
+    else return response.json();
+  })
+  .then((json) => {
+    deleteHeader();
+    deleteMain();
+
+    // CREATE HEADER
+    // console.log(json)
+
+    headerLoad(json);
+
+    // CREATE CONTAINER
+
+    json.menuItems.forEach((item) => {
+      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+      let element = document.createElement(item.type);
+      if (item.type == "div" || item.type == "form" || item.type == "table")
+        divLoader(element, item.content);
+
+      elementCustomize(element, item);
+      parent.appendChild(element);
+    });
+  });
+}

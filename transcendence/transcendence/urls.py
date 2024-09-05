@@ -56,4 +56,6 @@ urlpatterns = [
     path('settings', views.load_settings, name='settings'),
     path('delete_user_stats', views.delete_user_stats, name='delete_user_stats'),
     path('save_changes', views.save_changes, name='save_changes'),
+    # FRIENDS
+    path('profile', views.profile, name="profile"),
 ]
