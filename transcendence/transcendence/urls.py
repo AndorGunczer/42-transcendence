@@ -58,4 +58,5 @@ urlpatterns = [
     path('save_changes', views.save_changes, name='save_changes'),
     # FRIENDS
     path('profile', views.profile, name="profile"),
+    path('open_chat', views.open_chat, name="open_chat"),
 ]

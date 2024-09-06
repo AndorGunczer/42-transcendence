@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from . import models
-from transcendence.models import Users2, Tournaments, Participants, Players, Games, Avatar, Friends
+from transcendence.models import Users2, Tournaments, Participants, Players, Games, Avatar, Friends, Messages
 from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -1573,3 +1573,49 @@ def profile(request, menu_type='profile'):
         return JsonResponse(menu)
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+def open_chat(request):
+    token = get_token_from_header(request)
+
+    data = json.loads(request.body)
+    target_friend_username = data.get('target_friend')
+    source_friend_username = data.get('source_friend')
+    
+    try:
+        target_friend = Users2.objects.get(username=target_friend_username)
+        source_friend = Users2.objects.get(username=source_friend_username)
+    except Users2.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+    # Query the friendship between these two users
+    try:
+        friendship = Friends.objects.get(
+            Q(friend1=target_friend, friend2=source_friend) |
+            Q(friend1=source_friend, friend2=target_friend)
+        )
+    except Friends.DoesNotExist:
+        return JsonResponse({'error': 'Friendship not found'}, status=404)
+
+    if (token == None) or (not validate_token(token)):
+        pass
+    else:
+        messages_queryset = Messages.objects.filter(friendship=friendship)
+
+        # Populate the messages list
+        messages_list = []
+        for message in messages_queryset:
+            messages_list.append({
+                'sender': message.sender,
+                'receiver': message.receiver,
+                'message': message.message,
+            })
+
+        # Create the JsonResponse
+        response = JsonResponse({
+            'friendship_id': friendship.id,
+            'messages': messages_list,
+        })
+
+        return response
+
+    return JsonResponse({'error': 'Menu type not found'}, status=404)

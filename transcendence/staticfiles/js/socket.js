@@ -39,7 +39,22 @@ socket.onclose = function(e) {
 // Handle Incoming 
 
 function handleChatMessage(data) {
-    console.log('New chat message:', data);
+    console.log(data.friendship_id);
+    let chatWindow = document.getElementById(data.friendship_id);
+    let chatBox = chatWindow.children[1];
+    let thisUser = (document.getElementById("user").innerHTML).split(" ").pop();
+    let messageDiv = document.createElement("div");
+
+    if (thisUser == data.receiver) {
+        messageDiv.setAttribute("class", "align-self-start w-25");
+    } else {
+        messageDiv.setAttribute("class", "align-self-end w-25");
+    }
+
+    let messageParagraph = document.createElement("p");
+    messageParagraph.innerHTML = data.message;
+    messageDiv.appendChild(messageParagraph);
+    chatBox.appendChild(messageDiv);
 }
 
 function new_friend_request(friend) {
@@ -214,4 +229,45 @@ function decline_friend_request(declined_user) {
     })
 
     socket.send(message);
+}
+
+function send_message(event) {
+    // Get the button element that triggered the function
+    const buttonElement = event.target;
+
+    // Get the chat window element by navigating from the button
+    const chatWindow = buttonElement.closest('.chat-window'); // Assuming the chat window has a class like 'chat-window'
+    
+    // Access the necessary data from the chat window's dataset
+    const receiver = chatWindow.dataset.receiver;
+    const sender = chatWindow.dataset.sender;
+    const friendship_id = chatWindow.dataset.friendshipId;
+
+    // Get the message from the input field in the chat window
+    const inputField = chatWindow.querySelector('input[type="text"]');
+    const message = inputField.value;
+
+    if (message.trim() === "") {
+        console.log("Message cannot be empty!");
+        return;
+    }
+
+    // Construct the message data to send
+    const messageData = JSON.stringify({
+        type: "chat_message",
+        sender: sender,
+        receiver: receiver,
+        friendship_id: friendship_id,
+        message: message
+    });
+
+    // Clear the input field after sending
+    inputField.value = "";
+
+    // Here you would send the message data to the server, for example using fetch or WebSocket
+    // For demonstration, let's log it to the console
+    console.log("Sending message:", messageData);
+
+    // Example: Sending the message via fetch
+    socket.send(messageData);
 }

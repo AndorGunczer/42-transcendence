@@ -426,64 +426,93 @@ async function checkProfile(profile_name) {
 }
 
 async function chat(target_friend) {
-  const parent = document.getElementById("chat-container");
+  const csrfToken = await getCsrfToken();
+  const currentUser = (document.getElementById("user").innerHTML).split(" ").pop();
+  let sender = "";
+  let receiver = "";
+  let friendship_id = 0;
+  let messages = [];
 
-  let chatWindow = document.createElement("div");
-  chatWindow.setAttribute("class", "position-fixed d-flex flex-column justify-content-between h-25 w-25 pe-auto");
-  chatWindow.setAttribute("id", "{friend_id}");
-  // create 3 divs to create chatwindow
+  const url = '/open_chat';
 
-  // Add identifier to chat window
-  let chatNav = document.createElement("div");
-  chatNav.setAttribute("class", "bg-success");
-  let navParagraph = document.createElement("p");
-  navParagraph.innerHTML = target_friend;
-  chatNav.appendChild(navParagraph);
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({
+      'target_friend': target_friend,
+      'source_friend': currentUser,
+    }),
+    credentials: 'include'
+  }).then((response) => {
+    if (!response.ok) console.log("yeaah");
+    else return response.json();
+  }).then((json) => {
+    console.log(json);
+    receiver = json.target_friend;
+    sender = json.source_friend;
+    friendship_id = json.friendship_id;
+    messages = json.messages;
+    console.log(friendship_id);
 
-  // Add Message store to chat window
-  let chatBody = document.createElement("div");
-  chatBody.setAttribute("class", "bg-danger flex-grow-1 overflow-scroll");
+    // CREATE THE CHATWINDOW
+    const parent = document.getElementById("chat-container");
 
-  // Add HMI to chat window
-  let chatInput = document.createElement("div");
-  chatInput.setAttribute("class", "bg-warning d-flex flex-row");
+    let chatWindow = document.createElement("div");
+    chatWindow.setAttribute("class", "position-fixed d-flex flex-column justify-content-between h-25 w-25 pe-auto chat-window");
+    chatWindow.setAttribute("id", `${friendship_id}`);
 
-  let inputField = document.createElement("input");
-  inputField.setAttribute("type", "text");
-  inputField.setAttribute("class", "w-75");
-  chatInput.appendChild(inputField);
-  let inputButton = document.createElement("button");
-  inputButton.setAttribute("class", "w-25");
-  inputButton.setAttribute("onclick", "send_message()");
-  chatInput.appendChild(inputButton);
+    chatWindow.dataset.receiver = receiver;
+    chatWindow.dataset.sender = sender;
+    chatWindow.dataset.friendshipId = friendship_id;
+    // create 3 divs to create chatwindow
+  
+    // Add identifier to chat window
+    let chatNav = document.createElement("div");
+    chatNav.setAttribute("class", "bg-success");
+    let navParagraph = document.createElement("p");
+    navParagraph.innerHTML = target_friend;
+    chatNav.appendChild(navParagraph);
+  
+    // Add Message store to chat window
+    let chatBody = document.createElement("div");
+    chatBody.setAttribute("class", "bg-danger d-flex flex-column flex-grow-1 overflow-scroll");
+  
+    // Add HMI to chat window
+    let chatInput = document.createElement("div");
+    chatInput.setAttribute("class", "bg-warning d-flex flex-row");
+  
+    let inputField = document.createElement("input");
+    inputField.setAttribute("type", "text");
+    inputField.setAttribute("class", "w-75");
+    chatInput.appendChild(inputField);
+    let inputButton = document.createElement("button");
+    inputButton.setAttribute("class", "w-25");
+    inputButton.setAttribute("onclick", "send_message(event)");
+    chatInput.appendChild(inputButton);
+  
+  
+  
+    chatWindow.appendChild(chatNav);
+    chatWindow.appendChild(chatBody);
+    chatWindow.appendChild(chatInput);
+    parent.appendChild(chatWindow);
 
+    messages.forEach((message) => {
+      let messageDiv = document.createElement("div");
+      console.log(`receiver: ${receiver} - currentUser: ${currentUser}`);
+      if (receiver == currentUser)
+        messageDiv.setAttribute("class", "align-self-start w-25");
+      else
+        messageDiv.setAttribute("class", "align-self-end w-25");
 
-
-  chatWindow.appendChild(chatNav);
-  chatWindow.appendChild(chatBody);
-  chatWindow.appendChild(chatInput);
-  parent.appendChild(chatWindow);
-
-  // const source_friend = (document.getElementById("user").innerHTML).split(" ").pop();
-
-  // const url = '/open_chat'
-  // fetch(url, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     "X-CSRFToken": csrfToken,
-  //   },
-  //   body: JSON.stringify({
-  //     'target_friend': target_friend,
-  //     'source_friend': source_friend,
-  //   }),
-  //   credentials: 'include'
-  // }).then((response) => {
-  //   if (!response.ok) console.log("yeaah");
-  //   else return response.json();
-  // }).then((json) => {
-
-  // })
-
+      let messageParagraph = document.createElement("p");
+      messageParagraph.innerHTML = message.message;
+      messageDiv.appendChild(messageParagraph);
+      chatBody.appendChild(messageDiv);
+    })
+  })
 
 }

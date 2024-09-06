@@ -11,7 +11,7 @@ from django.conf import settings
 import jwt
 from django.db.models import Q
 
-from transcendence.models import Users2, Friends  # Adjust the import based on your project structure
+from transcendence.models import Users2, Friends, Messages  # Adjust the import based on your project structure
 
 class CommunicationConsumer(AsyncWebsocketConsumer):
 
@@ -81,6 +81,40 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
 
     async def handle_chat_message(self, data):
         print("handle_chat_message is called")
+        sender = await sync_to_async(Users2.objects.get)(username=data.get("sender"))
+        receiver = await sync_to_async(Users2.objects.get)(username=data.get("receiver"))
+        friendship_id = data.get("friendship_id")
+        friendship = await sync_to_async(Friends.objects.get)(id=friendship_id)
+        message = data.get("message")
+
+        new_message = await sync_to_async(Messages)(friendship=friendship, sender=sender.username, receiver=receiver.username, message=message)
+        await sync_to_async(new_message.save)()
+
+        await self.channel_layer.group_send(
+                f"user_{sender.id}",
+                {
+                    'type': 'send_chat_message',
+                    'sender': sender.username,
+                    'receiver': receiver.username,
+                    'friendship_id': friendship_id,
+                    'message': message,
+                }
+            )
+
+        await self.channel_layer.group_send(
+                f"user_{receiver.id}",
+                {
+                    'type': 'send_chat_message',
+                    'sender': sender.username,
+                    'receiver': receiver.username,
+                    'friendship_id': friendship_id,
+                    'message': message,
+                }
+            )
+
+
+
+
 
     async def handle_friend_request(self, data):
         print("handle_friend_request is called")
@@ -207,6 +241,9 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
     async def send_chat_message(self, event):
         await self.send(text_data=json.dumps({
             'type': 'chat_message',
+            'sender': event['sender'],
+            'receiver': event['receiver'],
+            'friendship_id': event['friendship_id'],
             'message': event['message'],
         }))
 
