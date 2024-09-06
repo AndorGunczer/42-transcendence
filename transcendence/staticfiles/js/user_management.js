@@ -424,3 +424,66 @@ async function checkProfile(profile_name) {
     });
   });
 }
+
+async function chat(target_friend) {
+  const parent = document.getElementById("chat-container");
+
+  let chatWindow = document.createElement("div");
+  chatWindow.setAttribute("class", "position-fixed d-flex flex-column justify-content-between h-25 w-25 pe-auto");
+  chatWindow.setAttribute("id", "{friend_id}");
+  // create 3 divs to create chatwindow
+
+  // Add identifier to chat window
+  let chatNav = document.createElement("div");
+  chatNav.setAttribute("class", "bg-success");
+  let navParagraph = document.createElement("p");
+  navParagraph.innerHTML = target_friend;
+  chatNav.appendChild(navParagraph);
+
+  // Add Message store to chat window
+  let chatBody = document.createElement("div");
+  chatBody.setAttribute("class", "bg-danger flex-grow-1 overflow-scroll");
+
+  // Add HMI to chat window
+  let chatInput = document.createElement("div");
+  chatInput.setAttribute("class", "bg-warning d-flex flex-row");
+
+  let inputField = document.createElement("input");
+  inputField.setAttribute("type", "text");
+  inputField.setAttribute("class", "w-75");
+  chatInput.appendChild(inputField);
+  let inputButton = document.createElement("button");
+  inputButton.setAttribute("class", "w-25");
+  inputButton.setAttribute("onclick", "send_message()");
+  chatInput.appendChild(inputButton);
+
+
+
+  chatWindow.appendChild(chatNav);
+  chatWindow.appendChild(chatBody);
+  chatWindow.appendChild(chatInput);
+  parent.appendChild(chatWindow);
+
+  // const source_friend = (document.getElementById("user").innerHTML).split(" ").pop();
+
+  // const url = '/open_chat'
+  // fetch(url, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     "X-CSRFToken": csrfToken,
+  //   },
+  //   body: JSON.stringify({
+  //     'target_friend': target_friend,
+  //     'source_friend': source_friend,
+  //   }),
+  //   credentials: 'include'
+  // }).then((response) => {
+  //   if (!response.ok) console.log("yeaah");
+  //   else return response.json();
+  // }).then((json) => {
+
+  // })
+
+
+}

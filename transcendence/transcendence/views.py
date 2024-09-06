@@ -248,6 +248,15 @@ def modify_json_menu(menu_type, token):
                 }
             ]
         })
+
+        menu['menuItems'].append({
+            'type': 'div',
+            'class': 'position-fixed bottom-0 h-25 w-100 pe-none',
+            'identifier': 'chat-container',
+            'content': [
+
+            ]
+        })
     
 
     return menu
