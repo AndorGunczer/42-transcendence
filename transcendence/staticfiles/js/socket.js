@@ -46,12 +46,13 @@ function handleChatMessage(data) {
     let messageDiv = document.createElement("div");
 
     if (thisUser == data.receiver) {
-        messageDiv.setAttribute("class", "align-self-start w-25 p-1 mt-1 bg-warning border-primary rounded");
+        messageDiv.setAttribute("class", "align-self-start w-25 p-1 mt-1 bg-chat-message border-primary rounded");
     } else {
-        messageDiv.setAttribute("class", "align-self-end w-25 p-1 mt-1 bg-warning border-primary rounded");
+        messageDiv.setAttribute("class", "align-self-end w-25 p-1 mt-1 bg-chat-message border-primary rounded");
     }
 
     let messageParagraph = document.createElement("p");
+    messageParagraph.setAttribute("class", "text-white");
     messageParagraph.innerHTML = data.message;
     messageDiv.appendChild(messageParagraph);
     chatBox.appendChild(messageDiv);

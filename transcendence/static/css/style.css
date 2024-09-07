@@ -36,6 +36,18 @@ img {
     background-color: #FB773C !important;
 }
 
+.bg-chat-nav {
+    background-color: #164e63 !important;
+}
+
+.bg-chat-body {
+    background-color: #22d3ee !important;
+}
+
+.bg-chat-message {
+    background-color: #0e7490 !important;
+}
+
 .header {
     /* Removed the height property */
     /* Consider using padding instead to maintain the layout */

@@ -469,7 +469,7 @@ async function chat(target_friend) {
     const parent = document.getElementById("chat-container");
 
     let chatWindow = document.createElement("div");
-    chatWindow.setAttribute("class", "d-flex flex-column justify-content-between h-100 w-25 pe-auto chat-window");
+    chatWindow.setAttribute("class", "d-flex flex-column justify-content-between h-100 w-25 pe-auto chat-window rounded bg-secondary bg-gradient text-white");
     chatWindow.setAttribute("id", `${friendship_id}`);
 
     chatWindow.dataset.receiver = receiver;
@@ -479,14 +479,15 @@ async function chat(target_friend) {
   
     // Add identifier to chat window
     let chatNav = document.createElement("div");
-    chatNav.setAttribute("class", "bg-success");
+    chatNav.setAttribute("class", "bg-chat-nav d-flex justify-content-center align-items-center");
+    // chatNav.setAttribute("onclick", "chatNavRemove(this.id)");
     let navParagraph = document.createElement("p");
     navParagraph.innerHTML = target_friend;
     chatNav.appendChild(navParagraph);
   
     // Add Message store to chat window
     let chatBody = document.createElement("div");
-    chatBody.setAttribute("class", "bg-danger d-flex flex-column flex-grow-1 overflow-scroll");
+    chatBody.setAttribute("class", "bg-chat-body d-flex flex-column flex-grow-1 overflow-scroll");
   
     // Add HMI to chat window
     let chatInput = document.createElement("div");
@@ -494,10 +495,11 @@ async function chat(target_friend) {
   
     let inputField = document.createElement("input");
     inputField.setAttribute("type", "text");
-    inputField.setAttribute("class", "w-75");
+    inputField.setAttribute("class", "w-75 bg-secondary bg-gradient text-white");
     chatInput.appendChild(inputField);
     let inputButton = document.createElement("button");
-    inputButton.setAttribute("class", "w-25");
+    inputButton.innerHTML = "Send";
+    inputButton.setAttribute("class", "w-25 bg-secondary text-white");
     inputButton.setAttribute("onclick", "send_message(event)");
     chatInput.appendChild(inputButton);
   
@@ -512,11 +514,12 @@ async function chat(target_friend) {
       let messageDiv = document.createElement("div");
       console.log(`receiver: ${receiver} - currentUser: ${currentUser}`);
       if (message.receiver == currentUser)
-        messageDiv.setAttribute("class", "align-self-start w-25 p-1 m-1 bg-warning border-primary rounded");
+        messageDiv.setAttribute("class", "align-self-start w-25 p-1 m-1 bg-chat-message border-primary rounded");
       else
-        messageDiv.setAttribute("class", "align-self-end w-25 p-1 m-1 bg-warning border-primary rounded");
+        messageDiv.setAttribute("class", "align-self-end w-25 p-1 m-1 bg-chat-message border-primary rounded");
 
       let messageParagraph = document.createElement("p");
+      messageParagraph.setAttribute("class", "text-white");
       messageParagraph.innerHTML = message.message;
       messageDiv.appendChild(messageParagraph);
       chatBody.appendChild(messageDiv);

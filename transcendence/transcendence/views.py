@@ -108,12 +108,12 @@ def modify_json_menu(menu_type, token):
     menu['menuItems'].append({
         'id': len(menu['menuItems']),
         'type': 'div',
-        'class': 'h-100 w-25 position-absolute top-25 end-0 border border-white',
+        'class': 'h-100 w-25 position-absolute top-25 end-0 border border-white overflow-scroll',
         'content': [
             {
                 # add friend
                 'type': 'div',
-                'class': 'd-flex flex-column overflow-scroll',
+                'class': 'd-flex flex-column',
                 'content': [
                     {
                         'type': 'input',
@@ -193,7 +193,7 @@ def modify_json_menu(menu_type, token):
                 'content': [
                     {
                         'type': 'p',
-                        'class': 'text-white',
+                        'class': 'text-white m-3',
                         'text': f"new friend request from {request.friend1.username if user.username == request.friend2.username else request.friend2.username}",
                     },
                     {
@@ -202,12 +202,14 @@ def modify_json_menu(menu_type, token):
                         'content': [
                             {
                                 'type': 'button',
+                                'class': 'rounded bg-secondary bg-gradient text-white',
                                 'onclick': f"accept_friend_request(this.id)",
                                 'identifier': f"{request.friend1.username if user.username == request.friend2.username else request.friend2.username}",
                                 'text': 'ACCEPT'
                             },
                             {
                                 'type': 'button',
+                                'class': 'rounded bg-secondary bg-gradient text-white',
                                 'onclick': f"accept_friend_request(this.id)",
                                 'identifier': f"{request.friend1.username if user.username == request.friend2.username else request.friend2.username}",
                                 'text': 'DECLINE'
@@ -225,7 +227,7 @@ def modify_json_menu(menu_type, token):
             'content': [
                 {
                     'type': 'p',
-                    'class': 'text-white',
+                    'class': 'text-white m-3',
                     'text': f"{friend.friend1.username if user.username == friend.friend2.username else friend.friend2.username}",
                 },
                 {
@@ -234,12 +236,14 @@ def modify_json_menu(menu_type, token):
                     'content': [
                         {
                             'type': 'button',
+                            'class': 'rounded bg-secondary bg-gradient text-white',
                             'onclick': f"chat(this.id)",
                             'identifier': f"{friend.friend1.username if user.username == friend.friend2.username else friend.friend2.username}",
                             'text': 'CHAT'
                         },
                         {
                             'type': 'button',
+                            'class': 'rounded bg-secondary bg-gradient text-white',
                             'onclick': f"checkProfile(this.id)",
                             'identifier': f"{friend.friend1.username if user.username == friend.friend2.username else friend.friend2.username}",
                             'text': 'PROFILE'
