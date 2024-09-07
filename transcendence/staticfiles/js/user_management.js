@@ -457,11 +457,19 @@ async function chat(target_friend) {
     messages = json.messages;
     console.log(friendship_id);
 
+    if (document.getElementById(friendship_id))
+      return ;
+
+    let chatWindows = document.getElementsByClassName('chat-window');
+    if (chatWindows.length == 3)
+      chatWindows[0].remove();
+
+
     // CREATE THE CHATWINDOW
     const parent = document.getElementById("chat-container");
 
     let chatWindow = document.createElement("div");
-    chatWindow.setAttribute("class", "position-fixed d-flex flex-column justify-content-between h-25 w-25 pe-auto chat-window");
+    chatWindow.setAttribute("class", "d-flex flex-column justify-content-between h-100 w-25 pe-auto chat-window");
     chatWindow.setAttribute("id", `${friendship_id}`);
 
     chatWindow.dataset.receiver = receiver;
@@ -504,9 +512,9 @@ async function chat(target_friend) {
       let messageDiv = document.createElement("div");
       console.log(`receiver: ${receiver} - currentUser: ${currentUser}`);
       if (message.receiver == currentUser)
-        messageDiv.setAttribute("class", "align-self-start w-25 p-1 mt-1 bg-warning border-primary rounded");
+        messageDiv.setAttribute("class", "align-self-start w-25 p-1 m-1 bg-warning border-primary rounded");
       else
-        messageDiv.setAttribute("class", "align-self-end w-25 p-1 mt-1 bg-warning border-primary rounded");
+        messageDiv.setAttribute("class", "align-self-end w-25 p-1 m-1 bg-warning border-primary rounded");
 
       let messageParagraph = document.createElement("p");
       messageParagraph.innerHTML = message.message;

@@ -113,7 +113,7 @@ def modify_json_menu(menu_type, token):
             {
                 # add friend
                 'type': 'div',
-                'class': 'd-flex flex-column',
+                'class': 'd-flex flex-column overflow-scroll',
                 'content': [
                     {
                         'type': 'input',
@@ -251,7 +251,7 @@ def modify_json_menu(menu_type, token):
 
         menu['menuItems'].append({
             'type': 'div',
-            'class': 'position-fixed bottom-0 h-25 w-100 pe-none',
+            'class': 'position-fixed d-flex flex-row bottom-0 h-25 w-100 pe-none',
             'identifier': 'chat-container',
             'content': [
 
