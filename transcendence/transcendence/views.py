@@ -1612,6 +1612,8 @@ def open_chat(request):
 
         # Create the JsonResponse
         response = JsonResponse({
+            'target_friend': target_friend.username,
+            'source_friend': source_friend.username,
             'friendship_id': friendship.id,
             'messages': messages_list,
         })

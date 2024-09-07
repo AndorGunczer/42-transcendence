@@ -503,10 +503,10 @@ async function chat(target_friend) {
     messages.forEach((message) => {
       let messageDiv = document.createElement("div");
       console.log(`receiver: ${receiver} - currentUser: ${currentUser}`);
-      if (receiver == currentUser)
-        messageDiv.setAttribute("class", "align-self-start w-25");
+      if (message.receiver == currentUser)
+        messageDiv.setAttribute("class", "align-self-start w-25 p-1 mt-1 bg-warning border-primary rounded");
       else
-        messageDiv.setAttribute("class", "align-self-end w-25");
+        messageDiv.setAttribute("class", "align-self-end w-25 p-1 mt-1 bg-warning border-primary rounded");
 
       let messageParagraph = document.createElement("p");
       messageParagraph.innerHTML = message.message;
