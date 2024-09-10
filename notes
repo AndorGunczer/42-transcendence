@@ -99,3 +99,5 @@ NEW NGINX SETUP:
     buttonDiv.appendChild(accept);  
     
     }
+
+Launch Backend with Daphne: daphne -p 8000 transcendence.asgi:application

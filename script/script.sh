@@ -48,8 +48,8 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py populate_avatars
 
-# Run Django server in the background
-nohup python3 manage.py runserver_plus 0.0.0.0:8000 --cert-file /app/cert.crt --key-file /app/key.pem &
+# Run Django server in the background # nohup
+python3 manage.py runserver_plus 0.0.0.0:8000 --cert-file /app/cert.crt --key-file /app/key.pem &
 
 
 # Keep the script running

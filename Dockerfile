@@ -17,6 +17,8 @@ RUN ssh-keygen -A
 RUN apt-get install -y python3 python3-pip
 ENV PIP_BREAK_SYSTEM_PACKAGES=1
 RUN pip3 install django djangorestframework django-cors-headers djangorestframework-simplejwt django-extensions pyOpenSSL Werkzeug
+# Install Async Python packages
+RUN pip3 install daphne channels
 
 # Install Solidity Web3 Module
 RUN pip3 install web3
@@ -56,10 +58,15 @@ RUN apt-get install npm -y
 # Install npm packages globally
 RUN npm install -g truffle ganache-cli
 
+# install nginx
+RUN apt-get install nginx -y
+
+
 # Copy blockchain files and compile contracts
 COPY ./blockchain /app/blockchain
 RUN cd /app/blockchain && truffle compile
 COPY ./transcendence ./transcendence
+COPY ./script/nginx.conf ./nginx.conf
 
 # Set the entrypoint for the container
 ENTRYPOINT ["/app/script.sh"]
