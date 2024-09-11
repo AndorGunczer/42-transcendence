@@ -1,7 +1,7 @@
 from web3 import Web3
 
 # Connect to Ganache (default URL is usually http://localhost:7545)
-web3 = Web3(Web3.HTTPProvider('http://localhost:7545'))
+web3 = Web3(Web3.HTTPProvider('http://192.168.10.3:7545'))
 
 # Ensure connection is successful
 if not web3.is_connected():
@@ -125,9 +125,9 @@ contract_abi = [
     }
 ]
 
-contract_address = '0x7a9f3aA1EEF757421BE6692aefa97132ac210249'
-# f = open("/app/contractAddress.txt", "r")
-# contract_address = (f.read()).strip()
+# contract_address = '0x7a9f3aA1EEF757421BE6692aefa97132ac210249'
+f = open("/app/data/contractAddress.txt", "r")
+contract_address = (f.read()).strip()
 # print(contract_address)
 
 # Initialize contract

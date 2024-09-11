@@ -43,30 +43,32 @@ RUN echo 'root ALL=(postgres) NOPASSWD: ALL' >> /etc/sudoers
 # Expose the application port
 EXPOSE 8000
 
-# Node.js and Solidity dependencies
-RUN apt-get install -y curl
+# # Node.js and Solidity dependencies
+# RUN apt-get install -y curl
 
-# Install nvm and Node.js
-ENV NVM_DIR=/usr/local/nvm
-ENV NODE_VERSION=22.4.1
-RUN mkdir -p $NVM_DIR
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-RUN . $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm use $NODE_VERSION && nvm alias default $NODE_VERSION
-ENV PATH=$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
-RUN apt-get install npm -y
+# # Install nvm and Node.js
+# ENV NVM_DIR=/usr/local/nvm
+# ENV NODE_VERSION=22.4.1
+# RUN mkdir -p $NVM_DIR
+# RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+# RUN . $NVM_DIR/nvm.sh && nvm install $NODE_VERSION && nvm use $NODE_VERSION && nvm alias default $NODE_VERSION
+# ENV PATH=$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+# RUN apt-get install npm -y
 
-# Install npm packages globally
-RUN npm install -g truffle ganache-cli
+# # Install npm packages globally
+# RUN npm install -g truffle ganache-cli
 
 # install nginx
 RUN apt-get install nginx -y
+RUN mkdir ssl
 
 
 # Copy blockchain files and compile contracts
-COPY ./blockchain /app/blockchain
-RUN cd /app/blockchain && truffle compile
+# COPY ./blockchain /app/blockchain
+# RUN cd /app/blockchain && truffle compile
 COPY ./transcendence ./transcendence
-COPY ./script/nginx.conf ./nginx.conf
+COPY ./script/nginx.conf /etc/nginx/nginx.conf
+COPY ./script/openssl.cnf /app/ssl/
 
 # Set the entrypoint for the container
 ENTRYPOINT ["/app/script.sh"]
