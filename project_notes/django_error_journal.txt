@@ -1,0 +1,88 @@
+CSRF requests fail upon introducing code to production infrastructure:
+    settings.py ADD: CSRF_TRUSTED_ORIGINS = ["https://127.0.0.1", "https://localhost"]
+
+No Path /wss/communication (socket failure):
+    Descripton: socket related urls are declared in routing.py, normal http related urls are at urls.py
+        upon requests to socket urls, I get the 404 not found error, because only urls.py is checked.
+    Root Cause Analysis:    - Socket communication uses socket.send() on the front end instead of fetch()
+    Fix: Replace fetch() with socket.send() in socket related functions
+
+Calling Sync function from an Async Context(Channels consumer) error (SynchronousOnlyOperation):
+    Description: Trying to issue an ORM call from within a Consumer fires up the above mentioned error.
+    Root Cause Analysis: x
+    Fix:    - Wrap sync function into async one (using sync to asyc)
+            or 
+            - 
+
+
+AttributeError: 'NoneType' object has no attribute 'group_send'
+    await self.channel_layer.group_send(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    Description: channel_layer is none 
+    Root Cause Analysis:    In the settings, there is no defined backend for django channels to run on.
+    Fix:    - Set a backend for django channels to use in settings.py ()
+
+ASGI: apps aren't loaded yet:
+    Description: imports of installed apps are made before asgi_app is initialized
+    Root Cause Analysis: above
+    Fix:    - Make sure imports happen after the wsgi and asgi initialized, not before
+            (settings.py file there was an import of consumers that created the error)
+
+Hardships with extracting the user during socket communication
+    Methods tried:
+        - database (get_user() from the Users2 model)
+        - Session (Doesn't work because we use Access Tokens)
+        - JWT Access tokens (working solution)
+
+
+NEWEST:
+
+127.0.0.1:53435 - - [07/Sep/2024:18:15:56] "WSCONNECTING /ws/communication/" - -
+2024-09-07 18:15:56,801 ERROR    Exception inside application: 'user_id'
+Traceback (most recent call last):
+  File "/Users/andorgunczer/.local/share/virtualenvs/transcendence-EkEkoSyj/lib/python3.12/site-packages/channels/routing.py", line 62, in __call__
+    return await application(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andorgunczer/.local/share/virtualenvs/transcendence-EkEkoSyj/lib/python3.12/site-packages/channels/sessions.py", line 47, in __call__
+    return await self.inner(dict(scope, cookies=cookies), receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andorgunczer/.local/share/virtualenvs/transcendence-EkEkoSyj/lib/python3.12/site-packages/channels/sessions.py", line 263, in __call__
+    return await self.inner(wrapper.scope, receive, wrapper.send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andorgunczer/.local/share/virtualenvs/transcendence-EkEkoSyj/lib/python3.12/site-packages/channels/auth.py", line 185, in __call__
+    return await super().__call__(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andorgunczer/.local/share/virtualenvs/transcendence-EkEkoSyj/lib/python3.12/site-packages/channels/middleware.py", line 24, in __call__
+    return await self.inner(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andorgunczer/.local/share/virtualenvs/transcendence-EkEkoSyj/lib/python3.12/site-packages/channels/routing.py", line 132, in __call__
+    return await application(
+           ^^^^^^^^^^^^^^^^^^
+  File "/Users/andorgunczer/.local/share/virtualenvs/transcendence-EkEkoSyj/lib/python3.12/site-packages/channels/consumer.py", line 94, in app
+    return await consumer(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andorgunczer/.local/share/virtualenvs/transcendence-EkEkoSyj/lib/python3.12/site-packages/channels/consumer.py", line 58, in __call__
+    await await_many_dispatch(
+  File "/Users/andorgunczer/.local/share/virtualenvs/transcendence-EkEkoSyj/lib/python3.12/site-packages/channels/utils.py", line 50, in await_many_dispatch
+    await dispatch(result)
+  File "/Users/andorgunczer/.local/share/virtualenvs/transcendence-EkEkoSyj/lib/python3.12/site-packages/channels/consumer.py", line 73, in dispatch
+    await handler(message)
+  File "/Users/andorgunczer/.local/share/virtualenvs/transcendence-EkEkoSyj/lib/python3.12/site-packages/channels/generic/websocket.py", line 179, in websocket_connect
+    await self.connect()
+  File "/Users/andorgunczer/WORK/SCHOOL/fresh_trans/transcendence/transcendence/consumers.py", line 28, in connect
+    self.user = await self.get_user_from_token(token)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andorgunczer/.local/share/virtualenvs/transcendence-EkEkoSyj/lib/python3.12/site-packages/asgiref/sync.py", line 468, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.5/Frameworks/Python.framework/Versions/3.12/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andorgunczer/.local/share/virtualenvs/transcendence-EkEkoSyj/lib/python3.12/site-packages/asgiref/sync.py", line 522, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/andorgunczer/WORK/SCHOOL/fresh_trans/transcendence/transcendence/consumers.py", line 45, in get_user_from_token
+    user_id = token.payload['user_id']
+              ~~~~~~~~~~~~~^^^^^^^^^^^
+KeyError: 'user_id'
+127.0.0.1:53435 - - [07/Sep/2024:18:15:56] "WSDISCONNECT /ws/communication/" - -

@@ -1,0 +1,64 @@
+* {
+    /* Reset box-sizing to border-box for consistency */
+    box-sizing: border-box;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    gap: 24px;
+    padding: 50px;
+}
+
+.players {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 24px;
+    /* Consider using padding for vertical spacing */
+    padding: 24px 0;
+}
+
+.header {
+    /* Removed the height property */
+    /* Consider using padding instead to maintain the layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding-bottom: 50px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 24px;
+    /* Consider using padding for vertical spacing */
+    padding: 24px 0;
+}
+
+.button-container {
+    display: flex;
+    gap: 12px;
+    width: 200px;
+    justify-content: space-between;
+    /* Consider using padding instead of height for the buttons */
+}
+
+#container-logo {
+    /* Removed the height property */
+    /* Adjust the logo's size with width and padding as needed */
+    padding: 10px;
+    padding-bottom: 100px;
+}
+
+.menu-button {
+    width: 200px;
+    /* Removed the height property */
+    /* Adjust the button's size with padding as needed */
+    padding: 10px;
+}
