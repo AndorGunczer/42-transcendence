@@ -117,6 +117,7 @@ async function submit_login_form(event) {
         // Show OTP popup
         document.getElementById("otpPopup").style.display = "block";
       } else {
+        chatSocket = new ChatSocket();
         load_main();
       }
       
@@ -159,6 +160,7 @@ async function verify_otp(event) {
   })
   .then((response) => response.json())
   .then((json) => {
+      chatSocket = new ChatSocket();
       load_main()
   })
   .catch((error) => console.error("Error verifying OTP:", error));
@@ -180,6 +182,8 @@ async function logout(event) {
     })
     .then((data) => {
       console.log("Token Cookies Deleted Successfully.");
+      chatSocket.closeWebSocket();
+      chatSocket = null;
       load_main();
     })
     .catch((error) => {
@@ -499,7 +503,7 @@ async function chat(target_friend) {
     let inputButton = document.createElement("button");
     inputButton.innerHTML = "Send";
     inputButton.setAttribute("class", "w-25 bg-secondary text-white");
-    inputButton.setAttribute("onclick", "send_message(event)");
+    inputButton.setAttribute("onclick", "chatSocket.sendMessage(event)");
     chatInput.appendChild(inputButton);
   
   

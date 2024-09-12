@@ -127,7 +127,7 @@ def modify_json_menu(menu_type, token):
                         'type': 'button',
                         'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
                         'text': 'ADD FRIEND',
-                        'onclick': 'send_friend_request(event)',
+                        'onclick': 'chatSocket.sendFriendRequest(event)',
                     }
                 ]
             },
@@ -203,14 +203,14 @@ def modify_json_menu(menu_type, token):
                             {
                                 'type': 'button',
                                 'class': 'rounded bg-secondary bg-gradient text-white',
-                                'onclick': f"accept_friend_request(this.id)",
+                                'onclick': f"chatSocket.acceptFriendRequest(this.id)",
                                 'identifier': f"{request.friend1.username if user.username == request.friend2.username else request.friend2.username}",
                                 'text': 'ACCEPT'
                             },
                             {
                                 'type': 'button',
                                 'class': 'rounded bg-secondary bg-gradient text-white',
-                                'onclick': f"accept_friend_request(this.id)",
+                                'onclick': f"chatSocket.declineFriendRequest(this.id)",
                                 'identifier': f"{request.friend1.username if user.username == request.friend2.username else request.friend2.username}",
                                 'text': 'DECLINE'
                             }
@@ -444,6 +444,7 @@ def index(request):
             'username': 'Guest',
             'wins': 'None',
             'losses': 'None',
+            'authenticated': 'False'
         }
         return render(request, 'menu_general/index.html', obj)
     else:
@@ -452,6 +453,7 @@ def index(request):
             'username': user.username,
             'wins': user.wins,
             'losses': user.losses,
+            'authenticated': 'True'
         }
         print(obj)
         return render(request, 'menu_general/index.html', obj)

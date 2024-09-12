@@ -38,5 +38,25 @@
     <script src="{% static 'js/user_management.js' %}"></script>
     <script src="{% static 'js/token_management.js' %}"></script>
     <script src="{% static 'js/socket.js' %}"></script>
+    <script type="text/javascript">
+        // Pass the Django context object to JavaScript
+        const obj = {
+            authenticated: `{{ authenticated }}`,
+            username: "{{ username }}",
+            wins: "{{ wins }}",
+            losses: "{{ losses }}"
+        };
+
+        console.log(obj);
+
+        // Ensure the authenticated flag is treated as a boolean
+        const isAuthenticated = obj.authenticated == "True";
+        console.log(isAuthenticated)
+
+        // Use the authenticated flag to determine chatSocket initialization
+        chatSocket = isAuthenticated ?  new ChatSocket() : null;
+        console.log(chatSocket)
+
+    </script>
 </body>
 </html>
