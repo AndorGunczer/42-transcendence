@@ -9,16 +9,23 @@ from .models import Users2, MsgHistory
 
 def index(request):
 	users = Users2.objects.raw('select * from transcendence_users2')
+	request.session['cur_username'] = 'u1'#we set a sendername
+	# for now we'll use a certain user, to do: transfer a logged in user
+	try:
+		sender = Users2.objects.get(username='u1')
+	except Users2.DoesNotExist:
+		return HttpResponse("Sender not found", status=404)
 	# with connection.cursor() as cursor:
 	# 	cursor.execute('select Username from transcendence_users2',)
 	# 	usernames = cursor.fetchall()
-	context = {'users': users}
+	context = {'users': users, 'sender' : sender}
 	return render(request, "index.html", context)
 
 
 def dialog(request, receiver):
+	sender = request.session.get('cur_username', 'default_value')#we get sendername
 	try:
-		sender_obj = Users2.objects.get(username='placeholder')
+		sender_obj = Users2.objects.get(username=sender)
 	except Users2.DoesNotExist:
 		return HttpResponse("Sender not found", status=404)
 	try:
@@ -33,7 +40,7 @@ def dialog(request, receiver):
 	# with connection.cursor() as cursor:
 	# 	cursor.execute('select Username from transcendence_users2',)
 	# 	usernames = cursor.fetchall()
-	context = {'msgs': msgs, 'receiver': receiver}
+	context = {'msgs': msgs, 'receiver': receiver, 'sender': sender_obj}
 	return render(request, "dialog.html", context)
 
 def send(request):

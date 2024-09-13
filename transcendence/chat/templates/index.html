@@ -15,12 +15,15 @@
 	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <div class="header">
+	<div class="header">
+        <div>
+            <p>logged in as {{ sender }}</p>
+        </div>
     </div>
 	<div class="container-fluid my-3 text-left">
 		<ul class="nav flex-column">
 			<li class="nav-item">
-			  <a class="nav-link active" href="http://127.0.0.1:8001/chat/tim">tim</a>
+			  <a class="nav-link active" href="https://127.0.0.1:8000/chat/u1">u1</a>
 			</li>
 			<li class="nav-item">
 			  <a class="nav-link" href="#">Link</a>
@@ -39,7 +42,7 @@
 		<div class="row row-lim">
 			<div class = "col-11">
 				<ul class="list-group">
-					<li class="list-group-item user-item" onclick="openDialog('{{ user.username }}')">
+					<li class="list-group-item user-item" onclick="openDialog('{{ user.username }}', '{{ sender.username }}')">
 						{% if user.avatarDirect %}
 						<img src={{ user.avatarDirect }} alt="" class="ratio ratio-1x1">
 						{% endif %}

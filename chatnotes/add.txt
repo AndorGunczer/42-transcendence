@@ -17,5 +17,3 @@ transcendence.url'
 
 source ~/ts_env/bin/activate
 
-
-

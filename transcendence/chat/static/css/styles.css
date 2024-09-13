@@ -23,9 +23,22 @@ body {
 	max-width: 45px;
 }
 
+.user-item1{
+	background-color: #e4f4e4;
+	color: #373a63;
+
+}
 .user-item{
 	background-color: #e2d2ba;
 	color: #373a63;
+}
+
+.ms-5{
+	margin-left: 130px !important;
+}
+
+.me-5{
+	margin-right: 130px!important;
 }
 
 /* background: linear-gradient(#e2d2ba, #c8ddd5, #928e89); */
