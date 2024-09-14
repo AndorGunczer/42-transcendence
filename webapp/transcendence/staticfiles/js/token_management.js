@@ -6,9 +6,10 @@ function checkAndRefreshToken() {
       Accept: "application/json",
     },
   })
-    .then((response) => {
+    .then(async (response) => {
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
       }
       return response.json();
     })
@@ -20,7 +21,7 @@ function checkAndRefreshToken() {
       }
     })
     .catch((error) => {
-      console.error("There was an error:", error);
+      handleError(error);
     });
 }
 

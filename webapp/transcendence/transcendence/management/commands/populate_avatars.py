@@ -18,6 +18,7 @@ class Command(BaseCommand):
             {"username": "test1", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/anolis_avatar.jpg", "twofa": "True"},
             {"username": "test2", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/cat_avatar.jpg", "twofa": "False"},
             {"username": "test3", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/dog_avatar.jpg", "twofa": "False"},
+            {"username": "test4", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/birb.jpeg", "twofa": "true"},
         ]
 
         users_db = []
@@ -35,7 +36,8 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.WARNING(f'User {user_data["username"]} already exists'))
 
         for user in users_db:
-            other_users = Users2.objects.all().exclude(username=user.username)
+            if user.username == "test4": continue
+            other_users = Users2.objects.all().exclude(Q(username=user.username) | Q(username="test4"))
 
             for other_user in other_users:
                 try: 

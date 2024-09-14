@@ -18,9 +18,56 @@ function changeSelectFunction(callback, dependencies) {
   };
 }
 
+function closeError(event) {
+  const targetElement = event.target;
+  const containerElement = targetElement.closest("#error-notification-container");
+  containerElement.remove();
+}
+
+function handleError(errorMsg) {
+  let parent = document.getElementById("error-layer");
+  const errorPopup = document.createElement("div");
+  errorPopup.setAttribute("class", "d-flex flex-row bg-danger m-2 p-2 rounded-pill pe-auto");
+  errorPopup.setAttribute("id", "error-notification-container");
+
+  // First section of error window
+  const messageDisplayWindow = document.createElement("div");
+  messageDisplayWindow.setAttribute("class", "flex-grow-1 align-self-center");
+  const messageDisplay = document.createElement("p");
+  messageDisplay.setAttribute("class", "text-white m-0");
+  messageDisplay.innerHTML = errorMsg;
+  messageDisplayWindow.appendChild(messageDisplay);
+  errorPopup.appendChild(messageDisplayWindow);
+
+  // Second section of error window
+  const closePopupDiv = document.createElement("div");
+  const closePopupButton = document.createElement("button");
+  closePopupButton.innerHTML = "X";
+  closePopupButton.setAttribute("class", "text-white bg-danger border-0");
+  closePopupButton.setAttribute("onclick", "closeError(event)");
+  closePopupDiv.appendChild(closePopupButton);
+  errorPopup.append(closePopupDiv);
+
+  // Add element to DOM
+  parent.appendChild(errorPopup);
+}
+
+async function simulateError() {
+  const url = "/simulate_error"
+
+  fetch(url).then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+    }
+  }).catch((error) => {
+    handleError(error);
+  });
+}
+
 
 const changeSelect = changeSelectFunction((event) => {
-  document.getElementById('avatarPic').setAttribute("src", `https://127.0.0.1/static/images/${event.target.value}`);
+  document.getElementById('avatarPic').setAttribute("src", `https://localhost/static/images/${event.target.value}`);
 }, []);
 
 function deleteHeader() {
@@ -105,8 +152,11 @@ function load_main() {
   let url = "/indexPost";
 
   fetch(url)
-    .then((response) => {
-      if (!response.ok) console.log("yeaah");
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       else return response.json();
     })
     .then((json) => {
@@ -128,6 +178,9 @@ function load_main() {
         elementCustomize(element, item);
         parent.appendChild(element);
       });
+    })
+    .catch((error) => {
+      handleError(error);
     });
 }
 
@@ -135,8 +188,11 @@ function load_playMenu() {
   let url = "/play";
 
   fetch(url)
-    .then((response) => {
-      if (!response.ok) console.log("yeaah");
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       else return response.json();
     })
     .then((json) => {
@@ -160,6 +216,9 @@ function load_playMenu() {
 
         // div.appendChild(element);
       });
+    })
+    .catch((error) => {
+      handleError(error);
     });
 }
 
@@ -180,8 +239,11 @@ async function loadHistory() {
       // }),
       credentials: "include",
     })
-      .then((response) => {
-        if (!response.ok) console.log("yeaah");
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+        }
         else return response.json();
       })
       .then((json) => {
@@ -204,6 +266,9 @@ async function loadHistory() {
           elementCustomize(element, item);
           parent.appendChild(element);
         });
+      })
+      .catch((error) => {
+        handleError(error);
       });
 }
 
@@ -282,13 +347,18 @@ async function submit_local_pregame(event) {
     body: JSON.stringify({ player1, player2 }),
     credentials: "include",
   })
-    .then((response) => {
-      if (!response.ok) console.log("okay");
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       else return response.json();
     }).then((json) => {
       console.log(json);
       console.log(json.player1)
       load_localGame(json);
+    }).catch((error) => {
+      handleError(error);
     })
 }
 
@@ -312,8 +382,11 @@ function online_pregame() {
   let url = "/online_menu";
 
   fetch(url)
-    .then((response) => {
-      if (!response.ok) console.log("yeaah");
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       else return response.json();
     })
     .then((json) => {
@@ -327,6 +400,9 @@ function online_pregame() {
         divLoader(element, item.content);
         parent.appendChild(element);
       });
+    })
+    .catch((error) => {
+      handleError(error);
     });
 }
 
@@ -334,8 +410,11 @@ function load_register() {
   let url = "/register";
 
   fetch(url)
-    .then((response) => {
-      if (!response.ok) console.log("yeaah");
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       else return response.json();
     })
     .then((json) => {
@@ -357,6 +436,9 @@ function load_register() {
         .getElementById("registration_form")
         .addEventListener("submit", submit_registration_form, {once: true});
       document.getElementById("Avatar").addEventListener("change", changeSelect);
+    })
+    .catch((error) => {
+      handleError(error);
     });
 }
 
@@ -364,8 +446,11 @@ function load_login() {
   let url = "/login";
 
   fetch(url)
-    .then((response) => {
-      if (!response.ok) console.log("yeaah");
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       else return response.json();
     })
     .then((json) => {
@@ -381,15 +466,21 @@ function load_login() {
       });
       document
         .getElementById("login_form")
-    }, {once: true});
+    }, {once: true})
+    .catch((error) => {
+      handleError(error);
+    });
 }
 
 function load_singleGame() {
   let url = "/singleplayer_game";
 
   fetch(url)
-    .then((response) => {
-      if (!response.ok) console.log("yeaah");
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       else return response.json();
     })
     .then((json) => {
@@ -404,6 +495,9 @@ function load_singleGame() {
         parent.appendChild(element);
       });
       startSingleGame();
+    })
+    .catch((error) => {
+      handleError(error);
     });
 }
 
@@ -411,8 +505,11 @@ function load_localGame(state_json) {
   let url = "/local_game";
 
   fetch(url)
-    .then((response) => {
-      if (!response.ok) console.log("yeaah");
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       else return response.json();
     })
     .then((json) => {
@@ -427,6 +524,9 @@ function load_localGame(state_json) {
         parent.appendChild(element);
       });
       startLocalGame(state_json);
+    })
+    .catch((error) => {
+      handleError(error);
     });
 }
 
@@ -434,8 +534,11 @@ function load_onlineGame() {
   let url = "/online_game";
 
   fetch(url)
-    .then((response) => {
-      if (!response.ok) console.log("yeaah");
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       else return response.json();
     })
     .then((json) => {
@@ -450,6 +553,9 @@ function load_onlineGame() {
         parent.appendChild(element);
       });
       startOnlineGame();
+    })
+    .catch((error) => {
+      handleError(error);
     });
 }
 
@@ -459,8 +565,11 @@ function load_onlineGame() {
     let url = "/tournament_main";
   
     fetch(url)
-      .then((response) => {
-        if (!response.ok) console.log("yeaah");
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+        }
         else return response.json();
       })
       .then((json) => {
@@ -482,6 +591,9 @@ function load_onlineGame() {
           elementCustomize(element, item);
           parent.appendChild(element);
         });
+      })
+      .catch((error) => {
+        handleError(error);
       });
   }
 
@@ -489,8 +601,11 @@ function load_onlineGame() {
     let url = "/tournament_create";
   
     fetch(url)
-      .then((response) => {
-        if (!response.ok) console.log("yeaah");
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+        }
         else return response.json();
       })
       .then((json) => {
@@ -512,6 +627,9 @@ function load_onlineGame() {
           elementCustomize(element, item);
           parent.appendChild(element);
         });
+      })
+      .catch((error) => {
+        handleError(error);
       });
   }
 
@@ -565,18 +683,20 @@ function load_onlineGame() {
           players: player_list
         }),
         credentials: "include",
-      }).then((response) => {
+      }).then(async (response) => {
         if (response.ok)
           player_list = [];
+        else if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+        }
         console.log('tournament created');
         return response.json();
       }).then((json) => {
         load_next_step(json);
       }).catch((error) => {
-        console.log(error);
+        handleError(error);
       })
-
-      console.log('submit_tournament_create(event) called');
     }
 
 function validate_tournament_create() {
@@ -614,8 +734,11 @@ async function load_tournament_select() {
       }),
       credentials: "include",
     })
-      .then((response) => {
-        if (!response.ok) console.log("yeaah");
+      .then(async (response) => {
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+        }
         else return response.json();
       })
       .then((json) => {
@@ -638,6 +761,9 @@ async function load_tournament_select() {
           elementCustomize(element, item);
           parent.appendChild(element);
         });
+      })
+      .catch((error) => {
+        handleError(error);
       });
 }
 
@@ -661,8 +787,11 @@ async function load_tournament_localGame() {
     }),
     credentials: "include",
   })
-    .then((response) => {
-      if (!response.ok) console.log("yeaah");
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
       else return response.json();
     })
     .then((json) => {
@@ -677,5 +806,8 @@ async function load_tournament_localGame() {
         parent.appendChild(element);
       });
       startTournamentGame(json);
+    })
+    .catch((error) => {
+      handleError(error);
     });
 }

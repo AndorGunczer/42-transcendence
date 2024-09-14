@@ -59,4 +59,6 @@ urlpatterns = [
     # FRIENDS
     path('profile', views.profile, name="profile"),
     path('open_chat', views.open_chat, name="open_chat"),
+    # TESTING
+    path('simulate_error', views.simulate_error, name="simulate_error"),
 ]

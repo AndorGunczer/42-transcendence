@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+    <div id="error-layer" class="d-flex flex-column position-fixed fixed-top pe-none">
+
+    </div>
     <div class="header">
         <div class="player-info">
             <p class="text-white">logged in as {{ username }}</p>
@@ -33,6 +36,7 @@
         <button class="col-md-12 mt-2 p-3 h-50 w-25 p-3 mb-4 rounded bg-secondary bg-gradient text-white" onclick='loadHistory()'>MATCH HISTORY</button>
         {% endif %}
     </div>
+    <button onclick="simulateError()">ERROR</button>
     <script src="{% static 'js/menu.js' %}"></script>
     <script src="{% static 'js/game.js' %}"></script>
     <script src="{% static 'js/user_management.js' %}"></script>

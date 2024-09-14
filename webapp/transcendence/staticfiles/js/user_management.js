@@ -30,13 +30,19 @@ async function submit_registration_form(event) {
     body: JSON.stringify({ username, password, avatar, email, twofa }), // JSON.stringify({ username, password })
     credentials: "include",
   })
-    .then((response) => response.json())
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
+      else return response.json()
+    })
     .then((json) => {
       load_next_step(json);
     })
-    .catch((error) =>
-      console.error("Error submitting registration form:", error)
-    );
+    .catch((error) => {
+      handleError(error);
+    });
 }
 
 function validate_registration_form() {
@@ -110,7 +116,13 @@ async function submit_login_form(event) {
       body: JSON.stringify({ username, password }),
       credentials: "include",
   })
-  .then((response) => response.json())
+  .then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+    }
+    else return response.json();
+  })
   .then((json) => {
     console.log(json.status);
       if (json.status === 'otp_sent') {
@@ -122,7 +134,7 @@ async function submit_login_form(event) {
       }
       
   })
-  .catch((error) => console.error("Error submitting login form:", error));
+  .catch((error) => handleError(error));
 }
 
 function validate_login_form(){
@@ -158,12 +170,17 @@ async function verify_otp(event) {
       body: JSON.stringify({ otp }),
       credentials: "include",
   })
-  .then((response) => response.json())
+  .then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+    } else return response.json()
+  })
   .then((json) => {
       chatSocket = new ChatSocket();
       load_main()
   })
-  .catch((error) => console.error("Error verifying OTP:", error));
+  .catch((error) => handleError(error));
 }
 
 async function logout(event) {
@@ -177,8 +194,12 @@ async function logout(event) {
     },
     credentials: "include",
   })
-    .then((response) => {
-      return response.json();
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
+      else return response.json();
     })
     .then((data) => {
       console.log("Token Cookies Deleted Successfully.");
@@ -186,9 +207,7 @@ async function logout(event) {
       chatSocket = null;
       load_main();
     })
-    .catch((error) => {
-      console.error("there was an error: ", error);
-    });
+    .catch((error) => handleError(error));
 }
 
 async function getCsrfToken() {
@@ -208,7 +227,7 @@ async function uploadAvatar(event) {
   const file = fileInput.files[0];
 
   if (!file) {
-      alert('Please Select a File to Upload');
+      handleError("Please Select a File to Upload");
       return;
   }
 
@@ -262,7 +281,12 @@ async function settings() {
     },
     credentials: 'include',
   })
-  .then(response => response.json())
+  .then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+    } else return response.json();
+  })
   .then(json => {
     deleteHeader();
     deleteMain();
@@ -286,9 +310,7 @@ async function settings() {
       // div.appendChild(element);
     });
   })
-  .catch(error => {
-      console.error('Error:', error);
-  });
+  .catch(error => handleError(error));
 }
 
 async function deleteUserStats(event) {
@@ -306,7 +328,12 @@ async function deleteUserStats(event) {
     },
     credentials: 'include'
   })
-  .then(response => response.json())
+  .then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+    } else return response.json();
+  })
   .then(json => {
     deleteHeader();
     deleteMain();
@@ -329,9 +356,7 @@ async function deleteUserStats(event) {
       // div.appendChild(element);
     });
   })
-  .catch(error => {
-      console.error('Error:', error);
-  });
+  .catch(error => handleError(error));
 }
 
 async function saveChanges() {
@@ -358,7 +383,12 @@ async function saveChanges() {
     }),
     credentials: 'include'
   })
-  .then(response => response.json())
+  .then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+    } else return response.json();
+  })
   .then(json => {
     deleteHeader();
     deleteMain();
@@ -381,9 +411,7 @@ async function saveChanges() {
       // div.appendChild(element);
     });
   })
-  .catch(error => {
-      console.error('Error:', error);
-  });
+  .catch(error => handleError(error));
 }
 
 async function checkProfile(profile_name) {
@@ -402,8 +430,11 @@ async function checkProfile(profile_name) {
       'user_of_query': user_of_query,
     }),
     credentials: 'include'
-  }).then((response) => {
-    if (!response.ok) console.log("yeaah");
+  }).then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+    }
     else return response.json();
   })
   .then((json) => {
@@ -426,10 +457,12 @@ async function checkProfile(profile_name) {
       elementCustomize(element, item);
       parent.appendChild(element);
     });
-  });
+  })
+  .catch((error) => handleError(error));
 }
 
 async function chat(target_friend) {
+  console.log("chat has been called");
   const csrfToken = await getCsrfToken();
   const currentUser = (document.getElementById("user").innerHTML).split(" ").pop();
   let sender = "";
@@ -450,8 +483,11 @@ async function chat(target_friend) {
       'source_friend': currentUser,
     }),
     credentials: 'include'
-  }).then((response) => {
-    if (!response.ok) console.log("yeaah");
+  }).then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+    }
     else return response.json();
   }).then((json) => {
     console.log(json);
@@ -463,6 +499,7 @@ async function chat(target_friend) {
 
     if (document.getElementById(friendship_id))
       return ;
+    console.log("502");
 
     let chatWindows = document.getElementsByClassName('chat-window');
     if (chatWindows.length == 3)
@@ -475,7 +512,7 @@ async function chat(target_friend) {
     let chatWindow = document.createElement("div");
     chatWindow.setAttribute("class", "d-flex flex-column justify-content-between h-100 w-25 pe-auto chat-window rounded bg-secondary bg-gradient text-white");
     chatWindow.setAttribute("id", `${friendship_id}`);
-
+    console.log("515");
     chatWindow.dataset.receiver = receiver;
     chatWindow.dataset.sender = sender;
     chatWindow.dataset.friendshipId = friendship_id;
@@ -505,7 +542,7 @@ async function chat(target_friend) {
     inputButton.setAttribute("class", "w-25 bg-secondary text-white");
     inputButton.setAttribute("onclick", "chatSocket.sendMessage(event)");
     chatInput.appendChild(inputButton);
-  
+    console.log("545");
   
   
     chatWindow.appendChild(chatNav);
@@ -528,5 +565,9 @@ async function chat(target_friend) {
       chatBody.appendChild(messageDiv);
     })
   })
+  .catch((error) => {
+    console.error(error);
+    handleError(error)
+  });
 
 }

@@ -40,6 +40,12 @@ class CustomTokenRefreshView(TokenRefreshView):
             )
         return response
 
+# Testing
+@csrf_exempt
+def simulate_error(request):
+    return JsonResponse({'error': 'Testing is successful'}, status=500)
+
+
 # Utilize Access Tokens
 
 def validate_token(token):
@@ -253,14 +259,14 @@ def modify_json_menu(menu_type, token):
             ]
         })
 
-        menu['menuItems'].append({
-            'type': 'div',
-            'class': 'position-fixed d-flex flex-row bottom-0 h-25 w-100 pe-none',
-            'identifier': 'chat-container',
-            'content': [
+    menu['menuItems'].append({
+        'type': 'div',
+        'class': 'position-fixed d-flex flex-row bottom-0 h-25 w-100 pe-none',
+        'identifier': 'chat-container',
+        'content': [
 
-            ]
-        })
+        ]
+    })
     
 
     return menu
@@ -1167,7 +1173,7 @@ def registration_check(request):
             if username == '': raise Exception("username_not_specified")
             password = data.get('password')
             if password == '': raise Exception("password_not_specified")
-            pre = "https://127.0.0.1/static/images/"
+            pre = "https://localhost/static/images/"
             print(data.get("avatar"))
             avatar = pre + data.get('avatar')
             print(avatar)
@@ -1183,7 +1189,7 @@ def registration_check(request):
         except Exception as e:
             warning = e
             print(warning)
-            return JsonResponse(MENU_DATA.get('register'))
+            return JsonResponse({'error': f'Username {username} already taken'}, status=404)
 
     else:
         return JsonResponse(MENU_DATA.get('register'))
@@ -1376,7 +1382,7 @@ def upload_file(request):
         file_content = base64.b64decode(file_data)
 
         # Construct the file path
-        static_images_dir = 'static/images'
+        static_images_dir = 'staticfiles/images'
         file_path = f'{static_images_dir}/{file_name}'
 
         # Ensure the directory exists
@@ -1459,7 +1465,7 @@ def save_changes(request, menu_type='main'):
         data = json.loads(request.body)
         username = data.get('username')
         avatar = data.get('avatar')
-        pre = "https://127.0.0.1/static/images/"
+        pre = "https://localhost/static/images/"
         print(data.get("avatar"))
         avatar = pre + data.get('avatar')
 

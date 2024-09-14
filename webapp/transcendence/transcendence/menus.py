@@ -1032,7 +1032,7 @@ MENU_DATA = {
                                         'type': 'img',
                                         'identifier': 'avatarPic',
                                         'class': 'mb-3',
-                                        'src': 'https://127.0.0.1:8000/static/images/question_mark.png',
+                                        'src': 'https://localhost:8000/static/images/question_mark.png',
                                     }
                                 ]
                             },

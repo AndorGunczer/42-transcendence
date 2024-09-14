@@ -92,13 +92,13 @@ class ChatSocket {
             const elementToRemove = (document.getElementById(data.accepted).parentElement).parentElement;
             elementToRemove.remove();
             console.log('Receiver');
-            const parent = document.getElementById('friends');
+            const parent = document.getElementById('friends').parentElement;
             const newNode = this.newFriend(data.accepted);
             parent.appendChild(newNode);
         } catch (error) {
             console.log(error);
             console.log('Sender');
-            const parent = document.getElementById('friends');
+            const parent = document.getElementById('friends').parentElement;
             const newNode = this.newFriend(data.acceptor);
             parent.appendChild(newNode);
         }
@@ -128,13 +128,13 @@ class ChatSocket {
         newNode.appendChild(buttonDiv);
 
         let accept = document.createElement('button');
-        accept.setAttribute('onclick', `acceptFriendRequest(this.id)`);
+        accept.setAttribute('onclick', `chatSocket.acceptFriendRequest(this.id)`);
         accept.setAttribute('id', `${friend}`);
         accept.innerHTML = 'ACCEPT';
         buttonDiv.appendChild(accept);
 
         let decline = document.createElement('button');
-        decline.setAttribute('onclick', 'declineFriendRequest(this.id)');
+        decline.setAttribute('onclick', 'chatSocket.declineFriendRequest(this.id)');
         decline.setAttribute('id', `${friend}`);
         decline.innerHTML = 'DECLINE';
         buttonDiv.appendChild(decline);
