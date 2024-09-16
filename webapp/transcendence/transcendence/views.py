@@ -226,39 +226,56 @@ def modify_json_menu(menu_type, token):
                 ]
             })
 
+    # Assume you have a variable indicating the current page
+
     for friend in friends_db:
-        # if (request.friend2.username == user.username):
+        friend_name = friend.friend1.username if user.username == friend.friend2.username else friend.friend2.username
+
+        # Base content for each friend
+        content = [
+            {
+                'type': 'p',
+                'class': 'text-white m-3',
+                'text': friend_name,
+            },
+            {
+                'type': 'div',
+                'class': 'd-flex flex-column',
+                'content': [
+                    {
+                        'type': 'button',
+                        'class': 'rounded bg-secondary bg-gradient text-white',
+                        'onclick': f"chat(this.id)",
+                        'identifier': friend_name,
+                        'text': 'CHAT'
+                    },
+                    {
+                        'type': 'button',
+                        'class': 'rounded bg-secondary bg-gradient text-white',
+                        'onclick': f"checkProfile(this.id)",
+                        'identifier': friend_name,
+                        'text': 'PROFILE'
+                    }
+                ]
+            }
+        ]
+
+        # Conditionally add the "Invite" button if the current page is "tournament_select"
+        if menu_type == "tournament_create":
+            content[1]['content'].append({
+                'type': 'button',
+                'class': 'rounded bg-secondary bg-gradient text-white',
+                'onclick': f"inviteToTournament(this.id)",
+                'identifier': friend_name,
+                'text': 'INVITE'
+            })
+
         friends_div.append({
             'type': 'div',
             'class': 'd-flex flex-column',
-            'content': [
-                {
-                    'type': 'p',
-                    'class': 'text-white m-3',
-                    'text': f"{friend.friend1.username if user.username == friend.friend2.username else friend.friend2.username}",
-                },
-                {
-                    'type': 'div',
-                    'class': 'd-flex flex-column',
-                    'content': [
-                        {
-                            'type': 'button',
-                            'class': 'rounded bg-secondary bg-gradient text-white',
-                            'onclick': f"chat(this.id)",
-                            'identifier': f"{friend.friend1.username if user.username == friend.friend2.username else friend.friend2.username}",
-                            'text': 'CHAT'
-                        },
-                        {
-                            'type': 'button',
-                            'class': 'rounded bg-secondary bg-gradient text-white',
-                            'onclick': f"checkProfile(this.id)",
-                            'identifier': f"{friend.friend1.username if user.username == friend.friend2.username else friend.friend2.username}",
-                            'text': 'PROFILE'
-                        }
-                    ]
-                }
-            ]
+            'content': content
         })
+
 
     menu['menuItems'].append({
         'type': 'div',

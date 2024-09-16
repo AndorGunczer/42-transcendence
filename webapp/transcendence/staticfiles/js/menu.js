@@ -817,3 +817,14 @@ async function load_tournament_localGame() {
       handleError(error);
     });
 }
+
+function inviteToTournament(playerName) {
+  let listElement = document.getElementById("tournament_ul");
+
+  const newParticipant = document.createElement("li");
+  newParticipant.innerHTML = playerName;
+  player_list.push(playerName);
+
+  listElement.append(newParticipant);
+
+}
