@@ -54,6 +54,10 @@ class ChatSocket {
     handleChatMessage(data) {
         console.log(data.friendship_id);
         let chatWindow = document.getElementById(data.friendship_id);
+
+        if (!chatWindow)
+            return ;
+
         let chatBox = chatWindow.children[1];
         let thisUser = (document.getElementById("user").innerHTML).split(" ").pop();
         let messageDiv = document.createElement("div");
@@ -72,6 +76,7 @@ class ChatSocket {
     }
 
     handleFriendRequest(data) {
+        // if (data.)
         console.log('New friend request:', data);
         const friendRequestList = document.getElementById('friend-requests');
         let newNode = this.newFriendRequest(data.sender);
@@ -90,7 +95,8 @@ class ChatSocket {
             // if fails then its the sender
             console.log('Looking for element with ID:', data.accepted);
             const elementToRemove = (document.getElementById(data.accepted).parentElement).parentElement;
-            elementToRemove.remove();
+            if (elementToRemove)
+                elementToRemove.remove();
             console.log('Receiver');
             const parent = document.getElementById('friends').parentElement;
             const newNode = this.newFriend(data.accepted);

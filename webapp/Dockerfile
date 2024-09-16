@@ -25,6 +25,8 @@ RUN pip3 install web3
 
 # Install PostgreSQL and dependencies
 RUN apt-get install -y python3-psycopg2 postgresql postgresql-contrib sudo
+RUN apt-get install -y postgresql-client
+
 
 # Copy scripts and configuration files
 COPY ./script/script.sh ./script.sh

@@ -117,59 +117,62 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
 
 
     async def handle_friend_request(self, data):
-        print("handle_friend_request is called")
-        from transcendence.models import Users2
+        from transcendence.models import Users2, Friends
+        from transcendence.serializers import FriendRequestSerializer
 
         sender_username = self.user.username
-        receiver_username = data.get("receiver")
+        serializer = FriendRequestSerializer(data=data)
 
-        try:
-            receiver = await sync_to_async(Users2.objects.get)(username=receiver_username)
-            # receiver = await sync_to_async(Users2.objects.get)(username=sender_username)
-            try:
-                await sync_to_async(Friends.objects.get)(
-                    Q(state="pending") | Q(state="accepted"),
-                    friend1=self.user,
-                    friend2=receiver
-                )
-                print("Friendship has already been created")
-
-                await self.channel_layer.group_send(
-                    f"user_{self.user.id}",
-                    {
-                        'type': 'send_duplicate_friendship_notification',
-                        'receiver': f"{receiver_username}",
-                        'message': f"Friend request has already been sent {receiver_username}.",
-                    }
-                )
-            except Friends.DoesNotExist:
-                friendship = await sync_to_async(Friends)(friend1=self.user, friend2=receiver, state="pending")
-                await sync_to_async(friendship.save)()
-
+        if serializer.is_valid():
+            receiver_username = serializer.validated_data.get("receiver")
+            if receiver_username == sender_username:
+                f"user_{self.user.id}",
+                {
+                    'type': 'send_notification',
+                    'message': f"YoU sErIoUs BoII?!.",
+                }
+            else:
                 try:
-                    success_check = await sync_to_async(Friends.objects.get)(friend1=self.user, friend2=receiver, state="pending")
-                    print(success_check)
-                except Friends.DoesNotExist:
-                    print(f'ERROR: Friends are not created in the database')
+                    receiver = await sync_to_async(Users2.objects.get)(username=receiver_username)
 
-                # Debug print to verify group name and content of the message
-                print(f"Sending friend request from {sender_username} to {receiver_username} in group user_{receiver.id}")
-                
-                await self.channel_layer.group_send(
-                    f"user_{receiver.id}",
-                    {
-                        'type': 'send_friend_request',
-                        'sender': f"{sender_username}",
-                        'message': f"You have a friend request from {sender_username}.",
-                    }
-                )
-                print("Message sent successfully")
-            
-        except Users2.DoesNotExist:
+                    try:
+                        await sync_to_async(Friends.objects.get)(
+                            Q(state="pending") | Q(state="accepted"),
+                            friend1=self.user,
+                            friend2=receiver
+                        )
+                        await self.channel_layer.group_send(
+                            f"user_{self.user.id}",
+                            {
+                                'type': 'send_duplicate_friendship_notification',
+                                'receiver': f"{receiver_username}",
+                                'message': f"Friend request has already been sent to {receiver_username}.",
+                            }
+                        )
+                    except Friends.DoesNotExist:
+                        friendship = await sync_to_async(Friends)(friend1=self.user, friend2=receiver, state="pending")
+                        await sync_to_async(friendship.save)()
+
+                        await self.channel_layer.group_send(
+                            f"user_{receiver.id}",
+                            {
+                                'type': 'send_friend_request',
+                                'sender': f"{sender_username}",
+                                'message': f"You have a friend request from {sender_username}.",
+                            }
+                        )
+                except Users2.DoesNotExist:
+                    await self.send(text_data=json.dumps({
+                        'type': 'notification',
+                        'message': f"User {receiver_username} does not exist.",
+                    }))
+        else:
             await self.send(text_data=json.dumps({
-                'type': 'notification',
-                'message': f"User {receiver_username} does not exist.",
+                'type': 'error',
+                'message': 'Invalid data received',
+                'errors': serializer.errors,
             }))
+
 
     async def handle_friend_acceptance(self, data):
         acceptor = await sync_to_async(Users2.objects.get)(username=data.get('acceptor'))

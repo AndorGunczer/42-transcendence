@@ -5,6 +5,12 @@ volumes:
       type: none
       o: bind
       device: ${PWD}/data/blockchain
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/data/postgres
 
 services:
   blockchain:
@@ -27,6 +33,7 @@ services:
       - "443:443"
     volumes:
       - blockchain_data:/app/data
+      - postgres_data:/var/lib/postgresql/16/main/
     networks:
       static-network:
         ipv4_address: ${WEBAPP_IP}

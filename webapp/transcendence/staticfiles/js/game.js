@@ -449,7 +449,7 @@ function startLocalGame(state_json) {
       }
       player2 = {
         name: jsonObject.player2,
-        id: jsonObject.player2_d,
+        id: jsonObject.player2_id,
         status: 'loser'
       }
     } else {

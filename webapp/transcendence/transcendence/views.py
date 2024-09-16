@@ -21,6 +21,7 @@ from transcendence.web3_utils import add_tournament, add_participant, increment_
 from .menus import MENU_DATA
 from django.db.models import Q
 
+
 # Initial Load of Site
 
 class CustomTokenRefreshView(TokenRefreshView):
@@ -454,15 +455,26 @@ def index(request):
         }
         return render(request, 'menu_general/index.html', obj)
     else:
-        user = get_user_from_token(token)
-        obj = {
-            'username': user.username,
-            'wins': user.wins,
-            'losses': user.losses,
-            'authenticated': 'True'
-        }
-        print(obj)
-        return render(request, 'menu_general/index.html', obj)
+        try:
+            user = get_user_from_token(token)
+            obj = {
+                'username': user.username,
+                'wins': user.wins,
+                'losses': user.losses,
+                'authenticated': 'True'
+            }
+            print(obj)
+            return render(request, 'menu_general/index.html', obj)
+        except Users2.DoesNotExist:
+            response = render(request, 'menu_general/index.html', {
+                'username': 'Guest',
+                'wins': 'None',
+                'losses': 'None',
+                'authenticated': 'False'
+            })
+            response.delete_cookie('access_token')
+            response.delete_cookie('refresh_token')
+            return response
 
 # Site loads with JSON Data
 
@@ -609,41 +621,57 @@ def local_menu(request, menu_type='local_menu'):
     else:
         return JsonResponse({'error': 'Menu type not found'}, status=404)
 
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from transcendence.models import Games, Users2, Players
+from transcendence.serializers import LocalGameRequestSerializer
+import copy
+
+@api_view(['POST'])
 def local_check(request, menu_type='local_game'):
     token = get_token_from_header(request)
 
-    data = json.loads(request.body)
-    player1 = data.get("player1")
-    player2 = data.get("player2")
+    # Deserialize the request data
+    serializer = LocalGameRequestSerializer(data=request.data)
+    if not serializer.is_valid():
+        return Response({'error': 'Invalid data'}, status=400)
 
-    # Users2.objects.get(username=player1)
-    # create game database instance and 2 player instances joined into game
+    player1 = serializer.validated_data['player1']
+    player2 = serializer.validated_data['player2']
+
+    # Create a new game instance
     game_db = Games()
     game_db.save()
 
+    # Try to create or assign player1 to the game
     try:
         player1_db = Players(player=Users2.objects.get(username=player1), game=game_db)
     except Users2.DoesNotExist:
         player1_db = Players(game=game_db, guest_name=player1)
     player1_db.save()
+
+    # Try to create or assign player2 to the game
     try:
         player2_db = Players(player=Users2.objects.get(username=player2), game=game_db)
     except Users2.DoesNotExist:
         player2_db = Players(game=game_db, guest_name=player2)
     player2_db.save()
 
-    # if (token == None) or (not validate_token(token)):
-    menu = copy.deepcopy(MENU_DATA.get(menu_type))
-    # else:
-    #     menu = modify_json_menu(menu_type, token)
+    # Prepare the response data in the required format
+    response_data = {
+        'player1': player1,
+        'player2': player2,
+        'player1_id': player1_db.id,
+        'player2_id': player2_db.id
+    }
+
+    # Check token and modify the menu if necessary
+    menu = copy.deepcopy(MENU_DATA.get(menu_type))  # You can replace this with actual menu handling logic
 
     if menu is not None:
-        response_data = {'player1': player1, 'player2': player2, 'player1_id': player1_db.id, 'player2_id': player2_db.id}
-        return JsonResponse(response_data, status=200)
+        return Response(response_data, status=200)
     else:
-        return JsonResponse({'error': 'Menu type not found'}, status=404)
-
-from django.core.exceptions import ObjectDoesNotExist
+        return Response({'error': 'Menu type not found'}, status=404)
 
 # Database Manipulation based on the results of Local Game
 
@@ -654,6 +682,7 @@ def close_local(request, menu_type='main'):
         data = json.loads(request.body)
         player1 = data.get('player1')
         player2 = data.get('player2')
+        # game_id = player1.get('name').get('game')
 
         if player1.get('status') == 'winner':
             try:
@@ -786,12 +815,23 @@ def tournament_create(request, menu_type='tournament_create'):
 # Processing of the form submitted at tournament_create()
 #   Creates an instance/s of: Tournament & Participants & Games & Players
 
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from transcendence.models import Tournaments, Users2, Participants, Games, Players
+from transcendence.serializers import TournamentCreateSerializer
+import copy
+
+@api_view(['POST'])
 def tournament_create_check(request, menu_type='main'):
     token = get_token_from_header(request)
 
-    data = json.loads(request.body)
-    tournament_name = data.get("tournament_name")
-    participants = data.get("players")
+    # Deserialize and validate the request data
+    serializer = TournamentCreateSerializer(data=request.data)
+    if not serializer.is_valid():
+        return Response({'error': 'Invalid data'}, status=400)
+
+    tournament_name = serializer.validated_data['tournament_name']
+    participants = serializer.validated_data['players']
     players = participants
 
     if len(players) % 2:
@@ -812,14 +852,19 @@ def tournament_create_check(request, menu_type='main'):
 
     # Create Tournament in the Database
     tournament_db = Tournaments(name=tournament_name)
-    tournament_db.save()
+    try:
+        tournament_db.save()
+    except Exception as e:
+        return JsonResponse({'error': 'Tournament is already created.'}, status=400)
 
     # Create Tournament on the Blockchain
     receipt = add_tournament(tournament_name, "No Winner Yet")
     print(f"addTournament transaction successful with hash: {receipt.transactionHash.hex()}")
 
+    # Add participants
     for participant in participants:
-        if participant == None: continue
+        if participant is None:
+            continue
         try:
             print(f'try participant: {participant}')
             user = Users2.objects.get(username=participant)
@@ -838,6 +883,7 @@ def tournament_create_check(request, menu_type='main'):
             print(f"addParticipant transaction successful with hash: {receipt.transactionHash.hex()}")
             continue
 
+    # Schedule matches
     for rounds in schedule:
         for matches in rounds:
             game_db = Games(tournament=tournament_db)
@@ -852,6 +898,7 @@ def tournament_create_check(request, menu_type='main'):
             except Users2.DoesNotExist:
                 player1_db = Players(game=game_db, guest_name=player1)
                 player1_db.save()
+
             try:
                 player2_db = Players(player=Users2.objects.get(username=player2), game=game_db)
                 player2_db.save()
@@ -859,16 +906,16 @@ def tournament_create_check(request, menu_type='main'):
                 player2_db = Players(game=game_db, guest_name=player2)
                 player2_db.save()
 
-
-    if (token == None) or (not validate_token(token)):
+    # Token and menu handling
+    if (token is None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
     else:
         menu = modify_json_menu(menu_type, token)
 
     if menu is not None:
-        return JsonResponse(menu)
+        return Response(menu)
     else:
-        return JsonResponse({'error': 'Menu type not found'}, status=404)
+        return Response({'error': 'Menu type not found'}, status=404)
 
 # Load the selected tournament (selected in tournament_main/initial page of tournament)
 
@@ -887,7 +934,10 @@ def tournament_select(request, menu_type='tournament_select'):
 
         # Blockchain Implementation
         participants_b = {}
-        index = get_tournament_index_by_name(tournament_name)
+        try:
+            index = get_tournament_index_by_name(tournament_name)
+        except Exception as e:
+            return JsonResponse({'error': 'Tournament not created in the Blockchain (Did you restart the container?)'}, status=404)
         p_list = get_participant_list(index)
 
         for participant in p_list:
@@ -1164,35 +1214,66 @@ def register(request, warning: str = None, menu_type='register'):
 
 # Process Data from Registration Form
 
+# def registration_check(request):
+#     if request.method == "POST":
+#         try:
+#             data = json.loads(request.body)
+#             print(request.body)
+#             username = data.get('username')
+#             if username == '': raise Exception("username_not_specified")
+#             password = data.get('password')
+#             if password == '': raise Exception("password_not_specified")
+#             pre = "https://localhost/static/images/"
+#             print(data.get("avatar"))
+#             avatar = pre + data.get('avatar')
+#             print(avatar)
+#             email = data.get('email')
+#             print(email)
+#             twofa = data.get('twofa')
+#             print(twofa)
+#             new_user = Users2(username=username, email=email, wins=0, losses=0, avatarDirect=avatar, allow_otp=twofa)
+#             new_user.set_password(password)
+#             new_user.save()
+#             # Users.objects.create(username=username, password=Users.make_password(password), wins=0, losses=0, games=None)
+#             return JsonResponse(MENU_DATA.get('main'))
+#         except Exception as e:
+#             warning = e
+#             print(warning)
+#             return JsonResponse({'error': f'Username {username} already taken'}, status=404)
+
+#     else:
+#         return JsonResponse(MENU_DATA.get('register'))
+
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from .serializers import RegistrationSerializer, LoginSerializer, UserUpdateSerializer
+
+@api_view(['POST'])
 def registration_check(request):
-    if request.method == "POST":
-        try:
-            data = json.loads(request.body)
-            print(request.body)
-            username = data.get('username')
-            if username == '': raise Exception("username_not_specified")
-            password = data.get('password')
-            if password == '': raise Exception("password_not_specified")
-            pre = "https://localhost/static/images/"
-            print(data.get("avatar"))
-            avatar = pre + data.get('avatar')
-            print(avatar)
-            email = data.get('email')
-            print(email)
-            twofa = data.get('twofa')
-            print(twofa)
-            new_user = Users2(username=username, email=email, wins=0, losses=0, avatarDirect=avatar, allow_otp=twofa)
-            new_user.set_password(password)
+    serializer = RegistrationSerializer(data=request.data)
+    if serializer.is_valid():
+        try: 
+            # Process the validated data
+            data = serializer.validated_data
+            # Create the user or any other processing
+            new_user = Users2(
+                username=data['username'],
+                email=data['email'],
+                wins=0,
+                losses=0,
+                avatarDirect="https://localhost/static/images/" + data['avatar'],
+                allow_otp=data['twofa'],
+            )
+            new_user.set_password(data['password'])
             new_user.save()
-            # Users.objects.create(username=username, password=Users.make_password(password), wins=0, losses=0, games=None)
-            return JsonResponse(MENU_DATA.get('main'))
+
+            return JsonResponse(MENU_DATA.get('main'), status=200)
         except Exception as e:
             warning = e
             print(warning)
             return JsonResponse({'error': f'Username {username} already taken'}, status=404)
-
     else:
-        return JsonResponse(MENU_DATA.get('register'))
+        return JsonResponse({'errors': serializer.errors}, status=400)
 
 # Generate One Time Password
 
@@ -1203,92 +1284,171 @@ def generate_otp():
 import smtplib, ssl
 import traceback
 
-@csrf_exempt
+# @csrf_exempt
+# def login_check(request):
+#     if request.method == "POST":
+#         try:
+#             data = json.loads(request.body)
+#             print(data)
+#             print("PRINT THE LINE BEFORE")
+#             username = data.get('username')
+#             password = data.get('password')
+
+#             if not username or not password:
+#                 return JsonResponse({'error': 'Username and password are required.'}, status=400)
+
+#             user = authenticate(request, username=username, password=password)
+#             if user is not None:
+#                 if user.allow_otp:
+#                     otp = generate_otp()
+#                     request.session['otp'] = otp
+#                     request.session['username'] = username
+#                     request.session['password'] = password
+
+#                     with open('output.txt', 'w') as file:
+#                         file.write("2fa is active\n")
+
+#                         try:
+#                             # Configuration
+#                             port = 465
+#                             smtp_server = "smtp.gmail.com"
+#                             sender_email = "ft.transcendence.2fa.42@gmail.com"
+#                             receiver_email = user.email
+#                             email_password = 'rwsv qnsl lqfa shic'
+#                             message = f"""\
+#                             Subject: Your OTP Code
+
+#                             Your OTP code is {otp}."""
+#                             context = ssl.create_default_context()
+
+#                             file.write("Preparing to connect to the SMTP server\n")
+#                             with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+#                                 file.write("Connection to server was successful\n")
+#                                 server.login(sender_email, email_password)
+#                                 file.write("Login to the SMTP server was successful\n")
+#                                 server.sendmail(sender_email, receiver_email, message)
+#                                 file.write("Email sent successfully\n")
+
+#                         except smtplib.SMTPException as e:
+#                             file.write(f"SMTP error occurred: {e}\n")
+#                             return JsonResponse({'error': 'Failed to send email'}, status=500)
+#                         except Exception as e:
+#                             file.write(f"An error occurred: {e}\n")
+#                             return JsonResponse({'error': 'An unexpected error occurred'}, status=500)
+
+#                     return JsonResponse({'status': 'otp_sent'})
+#                 else:
+#                     login(request, user)
+#                     refresh = RefreshToken.for_user(user)
+
+#                     refresh_token = str(refresh)
+#                     access_token = str(refresh.access_token)
+
+#                     # Assuming modify_json_menu requires a token and modifies the menu accordingly
+#                     response_data = modify_json_menu('main', access_token)
+
+#                     response = JsonResponse(response_data)
+#                     response.set_cookie(
+#                         'access_token', access_token, httponly=True, secure=True, samesite='Strict'
+#                     )
+
+#                     response.set_cookie(
+#                         'refresh_token', refresh_token, httponly=True, secure=True, samesite='Strict'
+#                     )
+
+#                     # Clear session data
+#                     request.session.pop('otp', None)
+#                     request.session.pop('username', None)
+#                     request.session.pop('password', None)
+#                     return response
+
+#             else:
+#                 return JsonResponse({'error': 'Invalid username or password'}, status=401)
+#         except Exception as e:
+#             print("Exception occurred:", e)
+#             traceback.print_exc()
+#             return JsonResponse({'error': str(e)}, status=500)
+#     else:
+#         return JsonResponse({'error': 'Only POST method is allowed.'}, status=405)
+
+from rest_framework.response import Response
+from rest_framework import status
+
+
+@api_view(['POST'])
+@csrf_exempt  # If needed, you can remove this if you're not using it for API
 def login_check(request):
-    if request.method == "POST":
-        try:
-            data = json.loads(request.body)
-            print(data)
-            print("PRINT THE LINE BEFORE")
-            username = data.get('username')
-            password = data.get('password')
+    # Use the LoginSerializer to validate the incoming data
+    serializer = LoginSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        # Extract validated data
+        username = serializer.validated_data.get('username')
+        password = serializer.validated_data.get('password')
 
-            if not username or not password:
-                return JsonResponse({'error': 'Username and password are required.'}, status=400)
+        # Authenticate the user
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            # If user has OTP enabled, handle 2FA flow
+            if user.allow_otp:
+                otp = generate_otp()
+                request.session['otp'] = otp
+                request.session['username'] = username
+                request.session['password'] = password
 
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                if user.allow_otp:
-                    otp = generate_otp()
-                    request.session['otp'] = otp
-                    request.session['username'] = username
-                    request.session['password'] = password
+                try:
+                    # Email configuration and sending the OTP code
+                    port = 465
+                    smtp_server = "smtp.gmail.com"
+                    sender_email = "ft.transcendence.2fa.42@gmail.com"
+                    receiver_email = user.email
+                    email_password = 'rwsv qnsl lqfa shic'  # Should be stored securely
+                    message = f"Subject: Your OTP Code\n\nYour OTP code is {otp}."
+                    context = ssl.create_default_context()
 
-                    with open('output.txt', 'w') as file:
-                        file.write("2fa is active\n")
+                    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+                        server.login(sender_email, email_password)
+                        server.sendmail(sender_email, receiver_email, message)
 
-                        try:
-                            # Configuration
-                            port = 465
-                            smtp_server = "smtp.gmail.com"
-                            sender_email = "ft.transcendence.2fa.42@gmail.com"
-                            receiver_email = user.email
-                            email_password = 'rwsv qnsl lqfa shic'
-                            message = f"""\
-                            Subject: Your OTP Code
+                    return Response({'status': 'otp_sent'}, status=status.HTTP_200_OK)
 
-                            Your OTP code is {otp}."""
-                            context = ssl.create_default_context()
+                except smtplib.SMTPException as e:
+                    return Response({'error': 'Failed to send email'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                except Exception as e:
+                    return Response({'error': 'An unexpected error occurred'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-                            file.write("Preparing to connect to the SMTP server\n")
-                            with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-                                file.write("Connection to server was successful\n")
-                                server.login(sender_email, email_password)
-                                file.write("Login to the SMTP server was successful\n")
-                                server.sendmail(sender_email, receiver_email, message)
-                                file.write("Email sent successfully\n")
-
-                        except smtplib.SMTPException as e:
-                            file.write(f"SMTP error occurred: {e}\n")
-                            return JsonResponse({'error': 'Failed to send email'}, status=500)
-                        except Exception as e:
-                            file.write(f"An error occurred: {e}\n")
-                            return JsonResponse({'error': 'An unexpected error occurred'}, status=500)
-
-                    return JsonResponse({'status': 'otp_sent'})
-                else:
-                    login(request, user)
-                    refresh = RefreshToken.for_user(user)
-
-                    refresh_token = str(refresh)
-                    access_token = str(refresh.access_token)
-
-                    # Assuming modify_json_menu requires a token and modifies the menu accordingly
-                    response_data = modify_json_menu('main', access_token)
-
-                    response = JsonResponse(response_data)
-                    response.set_cookie(
-                        'access_token', access_token, httponly=True, secure=True, samesite='Strict'
-                    )
-
-                    response.set_cookie(
-                        'refresh_token', refresh_token, httponly=True, secure=True, samesite='Strict'
-                    )
-
-                    # Clear session data
-                    request.session.pop('otp', None)
-                    request.session.pop('username', None)
-                    request.session.pop('password', None)
-                    return response
-
+            # If OTP is not enabled, log the user in
             else:
-                return JsonResponse({'error': 'Invalid username or password'}, status=401)
-        except Exception as e:
-            print("Exception occurred:", e)
-            traceback.print_exc()
-            return JsonResponse({'error': str(e)}, status=500)
+                login(request, user)
+                refresh = RefreshToken.for_user(user)
+
+                refresh_token = str(refresh)
+                access_token = str(refresh.access_token)
+
+                # Assuming modify_json_menu customizes the menu for the logged-in user
+                response_data = modify_json_menu('main', access_token)
+
+                response = JsonResponse(response_data)
+                response.set_cookie(
+                    'access_token', access_token, httponly=True, secure=True, samesite='Strict'
+                )
+                response.set_cookie(
+                    'refresh_token', refresh_token, httponly=True, secure=True, samesite='Strict'
+                )
+
+                # Clear sensitive session data
+                request.session.pop('otp', None)
+                request.session.pop('username', None)
+                request.session.pop('password', None)
+
+                return response
+
+        else:
+            # If authentication failed
+            return Response({'error': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
     else:
-        return JsonResponse({'error': 'Only POST method is allowed.'}, status=405)
+        # If serializer validation failed
+        return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 # Load OTP View if Two-Factor is enabled for user.
 
@@ -1457,34 +1617,77 @@ def delete_user_stats(request, menu_type='main'):
 
 # In Settings, save changes to user data
 
+# def save_changes(request, menu_type='main'):
+#     token = get_token_from_header(request)
+#     user = get_user_from_token(token)
+
+#     try:
+#         data = json.loads(request.body)
+#         username = data.get('username')
+#         avatar = data.get('avatar')
+#         pre = "https://localhost/static/images/"
+#         print(data.get("avatar"))
+#         avatar = pre + data.get('avatar')
+
+#         user.username = username
+#         print(avatar)
+#         user.avatarDirect = avatar
+#         user.save()
+#     except Exception as e:
+#         pass
+
+#     if (token == None) or (not validate_token(token)):
+#         menu = copy.deepcopy(MENU_DATA.get(menu_type))
+#     else:
+#         menu = modify_json_menu(menu_type, token)
+
+#     if menu is not None:
+#         return JsonResponse(menu)
+#     else:
+#         return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+@api_view(['POST'])
 def save_changes(request, menu_type='main'):
+    # Get token and user
     token = get_token_from_header(request)
     user = get_user_from_token(token)
 
-    try:
-        data = json.loads(request.body)
-        username = data.get('username')
-        avatar = data.get('avatar')
-        pre = "https://localhost/static/images/"
-        print(data.get("avatar"))
-        avatar = pre + data.get('avatar')
+    # Use the serializer for validating incoming data
+    serializer = UserUpdateSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        # Extract validated data
+        username = serializer.validated_data.get('username')
+        avatar = serializer.validated_data.get('avatar')
 
-        user.username = username
-        print(avatar)
-        user.avatarDirect = avatar
-        user.save()
-    except Exception as e:
-        pass
+        # Update user information
+        try:
+            user.username = username
 
-    if (token == None) or (not validate_token(token)):
-        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+            # Prepend your custom URL prefix
+            pre = "https://localhost/static/images/"
+            avatar_url = pre + avatar
+            user.avatarDirect = avatar_url
+
+            user.save()
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        # Check token validation
+        if token is None or not validate_token(token):
+            menu = copy.deepcopy(MENU_DATA.get(menu_type))
+        else:
+            menu = modify_json_menu(menu_type, token)
+
+        if menu is not None:
+            return Response(menu, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Menu type not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    # If validation fails
     else:
-        menu = modify_json_menu(menu_type, token)
-
-    if menu is not None:
-        return JsonResponse(menu)
-    else:
-        return JsonResponse({'error': 'Menu type not found'}, status=404)
+        return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 # FRIENDS
 

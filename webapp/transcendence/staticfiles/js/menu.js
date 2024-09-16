@@ -640,16 +640,22 @@ function load_onlineGame() {
       console.log("tournament_player_add called");
       let player_list_dom = document.getElementById("tournament_ul");
       let player_input = document.getElementById('player');
+      let player_input_value = sanitizeInput(player_input.value);
 
       let new_li = document.createElement('li');
-      new_li.textContent = player_input.value; // Make sure to set the text content of the new list item
+      new_li.textContent = player_input_value; // Make sure to set the text content of the new list item
+      
+      if (!player_input_value) {
+        alert("Wrong Input");
+        return ;
+      }
 
-      if (player_list.includes(player_input.value)) {
+      if (player_list.includes(player_input_value)) {
         alert("Player already in the tournament");
         return ;
       }
 
-      player_list.push(sanitizeInput(player_input.value));
+      player_list.push(sanitizeInput(player_input_value));
       player_input.value = "";
       player_list_dom.appendChild(new_li);
 

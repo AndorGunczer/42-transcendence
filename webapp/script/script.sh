@@ -29,21 +29,6 @@ psql -v ON_ERROR_STOP=1 --username "postgres" <<-EOSQL
     ALTER DATABASE transcendence OWNER TO project;
 EOSQL
 
-# # # Change directory to blockchain
-# cd ../blockchain
-
-# # Install missing npm packages
-# npm install npm-install-missing
-# npm install solc@0.5.0
-
-# # Install all npm packages
-# npm install
-
-# # Run ganache-cli in the background and log output to ganache.log
-# nohup ganache-cli --port 7545 --hostname 127.0.0.1 --gasLimit 8000000 --mnemonic "transcendence" &> ganache.log &
-# sleep 5
-# node scripts/deploy.js | grep "0x" | cut -c 31- > /app/contractAddress.txt
-
 # Change the directory to transcendence
 
 cd ../transcendence
