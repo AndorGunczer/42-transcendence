@@ -109,7 +109,15 @@ def modify_json_menu(menu_type, token):
     })
 
     if token and menu['menuTitle'] == 'Main Menu Buttons':
-        del menu['menuItems'][4]
+        del menu['menuItems'][3]
+
+        menu['menuItems'].append({
+                'id': 4,
+                'type': 'button',
+                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
+                'text': 'MATCH HISTORY',
+                'onclick': 'loadHistory()'
+            })
         
     # Add Friendlist
     menu['menuItems'].append({
