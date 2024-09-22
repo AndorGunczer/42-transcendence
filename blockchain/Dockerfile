@@ -1,6 +1,8 @@
 # Use an appropriate base image
 FROM ubuntu:latest
 
+ARG USER_ROOT_PW
+
 # Update and upgrade packages
 RUN apt-get update -y && apt-get upgrade -y
 
@@ -8,7 +10,7 @@ RUN apt-get update -y && apt-get upgrade -y
 WORKDIR /app
 
 # Configure SSH and root password
-RUN echo 'root:12345' | chpasswd
+RUN echo "root:${USER_ROOT_PW}" | chpasswd
 RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
 RUN ssh-keygen -A

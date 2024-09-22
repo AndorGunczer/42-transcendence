@@ -1,14 +1,17 @@
 # Use an appropriate base image
 FROM ubuntu:latest
 
+ARG USER_ROOT_PW
+ARG POSTGRES_PW
+
 # Update and upgrade packages
 RUN apt-get update -y && apt-get upgrade -y
 
 # Set the working directory
 WORKDIR /app
 
-# Configure SSH and root password
-RUN echo 'root:12345' | chpasswd
+# Configure SSH and root password #ENV
+RUN echo "root:$USER_ROOT_PW" | chpasswd
 RUN apt-get install -y openssh-server
 RUN mkdir /var/run/sshd
 RUN ssh-keygen -A
@@ -36,8 +39,8 @@ COPY ./files/pg_hba.conf ./pg_hba.conf
 # Set permissions for the script
 RUN chmod +x /app/script.sh
 
-# Set PostgreSQL password
-RUN echo 'postgres:12345' | chpasswd
+# Set PostgreSQL password #ENV
+RUN echo "postgres:'$USER_POSTGRES_PW'" | chpasswd
 
 # Allow root to run commands as postgres user without password
 RUN echo 'root ALL=(postgres) NOPASSWD: ALL' >> /etc/sudoers

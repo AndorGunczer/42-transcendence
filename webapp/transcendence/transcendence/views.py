@@ -383,37 +383,6 @@ def tournament_select_page_fill(menu, participants, tournament_name):
             ]
         })
 
-#     <table class="table">
-#   <thead class="thead-dark">
-#     <tr>
-#       <th scope="col">#</th>
-#       <th scope="col">First</th>
-#       <th scope="col">Last</th>
-#       <th scope="col">Handle</th>
-#     </tr>
-#   </thead>
-#   <tbody>
-#     <tr>
-#       <th scope="row">1</th>
-#       <td>Mark</td>
-#       <td>Otto</td>
-#       <td>@mdo</td>
-#     </tr>
-#     <tr>
-#       <th scope="row">2</th>
-#       <td>Jacob</td>
-#       <td>Thornton</td>
-#       <td>@fat</td>
-#     </tr>
-#     <tr>
-#       <th scope="row">3</th>
-#       <td>Larry</td>
-#       <td>the Bird</td>
-#       <td>@twitter</td>
-#     </tr>
-#   </tbody>
-# </table>
-
     if participants:
         tournament = Tournaments.objects.get(name=tournament_name)
 
@@ -1286,7 +1255,7 @@ def registration_check(request):
                 email=data['email'],
                 wins=0,
                 losses=0,
-                avatarDirect="https://localhost/static/images/" + data['avatar'],
+                avatarDirect="https://localhost/static/images/" + data['avatar'], #ENV
                 allow_otp=data['twofa'],
             )
             new_user.set_password(data['password'])
@@ -1422,7 +1391,7 @@ def login_check(request):
                 request.session['password'] = password
 
                 try:
-                    # Email configuration and sending the OTP code
+                    # Email configuration and sending the OTP code #ENV
                     port = 465
                     smtp_server = "smtp.gmail.com"
                     sender_email = "ft.transcendence.2fa.42@gmail.com"
@@ -1567,7 +1536,7 @@ def upload_file(request):
         file_content = base64.b64decode(file_data)
 
         # Construct the file path
-        static_images_dir = 'staticfiles/images'
+        static_images_dir = 'staticfiles/images' #ENV
         file_path = f'{static_images_dir}/{file_name}'
 
         # Ensure the directory exists
@@ -1690,7 +1659,7 @@ def save_changes(request, menu_type='main'):
             user.username = username
 
             # Prepend your custom URL prefix
-            pre = "https://localhost/static/images/"
+            pre = "https://localhost/static/images/" #ENV
             avatar_url = pre + avatar
             user.avatarDirect = avatar_url
 

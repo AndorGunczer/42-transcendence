@@ -1,7 +1,7 @@
 from web3 import Web3
 
 # Connect to Ganache (default URL is usually http://localhost:7545)
-web3 = Web3(Web3.HTTPProvider('http://192.168.10.3:7545'))
+web3 = Web3(Web3.HTTPProvider('http://192.168.10.3:7545')) #ENV
 
 # Ensure connection is successful
 if not web3.is_connected():

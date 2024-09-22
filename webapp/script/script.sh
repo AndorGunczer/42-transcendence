@@ -15,18 +15,18 @@ sleep 10
 
 # psql -c "CREATE USER project WITH PASSWORD '12345';"
 # psql -c "CREATE DATABASE transcendence;"
-# psql -c "ALTER DATABASE transcendence OWNER TO project;"
-export PGPASSWORD='12345'
-
-sudo -u postgres psql template1 -c "ALTER USER postgres WITH ENCRYPTED PASSWORD '12345';"
+# psql -c "ALTER DATABASE transcendence OWNER TO project;" #ENV
+export PGPASSWORD="$PGPASSWORD"
+#ENV
+sudo -u postgres psql template1 -c "ALTER USER postgres WITH ENCRYPTED PASSWORD '$DB_POSTGRES_PW';"
 cp /app/pg_hba.conf /etc/postgresql/16/main/pg_hba.conf
 
 service postgresql restart
-
+#ENV
 psql -v ON_ERROR_STOP=1 --username "postgres" <<-EOSQL
-    CREATE USER project WITH PASSWORD '12345';
-    CREATE DATABASE transcendence;
-    ALTER DATABASE transcendence OWNER TO project;
+    CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';
+    CREATE DATABASE $DB_DATABASE;
+    ALTER DATABASE $DB_DATABASE OWNER TO $DB_USER;
 EOSQL
 
 # Change the directory to transcendence
@@ -37,7 +37,7 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py populate_avatars
 service nginx start
-
+#ENV
 # Run Django server in the background # nohup
 daphne -p 8000 transcendence.asgi:application
 

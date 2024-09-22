@@ -15,7 +15,11 @@ volumes:
 services:
   blockchain:
     container_name: blockchain
-    build: "blockchain"
+    build:
+      context: ./blockchain
+      dockerfile: Dockerfile
+      args:
+        USER_ROOT_PW: ${USER_ROOT_PW}
     expose:
       - 7545
     volumes:
@@ -28,7 +32,18 @@ services:
     container_name: webapp
     depends_on:
       - blockchain
-    build: "webapp"
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+      args:
+        USER_ROOT_PW: ${USER_ROOT_PW}
+        USER_POSTGRES_PW: ${USER_POSTGRES_PW}
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_POSTGRES_PW: ${DB_POSTGRES_PW}
+      PGPASSWORD: ${PGPASSWORD}
     ports:
       - "443:443"
     volumes:
