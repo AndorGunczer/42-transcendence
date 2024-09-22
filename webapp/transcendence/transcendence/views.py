@@ -109,13 +109,21 @@ def modify_json_menu(menu_type, token):
     })
 
     if token and menu['menuTitle'] == 'Main Menu Buttons':
-        del menu['menuItems'][4]
+        del menu['menuItems'][3]
+
+        menu['menuItems'].append({
+                'id': 4,
+                'type': 'button',
+                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
+                'text': 'MATCH HISTORY',
+                'onclick': 'loadHistory()'
+            })
         
     # Add Friendlist
     menu['menuItems'].append({
         'id': len(menu['menuItems']),
         'type': 'div',
-        'class': 'h-100 w-25 position-absolute top-25 end-0 border border-white overflow-scroll',
+        'class': 'h-75 w-25 position-fixed top-25 end-0 border border-white overflow-scroll',
         'content': [
             {
                 # add friend
@@ -279,7 +287,7 @@ def modify_json_menu(menu_type, token):
 
     menu['menuItems'].append({
         'type': 'div',
-        'class': 'position-fixed d-flex flex-row bottom-0 h-25 w-100 pe-none',
+        'class': 'position-fixed d-flex flex-row bottom-0 start-0 h-25 w-100 pe-none',
         'identifier': 'chat-container',
         'content': [
 
