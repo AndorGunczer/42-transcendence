@@ -21,6 +21,18 @@ from transcendence.web3_utils import add_tournament, add_participant, increment_
 from .menus import MENU_DATA
 from django.db.models import Q
 
+import os
+from dotenv import load_dotenv
+
+# Importing .ENV
+
+load_dotenv()
+
+# Access environment variables
+SMTP_SERVER = os.getenv('SMTP_SERVER')
+SENDER_EMAIL = os.getenv('SENDER_EMAIL')
+EMAIL_PW = os.getenv('EMAIL_PW')
+
 
 # Initial Load of Site
 
@@ -1393,10 +1405,10 @@ def login_check(request):
                 try:
                     # Email configuration and sending the OTP code #ENV
                     port = 465
-                    smtp_server = "smtp.gmail.com"
-                    sender_email = "ft.transcendence.2fa.42@gmail.com"
+                    smtp_server = SMTP_SERVER
+                    sender_email = SENDER_EMAIL
                     receiver_email = user.email
-                    email_password = 'rwsv qnsl lqfa shic'  # Should be stored securely
+                    email_password = EMAIL_PW  # Should be stored securely
                     message = f"Subject: Your OTP Code\n\nYour OTP code is {otp}."
                     context = ssl.create_default_context()
 

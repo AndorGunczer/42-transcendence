@@ -22,6 +22,8 @@ ENV PIP_BREAK_SYSTEM_PACKAGES=1
 RUN pip3 install django djangorestframework django-cors-headers djangorestframework-simplejwt django-extensions pyOpenSSL Werkzeug
 # Install Async Python packages
 RUN pip3 install daphne channels
+# Install Dotenv
+RUN pip3 install python-dotenv
 
 # Install Solidity Web3 Module
 RUN pip3 install web3

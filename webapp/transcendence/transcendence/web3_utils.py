@@ -1,7 +1,16 @@
 from web3 import Web3
+import os
+from dotenv import load_dotenv
+
+# Load dotenv
+
+load_dotenv()
+
+# Assign Env variables
+BLOCKCHAIN_URL=os.getenv("BLOCKCHAIN_URL")
 
 # Connect to Ganache (default URL is usually http://localhost:7545)
-web3 = Web3(Web3.HTTPProvider('http://192.168.10.3:7545')) #ENV
+web3 = Web3(Web3.HTTPProvider(BLOCKCHAIN_URL)) #ENV
 
 # Ensure connection is successful
 if not web3.is_connected():
