@@ -288,27 +288,7 @@ async function settings() {
     } else return response.json();
   })
   .then(json => {
-    deleteHeader();
-    deleteMain();
-
-    // CREATE HEADER
-
-    headerLoad(json);
-
-    // CREATE CONTAINER
-
-    json.menuItems.forEach((item) => {
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      console.log(parent);
-      let element = document.createElement(item.type);
-      if (item.type == "div" || item.type == "form" || item.type == "select")
-        divLoader(element, item.content);
-
-      elementCustomize(element, item);
-      parent.appendChild(element);
-
-      // div.appendChild(element);
-    });
+    LOAD_DATA(json)
   })
   .catch(error => handleError(error));
 }
@@ -438,25 +418,7 @@ async function checkProfile(profile_name) {
     else return response.json();
   })
   .then((json) => {
-    deleteHeader();
-    deleteMain();
-
-    // CREATE HEADER
-    // console.log(json)
-
-    headerLoad(json);
-
-    // CREATE CONTAINER
-
-    json.menuItems.forEach((item) => {
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      let element = document.createElement(item.type);
-      if (item.type == "div" || item.type == "form" || item.type == "table")
-        divLoader(element, item.content);
-
-      elementCustomize(element, item);
-      parent.appendChild(element);
-    });
+    LOAD_DATA(json, true);
   })
   .catch((error) => handleError(error));
 }

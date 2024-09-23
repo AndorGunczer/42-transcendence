@@ -73,7 +73,7 @@ RUN mkdir ssl
 # Copy blockchain files and compile contracts
 # COPY ./blockchain /app/blockchain
 # RUN cd /app/blockchain && truffle compile
-COPY ./transcendence ./transcendence
+# COPY ./transcendence ./transcendence
 COPY ./script/nginx.conf /etc/nginx/nginx.conf
 COPY ./script/openssl.cnf /app/ssl/
 

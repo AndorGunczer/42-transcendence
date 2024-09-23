@@ -16,25 +16,10 @@
 
     </div>
     <div class="header">
-        <div class="player-info">
-            <p class="text-white">logged in as {{ username }}</p>
-            <p class="text-white">wins: {{ wins }}</p>
-            <p class="text-white">losses: {{ losses }}</p>
-        </div>
-        <div class="menu-button"></div>
+
     </div>
     <div class="container-fluid d-flex flex-column align-items-center justify-content-center" id="main">
-        <img src="{% static 'design/PONG.png' %}" alt="">
-        <button class="col-md-12 mt-2 p-3 h-50 w-25 p-3 mb-4 rounded bg-secondary bg-gradient text-white" id="button-play" onclick='load_playMenu()'>PLAY</button>
-        <button class="col-md-12 mt-2 p-3 h-50 w-25 p-3 mb-4 rounded bg-secondary bg-gradient text-white" onclick='load_tournament_main()'>TOURNAMENT</button>
-        {% if username == 'Guest' %}
-        <div class="d-flex flex-row w-25 justify-content-center">
-            <button class="col-md-12 mt-2 h-25 w-50 p-3 rounded bg-secondary bg-gradient text-white" id="button-login" onclick="load_login()">LOGIN</button>
-            <button class="col-md-12 mt-2 h-25 w-50 p-3 rounded bg-secondary bg-gradient text-white" id="button-register" onclick="load_register()">REGISTER</button>
-        </div>
-        {% else %}
-        <button class="col-md-12 mt-2 p-3 h-50 w-25 p-3 mb-4 rounded bg-secondary bg-gradient text-white" onclick='loadHistory()'>MATCH HISTORY</button>
-        {% endif %}
+     
     </div>
     <button onclick="simulateError()">ERROR</button>
     <script src="{% static 'js/menu.js' %}"></script>

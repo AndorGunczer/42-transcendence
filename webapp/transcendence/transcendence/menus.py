@@ -10,6 +10,7 @@
 MENU_DATA = {
     'main': {
         'menuTitle': 'Main Menu Buttons',
+        'id': 'main',
         'headerItems': [
             {
                 'id': 1,
@@ -95,6 +96,7 @@ MENU_DATA = {
     },
     'play_menu': {
         'menuTitle': 'Play Menu Buttons',
+        'id': 'play_menu',
         'headerItems': [
             {
                 'id': 1,
@@ -168,6 +170,7 @@ MENU_DATA = {
     },
     'match_history': {
         'menuTitle': 'Match History',
+        'id': 'match_history',
         'headerItems': [
             {
                 'id': 1,
@@ -216,6 +219,7 @@ MENU_DATA = {
     },
     'profile': {
         'menuTitle': 'profile',
+        'id': 'profile',
         'headerItems': [
             {
                 'id': 1,
@@ -290,6 +294,7 @@ MENU_DATA = {
     },
     'tournament_main': {
         'menuTitle': 'Tournament Main Menu',
+        'id': 'tournament_main',
         'headerItems': [
             {
                 'id': 1,
@@ -372,8 +377,9 @@ MENU_DATA = {
             }
         ]
     },
-        'tournament_create': {
+    'tournament_create': {
         'menuTitle': 'Tournament Create Menu',
+        'id': 'tournament_create',
         'headerItems': [
             {
                 'id': 1,
@@ -480,6 +486,7 @@ MENU_DATA = {
     },
     'tournament_select': {
         'menuTitle': 'Selected Tournament Menu',
+        'id': 'tournament_select',
         'headerItems': [
             {
                 'id': 1,
@@ -546,6 +553,7 @@ MENU_DATA = {
     },
     'singleplayer_menu': {
         'menuTitle': 'Singleplayer Menu Buttons',
+        'id': 'singleplayer_menu',
         'headerItems': [
             {
                 'id': 1,
@@ -599,6 +607,7 @@ MENU_DATA = {
     },
     'online_menu': {
         'menuTitle': 'Online Menu Buttons',
+        'id': 'online_menu',
         'headerItems': [
             {
                 'id': 1,
@@ -746,6 +755,7 @@ MENU_DATA = {
     },
     'local_menu': {
         'menuTitle': 'Local Menu Buttons',
+        'id': 'local_menu',
         'headerItems': [
             {
                 'id': 1,
@@ -899,6 +909,7 @@ MENU_DATA = {
     },
     'register': {
         'menuTitle': 'Local Menu Buttons',
+        'id': 'register',
         'headerItems': [
             {
                 'id': 1,
@@ -1025,7 +1036,7 @@ MENU_DATA = {
                                         'type': 'img',
                                         'identifier': 'avatarPic',
                                         'class': 'mb-3',
-                                        'src': 'https://localhost:8000/static/images/question_mark.png',
+                                        'src': 'https://localhost/static/images/question_mark.png',
                                     }
                                 ]
                             },
@@ -1088,6 +1099,7 @@ MENU_DATA = {
     },
     'login': {
         'menuTitle': 'Local Menu Buttons',
+        'id': 'login',
         'headerItems': [
             {
                 'id': 1,
@@ -1215,6 +1227,7 @@ MENU_DATA = {
     },
     'settings': {
         'menuTitle': 'User Data Change',
+        'id': 'settings',
         'headerItems': [
             {
                 'id': 1,
@@ -1316,6 +1329,7 @@ MENU_DATA = {
     },
     'singleplayer_game': {
         'menuTitle': 'Singleplayer Game Window',
+        'id': 'singleplayer_game',
         'headerItems': [
 
         ],
@@ -1331,6 +1345,7 @@ MENU_DATA = {
     },
     'local_game': {
         'menuTitle': 'Local Game Window',
+        'id': 'local_game',
         'headerItems': [
 
         ],
@@ -1346,6 +1361,7 @@ MENU_DATA = {
     },
     'online_game': {
         'menuTitle': 'Online Game Window',
+        'id': 'online_game',
         'headerItems': [
 
         ],

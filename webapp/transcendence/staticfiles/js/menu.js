@@ -4,16 +4,16 @@
 
 function sanitizeInput(input) {
   return input.replace(/&/g, "&amp;")
-              .replace(/</g, "&lt;")
-              .replace(/>/g, "&gt;")
-              .replace(/"/g, "&quot;")
-              .replace(/'/g, "&#039;");
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function changeSelectFunction(callback, dependencies) {
   // This is a placeholder function. Adjust as necessary for your actual use case.
   // It should return a function that handles events as per the requirements.
-  return function(event) {
+  return function (event) {
     callback(event);
   };
 }
@@ -146,7 +146,247 @@ function headerLoad(json) {
 }
 
 // LOAD FUNCTIONS
-  // MAIN
+// MAIN
+
+window.onpopstate = function (event) {
+
+  console.log("RELATED TO HISTORY");
+  const buffer = JSON.stringify(event.state);
+  if (buffer == null) {
+    console.log("Buffer ist NULL");
+    return;
+  }
+  const json = JSON.parse(buffer);
+  if (json == null) {
+    console.log("Json ist NULL");
+    return;
+  }
+  console.log(json);
+
+  LOAD_DATA(json, false);
+};
+
+function LOAD_DATA(json, shouldPush, state_json = null) {
+  console.log("state_json is: " + state_json);
+  if (shouldPush)
+    history.pushState(json, null);
+  deleteHeader();
+  deleteMain();
+
+  // CREATE HEADER
+
+  headerLoad(json);
+
+  // CREATE CONTAINER
+
+  switch (json.id) {
+    case "main":
+      {
+        json.menuItems.forEach((item) => {
+          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+          let element = document.createElement(item.type);
+          if (item.type == "div" || item.type == "form")
+            divLoader(element, item.content);
+          elementCustomize(element, item);
+          parent.appendChild(element);
+        });
+      }
+      break;
+    case "play_menu":
+      {
+        json.menuItems.forEach((item) => {
+          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+          let element = document.createElement(item.type);
+          if (item.type == "div" || item.type == "form")
+            divLoader(element, item.content);
+          elementCustomize(element, item);
+          parent.appendChild(element);
+        });
+      }
+      break;
+    case 'match_history':
+      {
+        json.menuItems.forEach((item) => {
+          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+          let element = document.createElement(item.type);
+          if (item.type == "div" || item.type == "form" || item.type == "table")
+            divLoader(element, item.content);
+
+          elementCustomize(element, item);
+          parent.appendChild(element);
+        });
+      }
+      break;
+    case "profile":
+      {
+        json.menuItems.forEach((item) => {
+          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+          let element = document.createElement(item.type);
+          if (item.type == "div" || item.type == "form" || item.type == "table")
+            divLoader(element, item.content);
+
+          elementCustomize(element, item);
+          parent.appendChild(element);
+        });
+      }
+      break;
+    case "tournament_main":
+      {
+        json.menuItems.forEach((item) => {
+          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+          let element = document.createElement(item.type);
+          if (item.type == "div" || item.type == "form")
+            divLoader(element, item.content);
+
+          elementCustomize(element, item);
+          parent.appendChild(element);
+        });
+      }
+      break;
+    case "tournament_create":
+      {
+        json.menuItems.forEach((item) => {
+          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+          let element = document.createElement(item.type);
+          if (item.type == "div" || item.type == "form")
+            divLoader(element, item.content);
+
+          elementCustomize(element, item);
+          parent.appendChild(element);
+        });
+      }
+      break;
+    case "tournament_select":
+      {
+        json.menu.menuItems.forEach((item) => {
+          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+          let element = document.createElement(item.type);
+          if (item.type == "div" || item.type == "form" || item.type == "table")
+            divLoader(element, item.content);
+
+          elementCustomize(element, item);
+          parent.appendChild(element);
+        });
+      }
+      break;
+    case "singleplayer_menu":
+      {
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+        json.menuItems.forEach((item) => {
+          let element = document.createElement("div");
+          elementCustomize(element, item);
+          divLoader(element, item.content);
+          parent.appendChild(element);
+        });
+      }
+      break;
+    case "online_menu":
+      {
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+        json.menuItems.forEach((item) => {
+          let element = document.createElement("div");
+          elementCustomize(element, item);
+          divLoader(element, item.content);
+          parent.appendChild(element);
+        });
+      }
+      break;
+    case "local_menu":
+      {
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+        json.menuItems.forEach((item) => {
+          let element = document.createElement("div");
+          elementCustomize(element, item);
+          divLoader(element, item.content);
+          parent.appendChild(element);
+        });
+      }
+      break;
+    case "register":
+      {
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+        json.menuItems.forEach((item) => {
+          let element;
+          if (item.type == "div")
+            element = document.createElement("div");
+          else if (item.type == "select")
+            element = document.createElement("select")
+          elementCustomize(element, item);
+          divLoader(element, item.content);
+          parent.appendChild(element);
+        });
+        document
+          .getElementById("registration_form")
+          .addEventListener("submit", submit_registration_form, { once: true });
+        document.getElementById("Avatar").addEventListener("change", changeSelect);
+
+      }
+      break;
+    case "login":
+      {
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+        json.menuItems.forEach((item) => {
+          let element = document.createElement("div");
+          elementCustomize(element, item);
+          divLoader(element, item.content);
+          parent.appendChild(element);
+        });
+        document.getElementById("login_form");
+      }
+      break;
+    case "settings":
+      {
+        json.menuItems.forEach((item) => {
+          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+          console.log(parent);
+          let element = document.createElement(item.type);
+          if (item.type == "div" || item.type == "form" || item.type == "select")
+            divLoader(element, item.content);
+
+          elementCustomize(element, item);
+          parent.appendChild(element);
+
+        });
+      }
+      break;
+    case "singleplayer_game":
+      {
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+        json.menuItems.forEach((item) => {
+          let element = document.createElement(item.type);
+          elementCustomize(element, item);
+          parent.appendChild(element);
+        });
+        startSingleGame();
+      }
+      break;
+    case "local_game":
+      {
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+        json.menuItems.forEach((item) => {
+          let element = document.createElement(item.type);
+          elementCustomize(element, item);
+          parent.appendChild(element);
+        });
+        startLocalGame(state_json);
+      }
+      break;
+    case "online_game":
+      {
+
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+        json.menuItems.forEach((item) => {
+          let element = document.createElement(item.type);
+          elementCustomize(element, item);
+          parent.appendChild(element);
+        });
+        startOnlineGame();
+      }
+      break;
+  }
+
+}
+
 
 function load_main() {
   let url = "/indexPost";
@@ -160,6 +400,46 @@ function load_main() {
       else return response.json();
     })
     .then((json) => {
+      LOAD_DATA(json, true);
+      // history.pushState(json, null);
+      // deleteHeader();
+      // deleteMain();
+
+      // // CREATE HEADER
+
+      // headerLoad(json);
+
+      // // CREATE CONTAINER
+
+      // json.menuItems.forEach((item) => {
+      //   let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+      //   let element = document.createElement(item.type);
+      //   if (item.type == "div" || item.type == "form")
+      //     divLoader(element, item.content);
+
+      //   elementCustomize(element, item);
+      //   parent.appendChild(element);
+      // });
+    })
+    .catch((error) => {
+      handleError(error);
+    });
+}
+
+window.onload = function () {
+  let url = "/indexPost";
+  console.log("ONLOAD FUNCTION CALLED");
+  console.log(url);
+  fetch(url)
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
+      else return response.json();
+    })
+    .then((json) => {
+      history.replaceState(json, null);
       deleteHeader();
       deleteMain();
 
@@ -168,21 +448,21 @@ function load_main() {
       headerLoad(json);
 
       // CREATE CONTAINER
-
       json.menuItems.forEach((item) => {
         let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
         let element = document.createElement(item.type);
         if (item.type == "div" || item.type == "form")
           divLoader(element, item.content);
-
         elementCustomize(element, item);
         parent.appendChild(element);
       });
+
+      // function to replace top of the History stack
     })
     .catch((error) => {
       handleError(error);
     });
-}
+};
 
 function load_playMenu() {
   let url = "/play";
@@ -196,26 +476,28 @@ function load_playMenu() {
       else return response.json();
     })
     .then((json) => {
-      deleteHeader();
-      deleteMain();
+      LOAD_DATA(json, true);
+      // history.pushState(json, null);
+      // deleteHeader();
+      // deleteMain();
 
-      // CREATE HEADER
+      // // CREATE HEADER
 
-      headerLoad(json);
+      // headerLoad(json);
 
-      // CREATE CONTAINER
+      // // CREATE CONTAINER
 
-      json.menuItems.forEach((item) => {
-        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-        let element = document.createElement(item.type);
-        if (item.type == "div" || item.type == "form")
-          divLoader(element, item.content);
+      // json.menuItems.forEach((item) => {
+      //   let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+      //   let element = document.createElement(item.type);
+      //   if (item.type == "div" || item.type == "form")
+      //     divLoader(element, item.content);
 
-        elementCustomize(element, item);
-        parent.appendChild(element);
+      //   elementCustomize(element, item);
+      //   parent.appendChild(element);
 
-        // div.appendChild(element);
-      });
+      //   // div.appendChild(element);
+      // });
     })
     .catch((error) => {
       handleError(error);
@@ -224,55 +506,57 @@ function load_playMenu() {
 
 async function loadHistory() {
   let url = "/match_history";
-  
+
   const csrfToken = await getCsrfToken();
 
 
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "X-CSRFToken": csrfToken,
-      },
-      // body: JSON.stringify({
-      //   tournament_name: document.getElementById('Avatar').value
-      // }),
-      credentials: "include",
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    // body: JSON.stringify({
+    //   tournament_name: document.getElementById('Avatar').value
+    // }),
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
+      else return response.json();
     })
-      .then(async (response) => {
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-        }
-        else return response.json();
-      })
-      .then((json) => {
-        deleteHeader();
-        deleteMain();
-  
-        // CREATE HEADER
-        // console.log(json)
-  
-        headerLoad(json);
-  
-        // CREATE CONTAINER
-  
-        json.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-          let element = document.createElement(item.type);
-          if (item.type == "div" || item.type == "form" || item.type == "table")
-            divLoader(element, item.content);
-  
-          elementCustomize(element, item);
-          parent.appendChild(element);
-        });
-      })
-      .catch((error) => {
-        handleError(error);
-      });
+    .then((json) => {
+      LOAD_DATA(json, true);
+      // history.pushState(json, null);
+      // deleteHeader();
+      // deleteMain();
+
+      // // CREATE HEADER
+      // // console.log(json)
+
+      // headerLoad(json);
+
+      // // CREATE CONTAINER
+
+      // json.menuItems.forEach((item) => {
+      //   let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+      //   let element = document.createElement(item.type);
+      //   if (item.type == "div" || item.type == "form" || item.type == "table")
+      //     divLoader(element, item.content);
+
+      //   elementCustomize(element, item);
+      //   parent.appendChild(element);
+      // });
+    })
+    .catch((error) => {
+      handleError(error);
+    });
 }
 
-  // GAMES
+// GAMES
 
 function single_pregame() {
   let url = "/singleplayer_menu";
@@ -283,16 +567,16 @@ function single_pregame() {
       else return response.json();
     })
     .then((json) => {
-      deleteHeader();
-      deleteMain();
-      headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      json.menuItems.forEach((item) => {
-        let element = document.createElement("div");
-        elementCustomize(element, item);
-        divLoader(element, item.content);
-        parent.appendChild(element);
-      });
+      LOAD_DATA(json, true);
+
+
+      // let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+      // json.menuItems.forEach((item) => {
+      //   let element = document.createElement("div");
+      //   elementCustomize(element, item);
+      //   divLoader(element, item.content);
+      //   parent.appendChild(element);
+      // });
     });
 
   console.log("single pregame called");
@@ -307,16 +591,7 @@ function local_pregame() {
       else return response.json();
     })
     .then((json) => {
-      deleteHeader();
-      deleteMain();
-      headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      json.menuItems.forEach((item) => {
-        let element = document.createElement("div");
-        elementCustomize(element, item);
-        divLoader(element, item.content);
-        parent.appendChild(element);
-      });
+      LOAD_DATA(json, true);
     });
 }
 
@@ -328,7 +603,7 @@ async function submit_local_pregame(event) {
   let validation = validate_local_pregame();
 
   if (!validation)
-    return ;
+    return;
 
   player1 = sanitizeInput(document.getElementById('player1').value);
   player2 = sanitizeInput(document.getElementById('player2').value);
@@ -390,16 +665,7 @@ function online_pregame() {
       else return response.json();
     })
     .then((json) => {
-      deleteHeader();
-      deleteMain();
-      headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      json.menuItems.forEach((item) => {
-        let element = document.createElement("div");
-        elementCustomize(element, item);
-        divLoader(element, item.content);
-        parent.appendChild(element);
-      });
+      LOAD_DATA(json, true);
     })
     .catch((error) => {
       handleError(error);
@@ -418,24 +684,9 @@ function load_register() {
       else return response.json();
     })
     .then((json) => {
-      deleteHeader();
-      deleteMain();
-      headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      json.menuItems.forEach((item) => {
-        let element;
-        if (item.type == "div")
-          element = document.createElement("div");
-        else if (item.type == "select")
-          element = document.createElement("select")
-        elementCustomize(element, item);
-        divLoader(element, item.content);
-        parent.appendChild(element);
-      });
-      document
-        .getElementById("registration_form")
-        .addEventListener("submit", submit_registration_form, {once: true});
-      document.getElementById("Avatar").addEventListener("change", changeSelect);
+      LOAD_DATA(json, true);
+
+
     })
     .catch((error) => {
       handleError(error);
@@ -454,19 +705,10 @@ function load_login() {
       else return response.json();
     })
     .then((json) => {
-      deleteHeader();
-      deleteMain();
-      headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      json.menuItems.forEach((item) => {
-        let element = document.createElement("div");
-        elementCustomize(element, item);
-        divLoader(element, item.content);
-        parent.appendChild(element);
-      });
-      document
-        .getElementById("login_form")
-    }, {once: true})
+      LOAD_DATA(json, true);
+
+
+    }, { once: true })
     .catch((error) => {
       handleError(error);
     });
@@ -484,17 +726,9 @@ function load_singleGame() {
       else return response.json();
     })
     .then((json) => {
-      console.log(json);
-      deleteHeader();
-      deleteMain();
-      headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      json.menuItems.forEach((item) => {
-        let element = document.createElement(item.type);
-        elementCustomize(element, item);
-        parent.appendChild(element);
-      });
-      startSingleGame();
+      LOAD_DATA(json, false);
+
+
     })
     .catch((error) => {
       handleError(error);
@@ -513,17 +747,9 @@ function load_localGame(state_json) {
       else return response.json();
     })
     .then((json) => {
-      console.log(json);
-      deleteHeader();
-      deleteMain();
-      headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      json.menuItems.forEach((item) => {
-        let element = document.createElement(item.type);
-        elementCustomize(element, item);
-        parent.appendChild(element);
-      });
-      startLocalGame(state_json);
+      LOAD_DATA(json, false, state_json);
+
+
     })
     .catch((error) => {
       handleError(error);
@@ -542,168 +768,125 @@ function load_onlineGame() {
       else return response.json();
     })
     .then((json) => {
-      console.log(json);
-      deleteHeader();
-      deleteMain();
-      headerLoad(json);
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      json.menuItems.forEach((item) => {
-        let element = document.createElement(item.type);
-        elementCustomize(element, item);
-        parent.appendChild(element);
-      });
-      startOnlineGame();
+      LOAD_DATA(json, false);
     })
     .catch((error) => {
       handleError(error);
     });
 }
 
-  // TOURNAMENT
+// TOURNAMENT
 
-  function load_tournament_main() {
-    let url = "/tournament_main";
-  
-    fetch(url)
-      .then(async (response) => {
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-        }
-        else return response.json();
-      })
-      .then((json) => {
-        deleteHeader();
-        deleteMain();
-  
-        // CREATE HEADER
-  
-        headerLoad(json);
-  
-        // CREATE CONTAINER
-  
-        json.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-          let element = document.createElement(item.type);
-          if (item.type == "div" || item.type == "form")
-            divLoader(element, item.content);
-  
-          elementCustomize(element, item);
-          parent.appendChild(element);
-        });
-      })
-      .catch((error) => {
-        handleError(error);
-      });
+function load_tournament_main() {
+  let url = "/tournament_main";
+
+  fetch(url)
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
+      else return response.json();
+    })
+    .then((json) => {
+      LOAD_DATA(json, true);
+    })
+    .catch((error) => {
+      handleError(error);
+    });
+}
+
+function load_tournament_create() {
+  let url = "/tournament_create";
+
+  fetch(url)
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
+      else return response.json();
+    })
+    .then((json) => {
+
+      LOAD_DATA(json, true);
+    })
+    .catch((error) => {
+      handleError(error);
+    });
+}
+
+let player_list = [];
+
+function tournament_player_add(event) {
+  event.preventDefault();
+  console.log("tournament_player_add called");
+  let player_list_dom = document.getElementById("tournament_ul");
+  let player_input = document.getElementById('player');
+  let player_input_value = sanitizeInput(player_input.value);
+
+  let new_li = document.createElement('li');
+  new_li.textContent = player_input_value; // Make sure to set the text content of the new list item
+
+  if (!player_input_value) {
+    alert("Wrong Input");
+    return;
   }
 
-  function load_tournament_create() {
-    let url = "/tournament_create";
-  
-    fetch(url)
-      .then(async (response) => {
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-        }
-        else return response.json();
-      })
-      .then((json) => {
-        deleteHeader();
-        deleteMain();
-  
-        // CREATE HEADER
-  
-        headerLoad(json);
-  
-        // CREATE CONTAINER
-  
-        json.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-          let element = document.createElement(item.type);
-          if (item.type == "div" || item.type == "form")
-            divLoader(element, item.content);
-  
-          elementCustomize(element, item);
-          parent.appendChild(element);
-        });
-      })
-      .catch((error) => {
-        handleError(error);
-      });
+  if (player_list.includes(player_input_value)) {
+    alert("Player already in the tournament");
+    return;
   }
 
-    let player_list = [];
+  player_list.push(sanitizeInput(player_input_value));
+  player_input.value = "";
+  player_list_dom.appendChild(new_li);
 
-    function tournament_player_add(event) {
-      event.preventDefault();
-      console.log("tournament_player_add called");
-      let player_list_dom = document.getElementById("tournament_ul");
-      let player_input = document.getElementById('player');
-      let player_input_value = sanitizeInput(player_input.value);
+  console.log(player_list);
 
-      let new_li = document.createElement('li');
-      new_li.textContent = player_input_value; // Make sure to set the text content of the new list item
-      
-      if (!player_input_value) {
-        alert("Wrong Input");
-        return ;
-      }
+  return false;
+}
 
-      if (player_list.includes(player_input_value)) {
-        alert("Player already in the tournament");
-        return ;
-      }
+async function submit_tournament_create(event) {
+  event.preventDefault();
 
-      player_list.push(sanitizeInput(player_input_value));
-      player_input.value = "";
-      player_list_dom.appendChild(new_li);
+  let validation = validate_tournament_create();
 
-      console.log(player_list);
+  if (!validation) {
+    // player_list = [];
+    return;
+  }
 
-      return false;
+  let tournament_name = document.getElementById('tournament_name').value;
+
+  const csrfToken = await getCsrfToken();
+
+  fetch("/tournament_create_check", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({
+      tournament_name: tournament_name,
+      players: player_list
+    }),
+    credentials: "include",
+  }).then(async (response) => {
+    if (response.ok)
+      player_list = [];
+    else if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
     }
-
-    async function submit_tournament_create(event) {
-      event.preventDefault();
-
-      let validation = validate_tournament_create();
-
-      if (!validation) {
-        // player_list = [];
-        return ;
-      }
-
-      let tournament_name = document.getElementById('tournament_name').value;
-
-      const csrfToken = await getCsrfToken();
-
-      fetch("/tournament_create_check", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          "X-CSRFToken": csrfToken,
-        },
-        body: JSON.stringify({
-          tournament_name: tournament_name,
-          players: player_list
-        }),
-        credentials: "include",
-      }).then(async (response) => {
-        if (response.ok)
-          player_list = [];
-        else if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-        }
-        console.log('tournament created');
-        return response.json();
-      }).then((json) => {
-        load_next_step(json);
-      }).catch((error) => {
-        handleError(error);
-      })
-    }
+    console.log('tournament created');
+    return response.json();
+  }).then((json) => {
+    load_next_step(json);
+  }).catch((error) => {
+    handleError(error);
+  })
+}
 
 function validate_tournament_create() {
   let tournament_name = document.getElementById('tournament_name').value;
@@ -725,58 +908,40 @@ let gameId;
 
 async function load_tournament_select() {
   let url = "/tournament_select";
-  
+
   const csrfToken = await getCsrfToken();
 
 
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "X-CSRFToken": csrfToken,
-      },
-      body: JSON.stringify({
-        tournament_name: document.getElementById('Avatar').value
-      }),
-      credentials: "include",
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({
+      tournament_name: document.getElementById('Avatar').value
+    }),
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
+      else return response.json();
     })
-      .then(async (response) => {
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-        }
-        else return response.json();
-      })
-      .then((json) => {
-        deleteHeader();
-        deleteMain();
-  
-        // CREATE HEADER
-  
-        headerLoad(json.menu);
-        gameId = json.game;
-  
-        // CREATE CONTAINER
-  
-        json.menu.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-          let element = document.createElement(item.type);
-          if (item.type == "div" || item.type == "form" || item.type == "table")
-            divLoader(element, item.content);
-  
-          elementCustomize(element, item);
-          parent.appendChild(element);
-        });
-      })
-      .catch((error) => {
-        handleError(error);
-      });
+    .then((json) => {
+      LOAD_DATA(json, true);
+    })
+    .catch((error) => {
+      handleError(error);
+    });
 }
 
 async function load_tournament_localGame() {
   console.log("load_tournament_localGame() is called");
   console.log("Game_id = " + gameId);
-  
+
   let url = "/tournament_game_check";
 
   const csrfToken = await getCsrfToken();
