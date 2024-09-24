@@ -121,6 +121,8 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
             await self.handle_friend_acceptance(data)
         elif message_type == 'friend_declination':
             await self.handle_friend_declination(data)
+        elif message_type == 'settings_save':
+            await self.handle_settings_save(data)
         elif message_type == 'notification':
             await self.handle_notification(data)
 
@@ -275,7 +277,19 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
                 }
             )
 
-
+    async def handle_settings_save(self, data):
+        # Fetch the updated user data from the database when an event happens
+        # user = await sync_to_async(Users2.objects.get)(id=self.scope["user"].id)
+        print("handle_settings_save is CALLED")
+        username = data.get('new_username')
+        avatarDirect = data.get('new_avatarDirect')
+        print(f'{username}, {avatarDirect}')
+        
+        # Update WebSocket state with the new data
+        self.scope["user"].username = username
+        self.scope["user"].avatarDirect = avatarDirect
+        print("SCORE IS UPDATED")
+        print(f'{self.scope["user"].username}, {self.scope["user"].avatarDirect}')
         
 
         

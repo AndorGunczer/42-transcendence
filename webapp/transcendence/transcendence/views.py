@@ -1528,7 +1528,7 @@ def logout(request):
             response.delete_cookie('refresh_token')
             return response
         except Exception as e:
-            pass
+            return JsonResponse({'error': str(e)}, status=404)
 
 def get_csrf_token(request):
     csrf_token = get_token(request)
@@ -1600,9 +1600,11 @@ def load_settings(request, menu_type='settings'):
                 'value': avatar.name,
                 'text': avatar.name
             })
-
-            if avatar.name == user.avatarDirect.rsplit('/', 1)[1]:
-                menu['menuItems'][0]['content'][1]['content'][1]['content'][1]['selected'] = user.avatarDirect.rsplit('/', 1)[1]
+            splitted_avatar = user.avatarDirect.rsplit('/', 1)[1]
+            # print(f'splitted_avatar: ' + splitted_avatar + " name: " + avata.name + " | " + avatar.name == splitted_avatar)
+            print(f'splitted_avatar: {splitted_avatar} name: {avatar.name} | {avatar.name == splitted_avatar}')
+            if avatar.name == splitted_avatar:
+                menu['menuItems'][0]['content'][1]['content'][1]['content'][i]['selected'] = splitted_avatar
             i = i + 1
 
         menu['menuItems'][0]['content'][0]['value'] = user.username
@@ -1691,6 +1693,9 @@ def save_changes(request, menu_type='main'):
             user.avatarDirect = avatar_url
 
             user.save()
+
+            print("DATABASE MODIFICATIONS HAVE BEEN SAVED")
+            print(f'username: {user.username} avatarDirect: {user.avatarDirect}')
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

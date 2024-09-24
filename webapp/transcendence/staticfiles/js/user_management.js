@@ -367,14 +367,23 @@ async function saveChanges() {
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-    } else return response.json();
+    } else {
+      // send changes to the socket
+      const message = JSON.stringify({
+          type: "settings_save",
+          new_username: username,
+          new_avatarDirect: avatar,
+      })
+      chatSocket.socket.send(message);
+      return response.json();
+    }
   })
   .then(json => {
     deleteHeader();
     deleteMain();
 
     // CREATE HEADER
-
+    console.log(json);
     headerLoad(json);
 
     // CREATE CONTAINER
