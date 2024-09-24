@@ -288,8 +288,13 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
         # Update WebSocket state with the new data
         self.scope["user"].username = username
         self.scope["user"].avatarDirect = avatarDirect
-        print("SCORE IS UPDATED")
+        self.user.username = username
+        self.user.avatarDirect = f'https://localhost/static/images/{avatarDirect}'
+        await sync_to_async(self.user.save)()
+        print("SCOPE IS UPDATED")
         print(f'{self.scope["user"].username}, {self.scope["user"].avatarDirect}')
+        print(f'username {self.user.username}')
+
         
 
         
