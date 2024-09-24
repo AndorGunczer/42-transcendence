@@ -22,10 +22,10 @@ class ChatSocket {
             case 'set_user_to_online':
                 console.log("set_user_to_online: ");
                 console.log(data);
-                this.handleSetUserOnline(data);
+                this.handleSetUserOnlineStatus(data, "Online");
                 break;
             case 'set_user_to_offline':
-                this.handleSetUserOffline(data);
+                this.handleSetUserOnlineStatus(data, "Offline");
                 break;
             case 'friend_request':
                 console.log("Friend request received");
@@ -83,8 +83,7 @@ class ChatSocket {
         chatBox.appendChild(messageDiv);
     }
 
-
-    handleSetUserOnline(data) {
+    handleSetUserOnlineStatus(data, onlineStatus) {
         const currentUser = (document.getElementById("user").innerHTML).split(" ").pop();
         const targetUser = data.target_user_name
 
@@ -105,34 +104,34 @@ class ChatSocket {
                 console.log('No .is_online element found');
             }
 
-            isOnline.innerText = "Online";
+            isOnline.innerText = onlineStatus;
         }
     }
 
-    handleSetUserOffline(data) {
-        const currentUser = (document.getElementById("user").innerHTML).split(" ").pop();
-        const targetUser = data.target_user_name
+    // handleSetUserOffline(data) {
+    //     const currentUser = (document.getElementById("user").innerHTML).split(" ").pop();
+    //     const targetUser = data.target_user_name
 
-        if (currentUser != targetUser) {
-            // Find the button element
-            const button = document.getElementById(targetUser);
+    //     if (currentUser != targetUser) {
+    //         // Find the button element
+    //         const button = document.getElementById(targetUser);
 
-            // Use closest to find the nearest ancestor div with class d-flex (container)
-            const container = button.parentElement.parentElement;
+    //         // Use closest to find the nearest ancestor div with class d-flex (container)
+    //         const container = button.parentElement.parentElement;
 
-            // Use querySelector to find the element with class .is_online within the container
-            const isOnline = container.querySelector('.is_online');
+    //         // Use querySelector to find the element with class .is_online within the container
+    //         const isOnline = container.querySelector('.is_online');
 
-            // Check if the element exists and log the content or do something with it
-            if (isOnline) {
-                console.log(isOnline.textContent); // Logs "Online"
-            } else {
-                console.log('No .is_online element found');
-            }
+    //         // Check if the element exists and log the content or do something with it
+    //         if (isOnline) {
+    //             console.log(isOnline.textContent); // Logs "Online"
+    //         } else {
+    //             console.log('No .is_online element found');
+    //         }
 
-            isOnline.innerText = "Offline";
-        }
-    }
+    //         isOnline.innerText = "Offline";
+    //     }
+    // }
 
     handleFriendRequest(data) {
         // if (data.)
