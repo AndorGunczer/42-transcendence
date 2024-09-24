@@ -258,7 +258,8 @@ function LOAD_DATA(json, shouldPush, state_json = null) {
       break;
     case "tournament_select":
       {
-        json.menu.menuItems.forEach((item) => {
+        console.log(json.menuItems);
+        json.menuItems.forEach((item) => {
           let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
           let element = document.createElement(item.type);
           if (item.type == "div" || item.type == "form" || item.type == "table")
@@ -388,10 +389,22 @@ function LOAD_DATA(json, shouldPush, state_json = null) {
 }
 
 
-function load_main() {
+async function load_main() {
   let url = "/indexPost";
 
-  fetch(url)
+  const csrfToken = await getCsrfToken();
+
+  fetch(url, {
+    method: "GET",
+    headers: {
+      "content-type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    // body: JSON.stringify({
+    //   tournament_name: document.getElementById('Avatar').value
+    // }),
+    credentials: "include",
+  })
     .then(async (response) => {
       if (!response.ok) {
         const errorData = await response.json();
