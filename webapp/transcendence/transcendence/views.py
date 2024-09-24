@@ -1292,6 +1292,7 @@ def registration_check(request):
         except Exception as e:
             warning = e
             print(warning)
+            username = serializer.validated_data['username']
             return JsonResponse({'error': f'Username {username} already taken'}, status=404)
     else:
         return JsonResponse({'errors': serializer.errors}, status=400)
