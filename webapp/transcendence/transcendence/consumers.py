@@ -35,6 +35,14 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
                 f"user_{self.user.id}",
                 self.channel_name
             )
+
+            # Add the user to the 'online_users' group
+            await self.channel_layer.group_add(
+                "online_users",  # Group name
+                self.channel_name  # Channel name for this user connection
+            )
+
+            await self.set_user_online(self.user)
             await self.accept()
         else:
             await self.close()
@@ -54,6 +62,41 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
                 self.channel_name
             )
 
+            await self.set_user_offline(self.user)
+
+            await self.channel_layer.group_discard(
+                "online_users",  # Group name
+                self.channel_name  # Channel name for this user connection
+            )
+
+    async def set_user_online(self, user):
+        user.is_online = True
+        await database_sync_to_async(user.save)()
+
+        # Notify other connected users
+        await self.channel_layer.group_send(
+            "online_users",  # A group for tracking online users
+            {
+                "type": "send_user_to_online",
+                "user_id": user.id,
+                "user_name": user.username,
+            }
+        )
+
+    async def set_user_offline(self, user):
+        user.is_online = False
+        await database_sync_to_async(user.save)()
+
+        # Notify other connected users
+        await self.channel_layer.group_send(
+            "online_users",  # A group for tracking online users
+            {
+                "type": "send_user_to_offline",
+                "user_id": user.id,
+                "user_name": user.username,
+            }
+        )
+
     # @database_sync_to_async
     # def get_user(self):
     #     user = self.scope.get("user", None)
@@ -70,6 +113,8 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
         if message_type == 'chat_message':
             print("friend request is selected")
             await self.handle_chat_message(data)
+        # elif message_type == 'user_online':
+        #     await self.handle_user
         elif message_type == 'friend_request':
             await self.handle_friend_request(data)
         elif message_type == 'friend_acceptance':
@@ -248,6 +293,20 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
             'receiver': event['receiver'],
             'friendship_id': event['friendship_id'],
             'message': event['message'],
+        }))
+
+    async def send_user_to_online(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'set_user_to_online',
+            'target_user_id': event['user_id'],
+            'target_user_name': event['user_name'],
+        }))
+
+    async def send_user_to_offline(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'set_user_to_offline',
+            'target_user_id': event['user_id'],
+            'target_user_name': event['user_name'],
         }))
 
     async def send_friend_request(self, event):

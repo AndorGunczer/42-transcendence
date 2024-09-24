@@ -249,7 +249,16 @@ def modify_json_menu(menu_type, token):
     # Assume you have a variable indicating the current page
 
     for friend in friends_db:
-        friend_name = friend.friend1.username if user.username == friend.friend2.username else friend.friend2.username
+        this_friend = friend.friend1 if user.username == friend.friend2.username else friend.friend2
+        friend_name = this_friend.username
+        is_online = "Online" if this_friend.is_online else "Offline"
+
+
+        print(f'''???????????????????????????????
+        friend_name: {friend_name}
+        friend.friend1.username: {friend.friend1.username}
+        friend.friend2.username: {friend.friend2.username}
+        is_online: {is_online}''')
 
         # Base content for each friend
         content = [
@@ -257,6 +266,12 @@ def modify_json_menu(menu_type, token):
                 'type': 'p',
                 'class': 'text-white m-3',
                 'text': friend_name,
+            },
+            {
+                'type': 'p',
+                'class': 'text-white m-1 is_online',
+                # 'identifier': 'is_online',
+                'text': is_online,
             },
             {
                 'type': 'div',

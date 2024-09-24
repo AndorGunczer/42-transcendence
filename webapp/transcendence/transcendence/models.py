@@ -53,6 +53,7 @@ class Users2(AbstractBaseUser, PermissionsMixin):
     # avatar = models.ForeignKey(Avatar, null=True, on_delete=models.SET_NULL)
     avatarDirect = models.CharField(max_length=200, null=True)
     allow_otp = models.BooleanField(default=False)
+    is_online = models.BooleanField(default=False)
 
     objects = CustomUserManager()
 
