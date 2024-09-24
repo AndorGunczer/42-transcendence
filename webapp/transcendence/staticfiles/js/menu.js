@@ -258,7 +258,8 @@ function LOAD_DATA(json, shouldPush, state_json = null) {
       break;
     case "tournament_select":
       {
-        json.menu.menuItems.forEach((item) => {
+        console.log(json.menuItems);
+        json.menuItems.forEach((item) => {
           let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
           let element = document.createElement(item.type);
           if (item.type == "div" || item.type == "form" || item.type == "table")

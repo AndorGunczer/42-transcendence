@@ -297,7 +297,7 @@ def modify_json_menu(menu_type, token):
 
         # Conditionally add the "Invite" button if the current page is "tournament_select"
         if menu_type == "tournament_create":
-            content[1]['content'].append({
+            content[2]['content'].append({
                 'type': 'button',
                 'class': 'rounded bg-secondary bg-gradient text-white',
                 'onclick': f"inviteToTournament(this.id)",
@@ -458,7 +458,7 @@ def tournament_select_page_fill(menu, participants, tournament_name):
         menu['menuItems'][0]['content'][1]['text'] = 'No participants found'
 
     print('tournament_select_page_fill() called')
-    return {'menu': menu, 'game': first_game_with_empty_result.id if first_game_with_empty_result else None}
+    return {'headerItems': menu['headerItems'], 'menuItems': menu['menuItems'], 'id': menu['id'], 'game': first_game_with_empty_result.id if first_game_with_empty_result else None}
 
 
 # VIEW FUNCTIONS
