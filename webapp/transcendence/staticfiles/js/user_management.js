@@ -432,6 +432,14 @@ async function checkProfile(profile_name) {
   .catch((error) => handleError(error));
 }
 
+function closeChatWindow(event) {
+  console.log("TARGET IS:  ");
+  console.log(event);
+  const targetElement = event.target.parentElement.parentElement;
+
+  targetElement.remove();
+}
+
 async function chat(target_friend) {
   console.log("chat has been called");
   const csrfToken = await getCsrfToken();
@@ -491,10 +499,18 @@ async function chat(target_friend) {
   
     // Add identifier to chat window
     let chatNav = document.createElement("div");
-    chatNav.setAttribute("class", "bg-chat-nav d-flex justify-content-center align-items-center");
+    chatNav.setAttribute("class", "bg-chat-nav d-flex justify-content-space-between align-items-center");
     let navParagraph = document.createElement("p");
-    navParagraph.innerHTML = target_friend;
+    navParagraph.setAttribute("id", target_friend);
+    // navParagraph.setAttribute("class", "link-light"); // later
+    navParagraph.setAttribute("onclick", "checkProfile(this.id)");
+    navParagraph.innerText = target_friend;
+    let closeChatWindow = document.createElement("p");
+    closeChatWindow.innerText = 'X';
+    closeChatWindow.setAttribute("onclick", "closeChatWindow(event)");
+
     chatNav.appendChild(navParagraph);
+    chatNav.appendChild(closeChatWindow);
   
     // Add Message store to chat window
     let chatBody = document.createElement("div");

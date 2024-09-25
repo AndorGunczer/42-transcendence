@@ -1505,7 +1505,10 @@ def login_check(request):
 
         else:
             # If authentication failed
-            return Response({'error': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
+            response = JsonResponse({'error': 'Invalid username or password'}, status=status.HTTP_401_UNAUTHORIZED)
+            response.delete_cookie("access_token")
+            response.delete_cookie("refresh_token")
+            return response
     else:
         # If serializer validation failed
         return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
