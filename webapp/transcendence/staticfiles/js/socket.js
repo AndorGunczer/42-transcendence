@@ -15,7 +15,11 @@ class ChatSocket {
 
     handleMessage(event) {
         const data = JSON.parse(event.data);
+
         switch (data.type) {
+            case 'chat_invite':
+                this.handleChatInviteMessage(data);
+                break;
             case 'chat_message':
                 this.handleChatMessage(data);
                 break;
@@ -54,7 +58,7 @@ class ChatSocket {
     handleClose(e) {
         console.error('WebSocket closed unexpectedly');
     }
-    
+
     closeWebSocket() {
         if (this.socket && this.socket.readyState === WebSocket.OPEN) {
             this.socket.close();
@@ -62,12 +66,43 @@ class ChatSocket {
         }
     }
 
+    handleChatInviteMessage(data) {
+        console.log(data.friendship_id);
+        let chatWindow = document.getElementById(data.friendship_id);
+
+        if (!chatWindow)
+            return;
+
+        let chatBox = chatWindow.children[1];
+        let thisUser = (document.getElementById("user").innerHTML).split(" ").pop();
+        let messageDiv = document.createElement("div");
+
+        let messageParagraph = document.createElement("button");
+
+        if (thisUser != data.receiver) {
+
+            messageDiv.setAttribute("class", "align-self-start w-25 p-1 mt-1 user-select-none");
+            messageParagraph = document.createElement("p");
+            messageParagraph.setAttribute("class", "text-white");
+            messageParagraph.innerText = "WAITING ...";
+
+        } else {
+            messageDiv.setAttribute("class", "align-self-end w-25 p-1 mt-1");
+            messageParagraph.setAttribute("class", "bg-secondary text-white user-select-none");
+            messageParagraph.innerText = "START GAME";
+        }
+
+
+        messageDiv.appendChild(messageParagraph);
+        chatBox.appendChild(messageDiv);
+    }
+
     handleChatMessage(data) {
         console.log(data.friendship_id);
         let chatWindow = document.getElementById(data.friendship_id);
 
         if (!chatWindow)
-            return ;
+            return;
 
         let chatBox = chatWindow.children[1];
         let thisUser = (document.getElementById("user").innerHTML).split(" ").pop();
@@ -81,7 +116,7 @@ class ChatSocket {
 
         let messageParagraph = document.createElement("p");
         messageParagraph.setAttribute("class", "text-white");
-        messageParagraph.innerHTML = data.message;
+        messageParagraph.innerHTML = data.friendship_id;
         messageDiv.appendChild(messageParagraph);
         chatBox.appendChild(messageDiv);
     }
@@ -321,7 +356,39 @@ class ChatSocket {
         // Send the message via WebSocket
         this.socket.send(messageData);
     }
+
+    sendInviteMessage(event) {
+        // Get the button element that triggered the function
+        const buttonElement = event.target;
+
+        // Get the chat window element by navigating from the button
+        const chatWindow = buttonElement.closest('.chat-window'); // Assuming the chat window has a class like 'chat-window'
+
+        // Access the necessary data from the chat window's dataset
+        const receiver = chatWindow.dataset.receiver;
+        const sender = chatWindow.dataset.sender;
+        const friendship_id = chatWindow.dataset.friendshipId;
+
+        // Get the message from the input field in the chat window
+        const inputField = chatWindow.querySelector('input[type="text"]');
+        const message = inputField.value;
+
+        // Construct the message data to send
+        const messageData = JSON.stringify({
+            type: "chat_invite",
+            sender: sender,
+            receiver: receiver,
+            friendship_id: friendship_id,
+            message: message
+        });
+
+        // Clear the input field after sending
+        inputField.value = "";
+
+        // Send the message via WebSocket
+        this.socket.send(messageData);
+    }
 }
 
-    // const chatSocket = new ChatSocket();
+// const chatSocket = new ChatSocket();
 

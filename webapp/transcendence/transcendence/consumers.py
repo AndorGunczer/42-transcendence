@@ -46,7 +46,7 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
             await self.accept()
         else:
             await self.close()
-    
+
     @sync_to_async
     def get_user_from_token(self, token):
         token = AccessToken(token)
@@ -114,6 +114,9 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
 
         if message_type == 'update':
             pass
+        elif message_type == 'chat_invite':
+            print("friend request is selected")
+            await self.handle_chat_invite(data)
         elif message_type == 'chat_message':
             print("friend request is selected")
             await self.handle_chat_message(data)
@@ -129,6 +132,39 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
             await self.handle_settings_save(data)
         elif message_type == 'notification':
             await self.handle_notification(data)
+
+    async def handle_chat_invite(self, data):
+        print("handle_chat_invite is called")
+        sender = await sync_to_async(Users2.objects.get)(username=data.get("sender"))
+        receiver = await sync_to_async(Users2.objects.get)(username=data.get("receiver"))
+        friendship_id = data.get("friendship_id")
+        friendship = await sync_to_async(Friends.objects.get)(id=friendship_id)
+        message = data.get("message")
+
+        new_message = await sync_to_async(Messages)(friendship=friendship, sender=sender.username, receiver=receiver.username, message=message)
+        await sync_to_async(new_message.save)()
+
+        await self.channel_layer.group_send(
+                f"user_{sender.id}",
+                {
+                    'type': 'send_chat_invite',
+                    'sender': sender.username,
+                    'receiver': receiver.username,
+                    'friendship_id': friendship_id,
+                    'message': message,
+                }
+            )
+
+        await self.channel_layer.group_send(
+                f"user_{receiver.id}",
+                {
+                    'type': 'send_chat_invite',
+                    'sender': sender.username,
+                    'receiver': receiver.username,
+                    'friendship_id': friendship_id,
+                    'message': message,
+                }
+            )
 
     async def handle_chat_message(self, data):
         print("handle_chat_message is called")
@@ -289,7 +325,7 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
         # username = data.get('new_username')
         # avatarDirect = data.get('new_avatarDirect')
         # print(f'{username}, {avatarDirect}')
-        
+
         # Update WebSocket state with the new data
         # self.scope["user"].username = username
         # self.scope["user"].avatarDirect = avatarDirect
@@ -302,10 +338,10 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
         # print(f'{self.scope["user"].username}, {self.scope["user"].avatarDirect}')
         # print(f'username {self.user.username}')
 
-        
 
-        
-        
+
+
+
 
     async def handle_notification(self, data):
         # Logic to handle incoming notification
@@ -320,6 +356,16 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
             'friendship_id': event['friendship_id'],
             'message': event['message'],
         }))
+
+    async def send_chat_invite(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'chat_invite',
+            'sender': event['sender'],
+            'receiver': event['receiver'],
+            'friendship_id': event['friendship_id'],
+            'message': event['message'],
+        }))
+
 
     async def send_user_to_online(self, event):
         await self.send(text_data=json.dumps({
@@ -361,7 +407,7 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
             'type': 'friend_declination_notification',
             'message': event['message'],
         }))
-    
+
     async def send_duplicate_friendship_notification(self, event):
         await self.send(text_data=json.dumps({
             'type': 'friend_duplication_notification',

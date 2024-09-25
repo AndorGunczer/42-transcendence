@@ -403,6 +403,78 @@ async function saveChanges() {
     .catch(error => handleError(error));
 }
 
+
+
+// async function submit_local_pregame(event) {
+//   event.preventDefault()
+
+//   let validation = validate_local_pregame();
+
+//   if (!validation)
+//     return;
+
+//   player1 = sanitizeInput(document.getElementById('player1').value);
+//   player2 = sanitizeInput(document.getElementById('player2').value);
+
+//   console.log(player1);
+
+//   const csrfToken = await getCsrfToken();
+
+//   fetch('/local_check', {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "X-CSRFToken": csrfToken,
+//       Accept: "application/json",
+//     },
+//     body: JSON.stringify({ player1, player2 }),
+//     credentials: "include",
+//   })
+//     .then(async (response) => {
+//       if (!response.ok) {
+//         const errorData = await response.json();
+//         throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+//       }
+//       else return response.json();
+//     }).then((json) => {
+//       console.log(json);
+//       console.log(json.player1)
+//       load_localGame(json);
+//     }).catch((error) => {
+//       handleError(error);
+//     })
+// }
+
+async function inviteToLocalGame(profile_name) {
+  const csrfToken = await getCsrfToken();
+  const user_of_query = (document.getElementById("user").innerHTML).split(" ").pop();
+  let url = "/profile";
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({
+      'user_of_profile': profile_name,
+      'user_of_query': user_of_query,
+    }),
+    credentials: 'include'
+  }).then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+    }
+    else return response.json();
+  })
+    .then((json) => {
+      LOAD_DATA(json, true);
+    })
+    .catch((error) => handleError(error));
+}
+
+
 async function checkProfile(profile_name) {
   const csrfToken = await getCsrfToken();
   const user_of_query = (document.getElementById("user").innerHTML).split(" ").pop();
@@ -501,6 +573,14 @@ async function chat(target_friend) {
     let chatNav = document.createElement("div");
     chatNav.setAttribute("class", "bg-chat-nav d-flex justify-content-between align-items-center");
 
+    let navInvite = document.createElement("p");
+    navInvite.setAttribute("id", target_friend);
+    navInvite.setAttribute("onclick", "checkProfile(this.id)");
+    navInvite.setAttribute("onclick", "inviteToLocalGame(this.id)");
+    navInvite.innerText = "Invite";
+    navInvite.classList.add("text-white");
+    navInvite.style.cursor = "pointer";
+    navInvite.setAttribute("onclick", "chatSocket.sendInviteMessage(event)");
     let navParagraph = document.createElement("p");
     navParagraph.setAttribute("id", target_friend);
     navParagraph.setAttribute("onclick", "checkProfile(this.id)");
@@ -510,6 +590,7 @@ async function chat(target_friend) {
 
     let flexGrowDiv = document.createElement("div");
     flexGrowDiv.setAttribute("class", "flex-grow-1 d-flex justify-content-center");
+
     flexGrowDiv.appendChild(navParagraph);
 
     let closeChatWindow = document.createElement("p");
@@ -517,7 +598,7 @@ async function chat(target_friend) {
     closeChatWindow.setAttribute("onclick", "closeChatWindow(event)");
     closeChatWindow.classList.add("text-danger");
     closeChatWindow.style.cursor = "pointer";
-
+    chatNav.appendChild(navInvite);
     chatNav.appendChild(flexGrowDiv);
     chatNav.appendChild(closeChatWindow);
 
