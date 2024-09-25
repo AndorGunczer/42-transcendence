@@ -43,6 +43,8 @@ class ChatSocket {
             case 'friend_duplication_notification':
                 this.handleFriendDuplicateNotification(data);
                 break;
+            case 'tournament_broadcast':
+                greenNotification(data.message);
             default:
                 console.error('Unknown message type:', data.type);
         }

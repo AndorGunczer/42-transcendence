@@ -109,8 +109,12 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         data = json.loads(text_data)
         message_type = data.get('type')
+        user = await sync_to_async(Users2.objects.get)(id=self.user.id)
+        self.user = user
 
-        if message_type == 'chat_message':
+        if message_type == 'update':
+            pass
+        elif message_type == 'chat_message':
             print("friend request is selected")
             await self.handle_chat_message(data)
         # elif message_type == 'user_online':
@@ -279,21 +283,24 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
 
     async def handle_settings_save(self, data):
         # Fetch the updated user data from the database when an event happens
-        # user = await sync_to_async(Users2.objects.get)(id=self.scope["user"].id)
+        new_user = await sync_to_async(Users2.objects.get)(id=self.user.id)
+        print(f'SOCKET ID: {self.user.id}\nSOCKET USERNAME: {self.user.username}')
         print("handle_settings_save is CALLED")
-        username = data.get('new_username')
-        avatarDirect = data.get('new_avatarDirect')
-        print(f'{username}, {avatarDirect}')
+        # username = data.get('new_username')
+        # avatarDirect = data.get('new_avatarDirect')
+        # print(f'{username}, {avatarDirect}')
         
         # Update WebSocket state with the new data
-        self.scope["user"].username = username
-        self.scope["user"].avatarDirect = avatarDirect
-        self.user.username = username
-        self.user.avatarDirect = f'https://localhost/static/images/{avatarDirect}'
+        # self.scope["user"].username = username
+        # self.scope["user"].avatarDirect = avatarDirect
+        # self.user.username = username
+        # self.user.avatarDirect = f'https://localhost/static/images/{avatarDirect}'
+        self.user = new_user
         await sync_to_async(self.user.save)()
+        print(f'SOCKET ID: {self.user.id}\nSOCKET USERNAME: {self.user.username}')
         print("SCOPE IS UPDATED")
-        print(f'{self.scope["user"].username}, {self.scope["user"].avatarDirect}')
-        print(f'username {self.user.username}')
+        # print(f'{self.scope["user"].username}, {self.scope["user"].avatarDirect}')
+        # print(f'username {self.user.username}')
 
         
 
@@ -359,4 +366,10 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'type': 'friend_duplication_notification',
             'message': event['message'],
+        }))
+
+    async def tournament_broadcast(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'tournament_broadcast',
+            'message': event['message']
         }))

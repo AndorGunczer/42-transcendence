@@ -290,6 +290,13 @@ def modify_json_menu(menu_type, token):
                         'onclick': f"checkProfile(this.id)",
                         'identifier': friend_name,
                         'text': 'PROFILE'
+                    },
+                    {
+                        'type': 'button',
+                        'class': 'rounded bg-secondary bg-gradient text-white',
+                        'onclick': f"inviteToGame(this.id)",
+                        'identifier': friend_name,
+                        'text': "GAME"
                     }
                 ]
             }
@@ -460,6 +467,21 @@ def tournament_select_page_fill(menu, participants, tournament_name):
     print('tournament_select_page_fill() called')
     return {'headerItems': menu['headerItems'], 'menuItems': menu['menuItems'], 'id': menu['id'], 'game': first_game_with_empty_result.id if first_game_with_empty_result else None}
 
+
+# Consumer Interaction
+
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
+
+def notify_user(user_id, message):
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        f"user_{user_id}",  # Group name
+        {
+            "type": "tournament_broadcast",
+            "message": message,
+        }
+    )
 
 # VIEW FUNCTIONS
 
@@ -927,6 +949,16 @@ def tournament_create_check(request, menu_type='main'):
                 player2_db = Players(game=game_db, guest_name=player2)
                 player2_db.save()
 
+    #TBC
+    first_game_with_empty_result = Games.objects.filter(
+        (Q(result__isnull=True) | Q(result='Not Set')) & Q(tournament_id=tournament_db.id)
+    ).order_by('id').first()
+
+    if first_game_with_empty_result:
+        registered_players = Players.objects.filter(game_id=first_game_with_empty_result.id).exclude(player_id=None)
+        for player in registered_players:
+            notify_user(player.player_id, "Next Tournament Game is Yours!")
+
     # Token and menu handling
     if (token is None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
@@ -1163,6 +1195,12 @@ def close_tournament_game(request, menu_type='main'):
                 set_winner(get_tournament_index_by_name(game_db.tournament.name), tournament_winner.player.username)
             except:
                 set_winner(get_tournament_index_by_name(game_db.tournament.name), tournament_winner.guest_name)
+        else:
+            registered_players = Players.objects.filter(game_id=first_game_with_empty_result.id).exclude(player_id=None)
+            for player in registered_players:
+                notify_user(player.player_id, "Next Tournament Game is Yours!")
+
+            
 
 
         # Determine the menu based on the token

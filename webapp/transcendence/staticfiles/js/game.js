@@ -490,6 +490,7 @@ async function close_local_game(player1, player2) {
   }).then((response) => {
     return response.json()
   }).then((json) => {
+    chatSocket.socket.send(JSON.stringify({type: "update"}));
     load_next_step(json);
   });
 }
@@ -781,6 +782,7 @@ async function close_tournament_game(gameId, player1, player2) {
   }).then((json) => {
     console.log('menu returned after game: ');
     console.log(json);
+    chatSocket.socket.send(JSON.stringify({type: "update"}));
     load_next_step(json);
   });
 }

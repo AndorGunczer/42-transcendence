@@ -542,3 +542,14 @@ async function chat(target_friend) {
   });
 
 }
+
+async function inviteToGame(player_name) {
+  console.log("chat has been called");
+  const csrfToken = await getCsrfToken();
+  const currentUser = (document.getElementById("user").innerHTML).split(" ").pop();
+  const invitedUser = player_name;
+
+  
+}
+
+// async

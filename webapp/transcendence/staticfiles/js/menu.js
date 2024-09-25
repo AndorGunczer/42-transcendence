@@ -2,6 +2,8 @@
 
 // HELPER FUNCTIONS
 
+let gameId;
+
 function sanitizeInput(input) {
   return input.replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -44,6 +46,34 @@ function handleError(errorMsg) {
   const closePopupButton = document.createElement("button");
   closePopupButton.innerHTML = "X";
   closePopupButton.setAttribute("class", "text-white bg-danger border-0");
+  closePopupButton.setAttribute("onclick", "closeError(event)");
+  closePopupDiv.appendChild(closePopupButton);
+  errorPopup.append(closePopupDiv);
+
+  // Add element to DOM
+  parent.appendChild(errorPopup);
+}
+
+function greenNotification(errorMsg) {
+  let parent = document.getElementById("error-layer");
+  const errorPopup = document.createElement("div");
+  errorPopup.setAttribute("class", "d-flex flex-row bg-success m-2 p-2 rounded-pill pe-auto");
+  errorPopup.setAttribute("id", "error-notification-container");
+
+  // First section of error window
+  const messageDisplayWindow = document.createElement("div");
+  messageDisplayWindow.setAttribute("class", "flex-grow-1 align-self-center");
+  const messageDisplay = document.createElement("p");
+  messageDisplay.setAttribute("class", "text-white m-0");
+  messageDisplay.innerHTML = errorMsg;
+  messageDisplayWindow.appendChild(messageDisplay);
+  errorPopup.appendChild(messageDisplayWindow);
+
+  // Second section of error window
+  const closePopupDiv = document.createElement("div");
+  const closePopupButton = document.createElement("button");
+  closePopupButton.innerHTML = "X";
+  closePopupButton.setAttribute("class", "text-white bg-success border-0");
   closePopupButton.setAttribute("onclick", "closeError(event)");
   closePopupDiv.appendChild(closePopupButton);
   errorPopup.append(closePopupDiv);
@@ -917,8 +947,6 @@ function validate_tournament_create() {
   return true;
 }
 
-let gameId;
-
 async function load_tournament_select() {
   let url = "/tournament_select";
 
@@ -944,6 +972,7 @@ async function load_tournament_select() {
       else return response.json();
     })
     .then((json) => {
+      gameId = json.game
       LOAD_DATA(json, true);
     })
     .catch((error) => {
