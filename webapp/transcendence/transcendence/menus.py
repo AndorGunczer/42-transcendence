@@ -159,13 +159,13 @@ MENU_DATA = {
                 'onclick': 'local_pregame()'
 
             },
-            {
-                'id': 4,
-                'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
-                'text': 'ONLINE',
-                'onclick': 'online_pregame()'
-            },
+            # {
+            #     'id': 4,
+            #     'type': 'button',
+            #     'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+            #     'text': 'ONLINE',
+            #     'onclick': 'online_pregame()'
+            # },
         ]
     },
     'match_history': {

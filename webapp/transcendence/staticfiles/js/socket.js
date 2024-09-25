@@ -45,6 +45,7 @@ class ChatSocket {
                 break;
             case 'tournament_broadcast':
                 greenNotification(data.message);
+                break;
             default:
                 console.error('Unknown message type:', data.type);
         }
