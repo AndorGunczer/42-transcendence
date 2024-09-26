@@ -4,7 +4,7 @@ async function submit_registration_form(event) {
   let validation = validate_registration_form();
 
   if (!validation) {
-    return ; 
+    return;
   }
 
   const csrfToken = await getCsrfToken();
@@ -99,7 +99,7 @@ async function submit_login_form(event) {
   let validation = validate_login_form();
 
   if (!validation)
-    return ;
+    return;
 
   console.log('submit login form called');
 
@@ -108,23 +108,23 @@ async function submit_login_form(event) {
   const password = sanitizeInput(document.getElementById("password").value);
 
   fetch("/login_check", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
-      },
-      body: JSON.stringify({ username, password }),
-      credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({ username, password }),
+    credentials: "include",
   })
-  .then(async (response) => {
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-    }
-    else return response.json();
-  })
-  .then((json) => {
-    console.log(json.status);
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
+      else return response.json();
+    })
+    .then((json) => {
+      console.log(json.status);
       if (json.status === 'otp_sent') {
         // Show OTP popup
         document.getElementById("otpPopup").style.display = "block";
@@ -132,12 +132,12 @@ async function submit_login_form(event) {
         chatSocket = new ChatSocket();
         load_main();
       }
-      
-  })
-  .catch((error) => handleError(error));
+
+    })
+    .catch((error) => handleError(error));
 }
 
-function validate_login_form(){
+function validate_login_form() {
   const username = sanitizeInput(document.getElementById("username").value);
 
   if (!username) {
@@ -162,25 +162,25 @@ async function verify_otp(event) {
   const otp = document.getElementById("otp").value;
 
   fetch("/verify_otp", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
-      },
-      body: JSON.stringify({ otp }),
-      credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({ otp }),
+    credentials: "include",
   })
-  .then(async (response) => {
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-    } else return response.json()
-  })
-  .then((json) => {
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      } else return response.json()
+    })
+    .then((json) => {
       chatSocket = new ChatSocket();
       load_main()
-  })
-  .catch((error) => handleError(error));
+    })
+    .catch((error) => handleError(error));
 }
 
 async function logout(event) {
@@ -227,8 +227,8 @@ async function uploadAvatar(event) {
   const file = fileInput.files[0];
 
   if (!file) {
-      handleError("Please Select a File to Upload");
-      return;
+    handleError("Please Select a File to Upload");
+    return;
   }
 
   const base64File = await convertToBase64(file);
@@ -236,35 +236,35 @@ async function uploadAvatar(event) {
   let url = '/upload_file';
 
   fetch(url, {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
-      },
-      body: JSON.stringify({
-          fileName: file.name,
-          fileType: file.type,
-          fileData: base64File
-      }),
-      credentials: "include"
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({
+      fileName: file.name,
+      fileType: file.type,
+      fileData: base64File
+    }),
+    credentials: "include"
   })
-  .then(response => response.json())
-  .then(data => {
+    .then(response => response.json())
+    .then(data => {
       console.log('Success:', data);
-  })
-  .catch(error => {
+    })
+    .catch(error => {
       console.error('Error:', error);
-  });
+    });
 }
 
 function convertToBase64(file) {
   return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-          resolve(reader.result.split(',')[1]); // Remove the "data:*/*;base64," part
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      resolve(reader.result.split(',')[1]); // Remove the "data:*/*;base64," part
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   });
 }
 async function settings() {
@@ -281,16 +281,16 @@ async function settings() {
     },
     credentials: 'include',
   })
-  .then(async (response) => {
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-    } else return response.json();
-  })
-  .then(json => {
-    LOAD_DATA(json)
-  })
-  .catch(error => handleError(error));
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      } else return response.json();
+    })
+    .then(json => {
+      LOAD_DATA(json)
+    })
+    .catch(error => handleError(error));
 }
 
 async function deleteUserStats(event) {
@@ -308,36 +308,79 @@ async function deleteUserStats(event) {
     },
     credentials: 'include'
   })
-  .then(async (response) => {
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-    } else return response.json();
-  })
-  .then(json => {
-    deleteHeader();
-    deleteMain();
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      } else return response.json();
+    })
+    .then(json => {
+      deleteHeader();
+      deleteMain();
 
-    // CREATE HEADER
+      // CREATE HEADER
 
-    headerLoad(json);
+      headerLoad(json);
 
-    // CREATE CONTAINER
+      // CREATE CONTAINER
 
-    json.menuItems.forEach((item) => {
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      let element = document.createElement(item.type);
-      if (item.type == "div" || item.type == "form" || item.type == "select")
-        divLoader(element, item.content);
+      json.menuItems.forEach((item) => {
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+        let element = document.createElement(item.type);
+        if (item.type == "div" || item.type == "form" || item.type == "select")
+          divLoader(element, item.content);
 
-      elementCustomize(element, item);
-      parent.appendChild(element);
+        elementCustomize(element, item);
+        parent.appendChild(element);
 
-      // div.appendChild(element);
-    });
-  })
-  .catch(error => handleError(error));
+        // div.appendChild(element);
+      });
+    })
+    .catch(error => handleError(error));
 }
+
+function applyMatchInvitation(event) {
+
+  console.log("applyMatchInvitation");
+  const button = event.currentTarget;
+  const parent = button.parentElement.parentElement;
+  const friendshipID = button.dataset.friendshipid;
+  const sender = button.dataset.sender;
+  const acceptor = button.dataset.receiver;
+
+  const message = JSON.stringify({
+    'type': 'apply_match_invitation',
+    'sender': acceptor,
+    'receiver': sender,
+    'friendship_id': friendshipID,
+  });
+  chatSocket.socket.send(message);
+
+  parent.remove();
+  submit_local_pregame_invite(sender, acceptor);
+}
+
+
+
+function declineMatchInvitation(event) {
+
+  console.log("declineMatchInvitation");
+  const button = event.currentTarget;
+  const parent = button.parentElement.parentElement;
+  const friendshipID = button.dataset.friendshipid;
+  const sender = button.dataset.sender;
+  const acceptor = button.dataset.receiver;
+
+  const message = JSON.stringify({
+    'type': 'decline_match_invitation',
+    'sender': acceptor,
+    'receiver': sender,
+    'friendship_id': friendshipID,
+  });
+  chatSocket.socket.send(message);
+  parent.remove();
+}
+
 
 async function saveChanges() {
   event.preventDefault();
@@ -363,45 +406,117 @@ async function saveChanges() {
     }),
     credentials: 'include'
   })
-  .then(async (response) => {
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-    } else {
-      // send changes to the socket
-      const message = JSON.stringify({
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      } else {
+        // send changes to the socket
+        const message = JSON.stringify({
           type: "settings_save",
           new_username: username,
           new_avatarDirect: avatar,
-      })
-      chatSocket.socket.send(message);
-      return response.json();
-    }
-  })
-  .then(json => {
-    deleteHeader();
-    deleteMain();
+        })
+        chatSocket.socket.send(message);
+        return response.json();
+      }
+    })
+    .then(json => {
+      deleteHeader();
+      deleteMain();
 
-    // CREATE HEADER
-    console.log(json);
-    headerLoad(json);
+      // CREATE HEADER
+      console.log(json);
+      headerLoad(json);
 
-    // CREATE CONTAINER
+      // CREATE CONTAINER
 
-    json.menuItems.forEach((item) => {
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      let element = document.createElement(item.type);
-      if (item.type == "div" || item.type == "form" || item.type == "select")
-        divLoader(element, item.content);
+      json.menuItems.forEach((item) => {
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+        let element = document.createElement(item.type);
+        if (item.type == "div" || item.type == "form" || item.type == "select")
+          divLoader(element, item.content);
 
-      elementCustomize(element, item);
-      parent.appendChild(element);
+        elementCustomize(element, item);
+        parent.appendChild(element);
 
-      // div.appendChild(element);
-    });
-  })
-  .catch(error => handleError(error));
+        // div.appendChild(element);
+      });
+    })
+    .catch(error => handleError(error));
 }
+
+
+
+// async function submit_local_pregame(event) {
+//   event.preventDefault()
+
+//   let validation = validate_local_pregame();
+
+//   if (!validation)
+//     return;
+
+//   player1 = sanitizeInput(document.getElementById('player1').value);
+//   player2 = sanitizeInput(document.getElementById('player2').value);
+
+//   console.log(player1);
+
+//   const csrfToken = await getCsrfToken();
+
+//   fetch('/local_check', {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "X-CSRFToken": csrfToken,
+//       Accept: "application/json",
+//     },
+//     body: JSON.stringify({ player1, player2 }),
+//     credentials: "include",
+//   })
+//     .then(async (response) => {
+//       if (!response.ok) {
+//         const errorData = await response.json();
+//         throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+//       }
+//       else return response.json();
+//     }).then((json) => {
+//       console.log(json);
+//       console.log(json.player1)
+//       load_localGame(json);
+//     }).catch((error) => {
+//       handleError(error);
+//     })
+// }
+
+async function inviteToLocalGame(profile_name) {
+  const csrfToken = await getCsrfToken();
+  const user_of_query = (document.getElementById("user").innerHTML).split(" ").pop();
+  let url = "/profile";
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({
+      'user_of_profile': profile_name,
+      'user_of_query': user_of_query,
+    }),
+    credentials: 'include'
+  }).then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+    }
+    else return response.json();
+  })
+    .then((json) => {
+      LOAD_DATA(json, true);
+    })
+    .catch((error) => handleError(error));
+}
+
 
 async function checkProfile(profile_name) {
   const csrfToken = await getCsrfToken();
@@ -426,10 +541,10 @@ async function checkProfile(profile_name) {
     }
     else return response.json();
   })
-  .then((json) => {
-    LOAD_DATA(json, true);
-  })
-  .catch((error) => handleError(error));
+    .then((json) => {
+      LOAD_DATA(json, true);
+    })
+    .catch((error) => handleError(error));
 }
 
 function closeChatWindow(event) {
@@ -477,7 +592,7 @@ async function chat(target_friend) {
     console.log(friendship_id);
 
     if (document.getElementById(friendship_id))
-      return ;
+      return;
     console.log("502");
 
     let chatWindows = document.getElementsByClassName('chat-window');
@@ -496,30 +611,52 @@ async function chat(target_friend) {
     chatWindow.dataset.sender = sender;
     chatWindow.dataset.friendshipId = friendship_id;
     // create 3 divs to create chatwindow
-  
+
     // Add identifier to chat window
     let chatNav = document.createElement("div");
-    chatNav.setAttribute("class", "bg-chat-nav d-flex justify-content-space-between align-items-center");
+    chatNav.setAttribute("class", "bg-chat-nav d-flex justify-content-between align-items-center");
+
+    let navInvite = document.createElement("p");
+    navInvite.setAttribute("id", target_friend);
+    navInvite.setAttribute("onclick", "checkProfile(this.id)");
+    navInvite.setAttribute("onclick", "inviteToLocalGame(this.id)");
+    navInvite.innerText = "Invite";
+    navInvite.classList.add("text-white");
+    navInvite.style.cursor = "pointer";
+    navInvite.setAttribute("onclick", "chatSocket.sendInviteMessage(event)");
+
+
     let navParagraph = document.createElement("p");
     navParagraph.setAttribute("id", target_friend);
-    // navParagraph.setAttribute("class", "link-light"); // later
     navParagraph.setAttribute("onclick", "checkProfile(this.id)");
     navParagraph.innerText = target_friend;
+    navParagraph.classList.add("text-warning");
+    navParagraph.style.cursor = "pointer";
+
+    let flexGrowDiv = document.createElement("div");
+    flexGrowDiv.setAttribute("class", "flex-grow-1 d-flex justify-content-center");
+
+    flexGrowDiv.appendChild(navParagraph);
+
     let closeChatWindow = document.createElement("p");
     closeChatWindow.innerText = 'X';
     closeChatWindow.setAttribute("onclick", "closeChatWindow(event)");
-
-    chatNav.appendChild(navParagraph);
+    closeChatWindow.classList.add("text-danger");
+    closeChatWindow.style.cursor = "pointer";
+    chatNav.appendChild(navInvite);
+    chatNav.appendChild(flexGrowDiv);
     chatNav.appendChild(closeChatWindow);
-  
+
+
+
     // Add Message store to chat window
     let chatBody = document.createElement("div");
     chatBody.setAttribute("class", "bg-chat-body d-flex flex-column flex-grow-1 overflow-scroll");
-  
+
     // Add HMI to chat window
     let chatInput = document.createElement("div");
     chatInput.setAttribute("class", "bg-warning d-flex flex-row");
-  
+
     let inputField = document.createElement("input");
     inputField.setAttribute("type", "text");
     inputField.setAttribute("class", "w-75 bg-secondary bg-gradient text-white");
@@ -530,14 +667,16 @@ async function chat(target_friend) {
     inputButton.setAttribute("onclick", "chatSocket.sendMessage(event)");
     chatInput.appendChild(inputButton);
     console.log("545");
-  
-  
+
+
     chatWindow.appendChild(chatNav);
     chatWindow.appendChild(chatBody);
     chatWindow.appendChild(chatInput);
     parent.appendChild(chatWindow);
 
     messages.forEach((message) => {
+      if (message.message == "")
+        return;
       let messageDiv = document.createElement("div");
       console.log(`receiver: ${receiver} - currentUser: ${currentUser}`);
       if (message.receiver == currentUser)
@@ -552,20 +691,76 @@ async function chat(target_friend) {
       chatBody.appendChild(messageDiv);
     })
   })
-  .catch((error) => {
-    console.error(error);
-    handleError(error)
-  });
+    .catch((error) => {
+      console.error(error);
+      handleError(error)
+    });
 
 }
 
-async function inviteToGame(player_name) {
-  console.log("chat has been called");
+async function block(event) {
+  const targetElement = event.target;
+  const blocker = (document.getElementById("user").innerHTML).split(" ").pop();
+  const blocked = event.target.id;
+
+  console.log("BLOCK CALLED");
+  console.log(blocked);
+  console.log("BLOCK DONE");
+
   const csrfToken = await getCsrfToken();
-  const currentUser = (document.getElementById("user").innerHTML).split(" ").pop();
-  const invitedUser = player_name;
 
-  
+  fetch("/block_user", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+      },
+      body: JSON.stringify({ blocker, blocked }),
+      credentials: "include",
+  })
+  .then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+    }
+    else return response.json();
+  })
+  .then((json) => {
+    targetElement.setAttribute('onclick', 'unblock(event)');
+    targetElement.innerText = "UNBLOCK";
+  })
+  .catch((error) => handleError(error));
+
+async function unblock(event) {
+  const targetElement = event.target;
+  const unblocker = (document.getElementById("user").innerHTML).split(" ").pop();
+  const unblocked = event.target.id;
+
+  console.log("BLOCK CALLED");
+  console.log(unblocked);
+  console.log("BLOCK DONE");
+
+  const csrfToken = await getCsrfToken();
+
+  fetch("/unblock_user", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+      },
+      body: JSON.stringify({ unblocker, unblocked }),
+      credentials: "include",
+  })
+  .then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+    }
+    else return response.json();
+  })
+  .then((json) => {
+    targetElement.setAttribute('onclick', 'block(event)');
+    targetElement.innerText = "BLOCK";
+  })
+  .catch((error) => handleError(error));
 }
-
-// async

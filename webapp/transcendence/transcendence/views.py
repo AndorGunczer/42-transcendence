@@ -1845,13 +1845,35 @@ def profile(request, menu_type='profile'):
     user_of_profile = Users2.objects.get(username=data.get("user_of_profile"))
     print(f"USER_OF_PROFILE: {user_of_profile.wins}")
     user_of_query = Users2.objects.get(username=data.get("user_of_query"))
+    try:
+        friendship = Friends.objects.get(
+            (Q(friend1=user_of_query) & Q(friend2=user_of_profile)) |
+            (Q(friend1=user_of_profile) & Q(friend2=user_of_query)))
+    except Friends.DoesNotExist:
+        print("Friendship does not exist: views.py 1851\n")
 
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
     else:
         menu = modify_json_menu(menu_type, token)
         menu = fill_profile_with_user_data(menu, user_of_profile)
-
+        if friendship.is_blocked:
+            if friendship.blocker == user_of_query.username:
+                menu['menuItems'][0]['content'].append({
+                    'type': 'button',
+                    'class': 'col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                    'identifier': user_of_profile.username,
+                    'onclick': 'unblock(event)',
+                    'text': 'UNBLOCK',
+                },)
+        else:
+            menu['menuItems'][0]['content'].append({
+                'type': 'button',
+                'class': 'col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'identifier': user_of_profile.username,
+                'onclick': 'block(event)',
+                'text': 'BLOCK',
+            },)
     if menu is not None:
         return JsonResponse(menu)
     else:
@@ -1898,9 +1920,57 @@ def open_chat(request):
             'target_friend': target_friend.username,
             'source_friend': source_friend.username,
             'friendship_id': friendship.id,
+            'is_blocked': friendship.is_blocked,
+            'blocker': friendship.blocker,
             'messages': messages_list,
         })
 
         return response
 
     return JsonResponse({'error': 'Menu type not found'}, status=404)
+
+def block_user(request):
+    token = get_token_from_header(request)
+
+    data = json.loads(request.body)
+    if (token == None) or (not validate_token(token)):
+        pass
+    else:
+        blocker_name = data.get('blocker')
+        blocker = Users2.objects.get(username=blocker_name)
+        blocked_name = data.get('blocked')
+        blocked = Users2.objects.get(username=blocked_name)
+        friendship = Friends.objects.get(
+            (Q(friend1=blocker) & Q(friend2=blocked)) |
+            (Q(friend1=blocked) & Q(friend2=blocker))
+        )
+
+        if not friendship.is_blocked:
+            friendship.blocker = blocker_name
+            friendship.is_blocked = True
+            friendship.save()
+    return JsonResponse({})
+        
+
+def unblock_user(request):
+    token = get_token_from_header(request)
+
+    data = json.loads(request.body)
+    if (token == None) or (not validate_token(token)):
+        pass
+    else:
+        unblocker_name = data.get('unblocker')
+        unblocker = Users2.objects.get(username=unblocker_name)
+        unblocked_name = data.get('unblocked')
+        unblocked = Users2.objects.get(username=unblocked_name)
+        friendship = Friends.objects.get(
+            (Q(friend1=unblocker) & Q(friend2=unblocked)) |
+            (Q(friend1=unblocked) & Q(friend2=unblocker))
+        )
+
+        if friendship.is_blocked:
+            if friendship.blocker == unblocker_name:
+                friendship.blocker = None
+                friendship.is_blocked = False
+                friendship.save()
+    return JsonResponse({})

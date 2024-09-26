@@ -259,7 +259,7 @@ MENU_DATA = {
             {
                 'id': 1,
                 'type': 'div',
-                'class': 'profile_info',
+                'class': 'profile_info d-flex flex-column',
                 'content': [
                     {
                         'type': 'div',
