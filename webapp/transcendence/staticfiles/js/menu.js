@@ -54,6 +54,134 @@ function handleError(errorMsg) {
   parent.appendChild(errorPopup);
 }
 
+
+function handleMatchInvitationApply(inviteData) {
+  console.log("handleMatchInvitationApply");
+  let parent = document.getElementById("error-layer");
+  const errorPopup = document.createElement("div");
+  errorPopup.setAttribute("class", "d-flex flex-row bg-info m-2 p-2 rounded-pill pe-auto");
+  errorPopup.setAttribute("id", "error-notification-container");
+
+  const messageDisplayWindow = document.createElement("div");
+  messageDisplayWindow.setAttribute("class", "flex-grow-1 align-self-center");
+  const messageDisplay = document.createElement("span");
+  messageDisplay.setAttribute("class", "text-success m-0");
+  messageDisplay.innerHTML = innerText = inviteData.sender + " applied for a match. Come to him!";
+  messageDisplayWindow.appendChild(messageDisplay);
+  errorPopup.appendChild(messageDisplayWindow);
+
+  // Close section of error window
+  const closePopupDiv = document.createElement("div");
+  const closePopupButton = document.createElement("button");
+  closePopupButton.innerHTML = "X";
+  closePopupButton.setAttribute("class", "text-white bg-info border-0");
+  closePopupButton.setAttribute("onclick", "closeError(event)");
+  closePopupDiv.appendChild(closePopupButton);
+
+  errorPopup.append(closePopupDiv);
+  parent.appendChild(errorPopup);
+}
+
+function handleMatchInvitationDecline(inviteData) {
+  console.log("handleMatchInvitationDecline");
+  let parent = document.getElementById("error-layer");
+  const errorPopup = document.createElement("div");
+  errorPopup.setAttribute("class", "d-flex flex-row bg-info m-2 p-2 rounded-pill pe-auto");
+  errorPopup.setAttribute("id", "error-notification-container");
+
+  const messageDisplayWindow = document.createElement("div");
+  messageDisplayWindow.setAttribute("class", "flex-grow-1 align-self-center");
+  const messageDisplay = document.createElement("span");
+  messageDisplay.setAttribute("class", "text-danger m-0");
+  messageDisplay.innerHTML = innerText = inviteData.sender + " declined your match request :(";
+  messageDisplayWindow.appendChild(messageDisplay);
+  errorPopup.appendChild(messageDisplayWindow);
+
+  // Close section of error window
+  const closePopupDiv = document.createElement("div");
+  const closePopupButton = document.createElement("button");
+  closePopupButton.innerHTML = "X";
+  closePopupButton.setAttribute("class", "text-white bg-info border-0");
+  closePopupButton.setAttribute("onclick", "closeError(event)");
+  closePopupDiv.appendChild(closePopupButton);
+
+  errorPopup.append(closePopupDiv);
+  parent.appendChild(errorPopup);
+}
+
+
+function inviteNotification(inviteData) {
+  let parent = document.getElementById("error-layer");
+  const errorPopup = document.createElement("div");
+  errorPopup.setAttribute("class", "d-flex flex-row bg-info m-2 p-2 rounded-pill pe-auto");
+  errorPopup.setAttribute("id", "error-notification-container");
+  // (document.getElementById("user").innerHTML).split(" ").pop();
+  if (inviteData.receiver === (document.getElementById("user").innerHTML).split(" ").pop()) {
+    // First section of error window
+    const messageDisplayWindow = document.createElement("div");
+    messageDisplayWindow.setAttribute("class", "flex-grow-1 align-self-center");
+    const messageDisplay = document.createElement("span");
+    messageDisplay.setAttribute("class", "text-white m-0");
+    messageDisplay.innerHTML = innerText = "You have been challenged to a game by " + inviteData.sender;
+    messageDisplayWindow.appendChild(messageDisplay);
+    errorPopup.appendChild(messageDisplayWindow);
+
+    // Apply section of error window
+    const applyPopupDiv = document.createElement("div");
+    const applyPopupButton = document.createElement("button");
+    applyPopupButton.innerHTML = "Accept";
+    applyPopupButton.setAttribute('data-sender', inviteData.sender);
+    applyPopupButton.setAttribute('data-receiver', inviteData.receiver);
+    applyPopupButton.setAttribute('data-friendshipid', inviteData.friendship_id);
+    applyPopupButton.setAttribute("class", "text-success bg-info border-0 fw-bold");
+    applyPopupButton.setAttribute("onclick", "applyMatchInvitation(event)");
+    applyPopupDiv.appendChild(applyPopupButton);
+
+
+    // Decline section of error window
+    const declinePopupDiv = document.createElement("div");
+    const declinePopupButton = document.createElement("button");
+    declinePopupButton.innerHTML = "Decline";
+    declinePopupButton.setAttribute('data-sender', inviteData.sender);
+    declinePopupButton.setAttribute('data-receiver', inviteData.receiver);
+    declinePopupButton.setAttribute('data-friendshipid', inviteData.friendship_id);
+    declinePopupButton.setAttribute("class", "text-danger bg-info border-0 fw-bold");
+    declinePopupButton.setAttribute("onclick", "declineMatchInvitation(event)");
+    declinePopupDiv.appendChild(declinePopupButton);
+    // errorPopup.append(playerNameDiv);
+    errorPopup.append(applyPopupDiv);
+    errorPopup.append(declinePopupDiv);
+  }
+  else {
+
+    // First section of error window
+    const messageDisplayWindow = document.createElement("div");
+    messageDisplayWindow.setAttribute("class", "flex-grow-1 align-self-center");
+    const messageDisplay = document.createElement("span");
+    messageDisplay.setAttribute("class", "text-white m-0");
+    messageDisplay.innerHTML = innerText = "You have challanged " + inviteData.receiver + " to a match. Wait for " + inviteData.receiver + " ...";
+    messageDisplayWindow.appendChild(messageDisplay);
+    errorPopup.appendChild(messageDisplayWindow);
+
+
+    // Close section of error window
+    const closePopupDiv = document.createElement("div");
+    const closePopupButton = document.createElement("button");
+    closePopupButton.innerHTML = "X";
+    closePopupButton.setAttribute("class", "text-white bg-info border-0");
+    closePopupButton.setAttribute("onclick", "closeError(event)");
+    closePopupDiv.appendChild(closePopupButton);
+
+    errorPopup.append(closePopupDiv);
+  }
+
+
+
+  // Add element to DOM
+  parent.appendChild(errorPopup);
+}
+
+
 function greenNotification(errorMsg) {
   let parent = document.getElementById("error-layer");
   const errorPopup = document.createElement("div");
@@ -640,6 +768,42 @@ function local_pregame() {
 
 //CONTINUE
 
+
+async function submit_local_pregame_invite(player1, player2) {
+  
+  let validation = validate_local_pregame_invite();
+
+  if (!validation)
+    return;
+
+  const csrfToken = await getCsrfToken();
+
+  fetch('/local_check', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+      Accept: "application/json",
+    },
+    body: JSON.stringify({ player1, player2 }),
+    credentials: "include",
+  })
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
+      else return response.json();
+    }).then((json) => {
+      console.log(json);
+      console.log(json.player1)
+      load_localGame(json);
+    }).catch((error) => {
+      handleError(error);
+    })
+}
+
+
 async function submit_local_pregame(event) {
   event.preventDefault()
 
@@ -679,6 +843,20 @@ async function submit_local_pregame(event) {
       handleError(error);
     })
 }
+
+function validate_local_pregame_invite(player1, player2) {
+  if (player1 == "") {
+    alert("Player1 must be filled out");
+    return false;
+  }
+  else if (player2 == "") {
+    alert("Player2 must be filled out");
+    return false;
+  }
+
+  return true
+}
+
 
 function validate_local_pregame() {
   player1 = document.getElementById('player1').value;

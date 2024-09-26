@@ -2,6 +2,20 @@
 
 let chatSocket = null;
 
+class InvitePlayer {
+    invitedID = 0;
+    challangerID = 0;
+    invitedName = "";
+    challangerName = "";
+
+    constructor(invitedID, challangerID, invitedName, challangerName) {
+        this.invitedID = invitedID;
+        this.challangerID = challangerID;
+        this.invitedName = invitedName;
+        this.challangerName = challangerName;
+    }
+};
+
 class ChatSocket {
     constructor() {
         this.socket = new WebSocket('wss://' + window.location.host + '/ws/communication/');
@@ -15,24 +29,27 @@ class ChatSocket {
 
     handleMessage(event) {
         const data = JSON.parse(event.data);
-
+        console.log(data.type);
         switch (data.type) {
+            case 'apply_match_invitation':
+                handleMatchInvitationApply(data);
+                break;
+            case 'decline_match_invitation':
+                handleMatchInvitationDecline(data);
+                break;
             case 'chat_invite':
-                this.handleChatInviteMessage(data);
+                inviteNotification(data);
                 break;
             case 'chat_message':
                 this.handleChatMessage(data);
                 break;
             case 'set_user_to_online':
-                console.log("set_user_to_online: ");
-                console.log(data);
                 this.handleSetUserOnlineStatus(data, "Online");
                 break;
             case 'set_user_to_offline':
                 this.handleSetUserOnlineStatus(data, "Offline");
                 break;
             case 'friend_request':
-                console.log("Friend request received");
                 this.handleFriendRequest(data);
                 break;
             case 'notification':
@@ -55,6 +72,7 @@ class ChatSocket {
         }
     }
 
+
     handleClose(e) {
         console.error('WebSocket closed unexpectedly');
     }
@@ -66,39 +84,8 @@ class ChatSocket {
         }
     }
 
-    handleChatInviteMessage(data) {
-        console.log(data.friendship_id);
-        let chatWindow = document.getElementById(data.friendship_id);
-
-        if (!chatWindow)
-            return;
-
-        let chatBox = chatWindow.children[1];
-        let thisUser = (document.getElementById("user").innerHTML).split(" ").pop();
-        let messageDiv = document.createElement("div");
-
-        let messageParagraph = document.createElement("button");
-
-        if (thisUser != data.receiver) {
-
-            messageDiv.setAttribute("class", "align-self-start w-25 p-1 mt-1 user-select-none");
-            messageParagraph = document.createElement("p");
-            messageParagraph.setAttribute("class", "text-white");
-            messageParagraph.innerText = "WAITING ...";
-
-        } else {
-            messageDiv.setAttribute("class", "align-self-end w-25 p-1 mt-1");
-            messageParagraph.setAttribute("class", "bg-secondary text-white user-select-none");
-            messageParagraph.innerText = "START GAME";
-        }
-
-
-        messageDiv.appendChild(messageParagraph);
-        chatBox.appendChild(messageDiv);
-    }
 
     handleChatMessage(data) {
-        console.log(data.friendship_id);
         let chatWindow = document.getElementById(data.friendship_id);
 
         if (!chatWindow)
@@ -116,7 +103,7 @@ class ChatSocket {
 
         let messageParagraph = document.createElement("p");
         messageParagraph.setAttribute("class", "text-white");
-        messageParagraph.innerHTML = data.friendship_id;
+        messageParagraph.innerHTML = data.message;
         messageDiv.appendChild(messageParagraph);
         chatBox.appendChild(messageDiv);
     }
@@ -368,25 +355,31 @@ class ChatSocket {
         const receiver = chatWindow.dataset.receiver;
         const sender = chatWindow.dataset.sender;
         const friendship_id = chatWindow.dataset.friendshipId;
+        {
+            const message = "A challenge has been opened. Check your notifications!";
+            const messageData = JSON.stringify({
+                type: "chat_message",
+                sender: sender,
+                receiver: receiver,
+                friendship_id: friendship_id,
+                message: message
+            });
 
-        // Get the message from the input field in the chat window
-        const inputField = chatWindow.querySelector('input[type="text"]');
-        const message = inputField.value;
+            this.socket.send(messageData);
+        }
 
-        // Construct the message data to send
-        const messageData = JSON.stringify({
-            type: "chat_invite",
-            sender: sender,
-            receiver: receiver,
-            friendship_id: friendship_id,
-            message: message
-        });
+        {
+            // let _invitePlayer = new InvitePlayer(receiver, sender, "Steven", "Andor");
 
-        // Clear the input field after sending
-        inputField.value = "";
-
-        // Send the message via WebSocket
-        this.socket.send(messageData);
+            const messageData = JSON.stringify({
+                type: "chat_invite",
+                sender: sender,
+                receiver: receiver,
+                friendship_id: friendship_id,
+                message: ""
+            });
+            this.socket.send(messageData);
+        }
     }
 }
 

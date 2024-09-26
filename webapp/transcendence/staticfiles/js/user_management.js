@@ -339,6 +339,49 @@ async function deleteUserStats(event) {
     .catch(error => handleError(error));
 }
 
+function applyMatchInvitation(event) {
+
+  console.log("applyMatchInvitation");
+  const button = event.currentTarget;
+  const parent = button.parentElement.parentElement;
+  const friendshipID = button.dataset.friendshipid;
+  const sender = button.dataset.sender;
+  const acceptor = button.dataset.receiver;
+
+  const message = JSON.stringify({
+    'type': 'apply_match_invitation',
+    'sender': acceptor,
+    'receiver': sender,
+    'friendship_id': friendshipID,
+  });
+  chatSocket.socket.send(message);
+
+  parent.remove();
+  submit_local_pregame_invite(sender, acceptor);
+}
+
+
+
+function declineMatchInvitation(event) {
+
+  console.log("declineMatchInvitation");
+  const button = event.currentTarget;
+  const parent = button.parentElement.parentElement;
+  const friendshipID = button.dataset.friendshipid;
+  const sender = button.dataset.sender;
+  const acceptor = button.dataset.receiver;
+
+  const message = JSON.stringify({
+    'type': 'decline_match_invitation',
+    'sender': acceptor,
+    'receiver': sender,
+    'friendship_id': friendshipID,
+  });
+  chatSocket.socket.send(message);
+  parent.remove();
+}
+
+
 async function saveChanges() {
   event.preventDefault();
 
@@ -581,6 +624,8 @@ async function chat(target_friend) {
     navInvite.classList.add("text-white");
     navInvite.style.cursor = "pointer";
     navInvite.setAttribute("onclick", "chatSocket.sendInviteMessage(event)");
+
+
     let navParagraph = document.createElement("p");
     navParagraph.setAttribute("id", target_friend);
     navParagraph.setAttribute("onclick", "checkProfile(this.id)");
@@ -630,6 +675,8 @@ async function chat(target_friend) {
     parent.appendChild(chatWindow);
 
     messages.forEach((message) => {
+      if (message.message == "")
+        return;
       let messageDiv = document.createElement("div");
       console.log(`receiver: ${receiver} - currentUser: ${currentUser}`);
       if (message.receiver == currentUser)

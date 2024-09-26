@@ -114,8 +114,13 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
 
         if message_type == 'update':
             pass
+        elif message_type == 'apply_match_invitation':
+            print("apply_match_invitation")
+            await self.handle_apply_match_invitation(data)
+        elif message_type == 'decline_match_invitation':
+            print("decline_match_invitation")
+            await self.handle_decline_match_invitation(data)
         elif message_type == 'chat_invite':
-            print("friend request is selected")
             await self.handle_chat_invite(data)
         elif message_type == 'chat_message':
             print("friend request is selected")
@@ -132,6 +137,58 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
             await self.handle_settings_save(data)
         elif message_type == 'notification':
             await self.handle_notification(data)
+ # async def send_apply_match_invitation(self, event):
+    #     await self.send(text_data=json.dumps({
+    #         'type': 'apply_match_invitation',
+    #         'sender': event['sender'],
+    #         'receiver': event['receiver'],
+    #         'friendship_id': event['friendship_id'],
+    #         'message': event['message'],
+    #     }))
+
+    # async def send_decline_match_invitation(self, event):
+    #     await self.send(text_data=json.dumps({
+    #         'type': 'decline_match_invitation',
+    #         'sender': event['sender'],
+    #         'receiver': event['receiver'],
+    #         'friendship_id': event['friendship_id'],
+    #         'message': event['message'],
+    #     }))
+
+    async def handle_decline_match_invitation(self, data):
+        print("--------------handle_decline_match_invitation---------------")
+        sender = await sync_to_async(Users2.objects.get)(username=data.get("sender"))
+        receiver = await sync_to_async(Users2.objects.get)(username=data.get("receiver"))
+        friendship_id = data.get("friendship_id")
+        friendship = await sync_to_async(Friends.objects.get)(id=friendship_id)
+
+        await self.channel_layer.group_send(
+                f"user_{receiver.id}",
+                {
+                    'type': 'send_decline_match_invitation',
+                    'sender': sender.username,
+                    'receiver': receiver.username,
+                    'friendship_id': friendship_id,
+                }
+            )
+
+
+    async def handle_apply_match_invitation(self, data):
+        print("--------------handle_apply_match_invitation---------------")
+        sender = await sync_to_async(Users2.objects.get)(username=data.get("sender"))
+        receiver = await sync_to_async(Users2.objects.get)(username=data.get("receiver"))
+        friendship_id = data.get("friendship_id")
+        friendship = await sync_to_async(Friends.objects.get)(id=friendship_id)
+
+        await self.channel_layer.group_send(
+                f"user_{receiver.id}",
+                {
+                    'type': 'send_apply_match_invitation',
+                    'sender': sender.username,
+                    'receiver': receiver.username,
+                    'friendship_id': friendship_id,
+                }
+            )
 
     async def handle_chat_invite(self, data):
         print("handle_chat_invite is called")
@@ -165,6 +222,8 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
                     'message': message,
                 }
             )
+
+
 
     async def handle_chat_message(self, data):
         print("handle_chat_message is called")
@@ -346,6 +405,24 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
     async def handle_notification(self, data):
         # Logic to handle incoming notification
         pass
+
+    # Methods to apply or decline match invitation
+
+    async def send_apply_match_invitation(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'apply_match_invitation',
+            'sender': event['sender'],
+            'receiver': event['receiver'],
+            'friendship_id': event['friendship_id'],
+        }))
+
+    async def send_decline_match_invitation(self, event):
+        await self.send(text_data=json.dumps({
+            'type': 'decline_match_invitation',
+            'sender': event['sender'],
+            'receiver': event['receiver'],
+            'friendship_id': event['friendship_id'],
+        }))
 
     # Methods to send messages to client
     async def send_chat_message(self, event):
