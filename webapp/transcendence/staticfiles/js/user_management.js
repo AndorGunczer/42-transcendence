@@ -710,26 +710,27 @@ async function block(event) {
   const csrfToken = await getCsrfToken();
 
   fetch("/block_user", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
-      },
-      body: JSON.stringify({ blocker, blocked }),
-      credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({ blocker, blocked }),
+    credentials: "include",
   })
-  .then(async (response) => {
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-    }
-    else return response.json();
-  })
-  .then((json) => {
-    targetElement.setAttribute('onclick', 'unblock(event)');
-    targetElement.innerText = "UNBLOCK";
-  })
-  .catch((error) => handleError(error));
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
+      else return response.json();
+    })
+    .then((json) => {
+      targetElement.setAttribute('onclick', 'unblock(event)');
+      targetElement.innerText = "UNBLOCK";
+    })
+    .catch((error) => handleError(error));
+}
 
 async function unblock(event) {
   const targetElement = event.target;
@@ -743,24 +744,24 @@ async function unblock(event) {
   const csrfToken = await getCsrfToken();
 
   fetch("/unblock_user", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
-      },
-      body: JSON.stringify({ unblocker, unblocked }),
-      credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({ unblocker, unblocked }),
+    credentials: "include",
   })
-  .then(async (response) => {
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-    }
-    else return response.json();
-  })
-  .then((json) => {
-    targetElement.setAttribute('onclick', 'block(event)');
-    targetElement.innerText = "BLOCK";
-  })
-  .catch((error) => handleError(error));
+    .then(async (response) => {
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+      }
+      else return response.json();
+    })
+    .then((json) => {
+      targetElement.setAttribute('onclick', 'block(event)');
+      targetElement.innerText = "BLOCK";
+    })
+    .catch((error) => handleError(error));
 }
