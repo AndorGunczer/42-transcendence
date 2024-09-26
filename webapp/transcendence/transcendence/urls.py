@@ -59,6 +59,8 @@ urlpatterns = [
     # FRIENDS
     path('profile', views.profile, name="profile"),
     path('open_chat', views.open_chat, name="open_chat"),
+    path('block_user', views.block_user, name="block_user"),
+    path('unblock_user', views.unblock_user, name="unblock_user"),
     # TESTING
     path('simulate_error', views.simulate_error, name="simulate_error"),
 ]

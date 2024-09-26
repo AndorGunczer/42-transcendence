@@ -233,6 +233,9 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
         friendship = await sync_to_async(Friends.objects.get)(id=friendship_id)
         message = data.get("message")
 
+        if friendship.is_blocked:
+            return None
+
         new_message = await sync_to_async(Messages)(friendship=friendship, sender=sender.username, receiver=receiver.username, message=message)
         await sync_to_async(new_message.save)()
 

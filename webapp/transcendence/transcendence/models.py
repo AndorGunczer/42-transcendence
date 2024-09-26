@@ -99,6 +99,9 @@ class Friends(models.Model):
     friend1 = models.ForeignKey(Users2, on_delete=models.CASCADE, related_name='friend1')
     friend2 = models.ForeignKey(Users2, on_delete=models.CASCADE, related_name='friend2')
     state = models.CharField(max_length=32)
+    is_blocked = models.BooleanField(default=False)
+    blocker = models.CharField(max_length=128, null=True, default=None)
+
 
 class Messages(models.Model):
     friendship = models.ForeignKey(Friends, on_delete=models.CASCADE)
