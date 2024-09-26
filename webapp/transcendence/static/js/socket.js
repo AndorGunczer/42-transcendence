@@ -36,7 +36,7 @@ socket.onclose = function(e) {
 
 
 
-// Handle Incoming 
+// Handle Incoming
 
 function handleChatMessage(data) {
     console.log(data.friendship_id);
@@ -142,7 +142,7 @@ function handleNotification(data) {
 
 function handleFriendAcceptanceNotification(data) {
     console.log('New notification:', data.message);
-    
+
     try {
         // if fails then its the sender
         console.log('Looking for element with ID:', data.accepted);
@@ -238,7 +238,7 @@ function send_message(event) {
 
     // Get the chat window element by navigating from the button
     const chatWindow = buttonElement.closest('.chat-window'); // Assuming the chat window has a class like 'chat-window'
-    
+
     // Access the necessary data from the chat window's dataset
     const receiver = chatWindow.dataset.receiver;
     const sender = chatWindow.dataset.sender;

@@ -4,7 +4,7 @@ async function submit_registration_form(event) {
   let validation = validate_registration_form();
 
   if (!validation) {
-    return ; 
+    return;
   }
 
   const csrfToken = await getCsrfToken();
@@ -93,7 +93,7 @@ async function submit_login_form(event) {
   let validation = validate_login_form();
 
   if (!validation)
-    return ;
+    return;
 
   console.log('submit login form called');
 
@@ -102,29 +102,29 @@ async function submit_login_form(event) {
   const password = sanitizeInput(document.getElementById("password").value);
 
   fetch("/login_check", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
-      },
-      body: JSON.stringify({ username, password }),
-      credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({ username, password }),
+    credentials: "include",
   })
-  .then((response) => response.json())
-  .then((json) => {
-    console.log(json.status);
+    .then((response) => response.json())
+    .then((json) => {
+      console.log(json.status);
       if (json.status === 'otp_sent') {
         // Show OTP popup
         document.getElementById("otpPopup").style.display = "block";
       } else {
         load_main();
       }
-      
-  })
-  .catch((error) => console.error("Error submitting login form:", error));
+
+    })
+    .catch((error) => console.error("Error submitting login form:", error));
 }
 
-function validate_login_form(){
+function validate_login_form() {
   const username = sanitizeInput(document.getElementById("username").value);
 
   if (!username) {
@@ -149,19 +149,19 @@ async function verify_otp(event) {
   const otp = document.getElementById("otp").value;
 
   fetch("/verify_otp", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
-      },
-      body: JSON.stringify({ otp }),
-      credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({ otp }),
+    credentials: "include",
   })
-  .then((response) => response.json())
-  .then((json) => {
+    .then((response) => response.json())
+    .then((json) => {
       load_main()
-  })
-  .catch((error) => console.error("Error verifying OTP:", error));
+    })
+    .catch((error) => console.error("Error verifying OTP:", error));
 }
 
 async function logout(event) {
@@ -204,8 +204,8 @@ async function uploadAvatar(event) {
   const file = fileInput.files[0];
 
   if (!file) {
-      alert('Please Select a File to Upload');
-      return;
+    alert('Please Select a File to Upload');
+    return;
   }
 
   const base64File = await convertToBase64(file);
@@ -213,35 +213,35 @@ async function uploadAvatar(event) {
   let url = '/upload_file';
 
   fetch(url, {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
-      },
-      body: JSON.stringify({
-          fileName: file.name,
-          fileType: file.type,
-          fileData: base64File
-      }),
-      credentials: "include"
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrfToken,
+    },
+    body: JSON.stringify({
+      fileName: file.name,
+      fileType: file.type,
+      fileData: base64File
+    }),
+    credentials: "include"
   })
-  .then(response => response.json())
-  .then(data => {
+    .then(response => response.json())
+    .then(data => {
       console.log('Success:', data);
-  })
-  .catch(error => {
+    })
+    .catch(error => {
       console.error('Error:', error);
-  });
+    });
 }
 
 function convertToBase64(file) {
   return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-          resolve(reader.result.split(',')[1]); // Remove the "data:*/*;base64," part
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      resolve(reader.result.split(',')[1]); // Remove the "data:*/*;base64," part
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   });
 }
 async function settings() {
@@ -258,33 +258,33 @@ async function settings() {
     },
     credentials: 'include',
   })
-  .then(response => response.json())
-  .then(json => {
-    deleteHeader();
-    deleteMain();
+    .then(response => response.json())
+    .then(json => {
+      deleteHeader();
+      deleteMain();
 
-    // CREATE HEADER
+      // CREATE HEADER
 
-    headerLoad(json);
+      headerLoad(json);
 
-    // CREATE CONTAINER
+      // CREATE CONTAINER
 
-    json.menuItems.forEach((item) => {
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      console.log(parent);
-      let element = document.createElement(item.type);
-      if (item.type == "div" || item.type == "form" || item.type == "select")
-        divLoader(element, item.content);
+      json.menuItems.forEach((item) => {
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+        console.log(parent);
+        let element = document.createElement(item.type);
+        if (item.type == "div" || item.type == "form" || item.type == "select")
+          divLoader(element, item.content);
 
-      elementCustomize(element, item);
-      parent.appendChild(element);
+        elementCustomize(element, item);
+        parent.appendChild(element);
 
-      // div.appendChild(element);
-    });
-  })
-  .catch(error => {
+        // div.appendChild(element);
+      });
+    })
+    .catch(error => {
       console.error('Error:', error);
-  });
+    });
 }
 
 async function deleteUserStats(event) {
@@ -302,32 +302,32 @@ async function deleteUserStats(event) {
     },
     credentials: 'include'
   })
-  .then(response => response.json())
-  .then(json => {
-    deleteHeader();
-    deleteMain();
+    .then(response => response.json())
+    .then(json => {
+      deleteHeader();
+      deleteMain();
 
-    // CREATE HEADER
+      // CREATE HEADER
 
-    headerLoad(json);
+      headerLoad(json);
 
-    // CREATE CONTAINER
+      // CREATE CONTAINER
 
-    json.menuItems.forEach((item) => {
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      let element = document.createElement(item.type);
-      if (item.type == "div" || item.type == "form" || item.type == "select")
-        divLoader(element, item.content);
+      json.menuItems.forEach((item) => {
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+        let element = document.createElement(item.type);
+        if (item.type == "div" || item.type == "form" || item.type == "select")
+          divLoader(element, item.content);
 
-      elementCustomize(element, item);
-      parent.appendChild(element);
+        elementCustomize(element, item);
+        parent.appendChild(element);
 
-      // div.appendChild(element);
-    });
-  })
-  .catch(error => {
+        // div.appendChild(element);
+      });
+    })
+    .catch(error => {
       console.error('Error:', error);
-  });
+    });
 }
 
 async function saveChanges() {
@@ -354,32 +354,32 @@ async function saveChanges() {
     }),
     credentials: 'include'
   })
-  .then(response => response.json())
-  .then(json => {
-    deleteHeader();
-    deleteMain();
+    .then(response => response.json())
+    .then(json => {
+      deleteHeader();
+      deleteMain();
 
-    // CREATE HEADER
+      // CREATE HEADER
 
-    headerLoad(json);
+      headerLoad(json);
 
-    // CREATE CONTAINER
+      // CREATE CONTAINER
 
-    json.menuItems.forEach((item) => {
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      let element = document.createElement(item.type);
-      if (item.type == "div" || item.type == "form" || item.type == "select")
-        divLoader(element, item.content);
+      json.menuItems.forEach((item) => {
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+        let element = document.createElement(item.type);
+        if (item.type == "div" || item.type == "form" || item.type == "select")
+          divLoader(element, item.content);
 
-      elementCustomize(element, item);
-      parent.appendChild(element);
+        elementCustomize(element, item);
+        parent.appendChild(element);
 
-      // div.appendChild(element);
-    });
-  })
-  .catch(error => {
+        // div.appendChild(element);
+      });
+    })
+    .catch(error => {
       console.error('Error:', error);
-  });
+    });
 }
 
 async function checkProfile(profile_name) {
@@ -402,27 +402,27 @@ async function checkProfile(profile_name) {
     if (!response.ok) console.log("yeaah");
     else return response.json();
   })
-  .then((json) => {
-    deleteHeader();
-    deleteMain();
+    .then((json) => {
+      deleteHeader();
+      deleteMain();
 
-    // CREATE HEADER
-    // console.log(json)
+      // CREATE HEADER
+      // console.log(json)
 
-    headerLoad(json);
+      headerLoad(json);
 
-    // CREATE CONTAINER
+      // CREATE CONTAINER
 
-    json.menuItems.forEach((item) => {
-      let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      let element = document.createElement(item.type);
-      if (item.type == "div" || item.type == "form" || item.type == "table")
-        divLoader(element, item.content);
+      json.menuItems.forEach((item) => {
+        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+        let element = document.createElement(item.type);
+        if (item.type == "div" || item.type == "form" || item.type == "table")
+          divLoader(element, item.content);
 
-      elementCustomize(element, item);
-      parent.appendChild(element);
+        elementCustomize(element, item);
+        parent.appendChild(element);
+      });
     });
-  });
 }
 
 async function chat(target_friend) {
@@ -458,7 +458,7 @@ async function chat(target_friend) {
     console.log(friendship_id);
 
     if (document.getElementById(friendship_id))
-      return ;
+      return;
 
     let chatWindows = document.getElementsByClassName('chat-window');
     if (chatWindows.length == 3)
@@ -476,7 +476,7 @@ async function chat(target_friend) {
     chatWindow.dataset.sender = sender;
     chatWindow.dataset.friendshipId = friendship_id;
     // create 3 divs to create chatwindow
-  
+
     // Add identifier to chat window
     let chatNav = document.createElement("div");
     chatNav.setAttribute("class", "bg-chat-nav d-flex justify-content-center align-items-center");
@@ -484,15 +484,15 @@ async function chat(target_friend) {
     let navParagraph = document.createElement("p");
     navParagraph.innerHTML = target_friend;
     chatNav.appendChild(navParagraph);
-  
+
     // Add Message store to chat window
     let chatBody = document.createElement("div");
     chatBody.setAttribute("class", "bg-chat-body d-flex flex-column flex-grow-1 overflow-scroll");
-  
+
     // Add HMI to chat window
     let chatInput = document.createElement("div");
     chatInput.setAttribute("class", "bg-warning d-flex flex-row");
-  
+
     let inputField = document.createElement("input");
     inputField.setAttribute("type", "text");
     inputField.setAttribute("class", "w-75 bg-secondary bg-gradient text-white");
@@ -502,9 +502,9 @@ async function chat(target_friend) {
     inputButton.setAttribute("class", "w-25 bg-secondary text-white");
     inputButton.setAttribute("onclick", "send_message(event)");
     chatInput.appendChild(inputButton);
-  
-  
-  
+
+
+
     chatWindow.appendChild(chatNav);
     chatWindow.appendChild(chatBody);
     chatWindow.appendChild(chatInput);
@@ -523,6 +523,7 @@ async function chat(target_friend) {
       messageParagraph.innerHTML = message.message;
       messageDiv.appendChild(messageParagraph);
       chatBody.appendChild(messageDiv);
+
     })
   })
 
