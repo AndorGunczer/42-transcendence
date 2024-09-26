@@ -16,6 +16,8 @@ function checkAndRefreshToken() {
     .then((data) => {
       if (data.message === "Token refreshed") {
         console.log("Token refreshed successfully.");
+      }  else if(data.message === "Refresh token missing"){
+        console.log(data.message);
       } else {
         console.error("Unexpected response:", data);
       }

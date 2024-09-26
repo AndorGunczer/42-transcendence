@@ -40,7 +40,8 @@ class CustomTokenRefreshView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
         refresh_token = request.COOKIES.get('refresh_token')
         if not refresh_token:
-            return JsonResponse({"error": "Refresh token missing"}, status=401)
+            # return JsonResponse({"error": "Refresh token missing"}, status=401)
+            return JsonResponse({"message": "Refresh token missing"}, status=200)
 
         request.data['refresh'] = refresh_token
         response = super().post(request, *args, **kwargs)
@@ -496,7 +497,10 @@ def index(request):
             'losses': 'None',
             'authenticated': 'False'
         }
-        return render(request, 'menu_general/index.html', obj)
+        response = render(request, 'menu_general/index.html', obj)
+        response.delete_cookie('access_token')
+        response.delete_cookie('refresh_token')
+        return response
     else:
         try:
             user = get_user_from_token(token)
