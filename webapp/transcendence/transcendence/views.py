@@ -41,7 +41,6 @@ class CustomTokenRefreshView(TokenRefreshView):
         refresh_token = request.COOKIES.get('refresh_token')
         if not refresh_token:
             # return JsonResponse({"error": "Refresh token missing"}, status=401)
-            print(f'debug: Refresh token missing')
             return JsonResponse({"message": "Refresh token missing"}, status=200)
 
         request.data['refresh'] = refresh_token
