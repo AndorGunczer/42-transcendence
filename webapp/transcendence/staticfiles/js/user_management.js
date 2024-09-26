@@ -559,13 +559,80 @@ async function chat(target_friend) {
 
 }
 
-async function inviteToGame(player_name) {
-  console.log("chat has been called");
-  const csrfToken = await getCsrfToken();
-  const currentUser = (document.getElementById("user").innerHTML).split(" ").pop();
-  const invitedUser = player_name;
+// async function inviteToGame(player_name) {
+//   console.log("chat has been called");
+//   const csrfToken = await getCsrfToken();
+//   const currentUser = (document.getElementById("user").innerHTML).split(" ").pop();
+//   const invitedUser = player_name;
 
   
+// }
+
+async function block(event) {
+  const targetElement = event.target;
+  const blocker = (document.getElementById("user").innerHTML).split(" ").pop();
+  const blocked = event.target.id;
+
+  console.log("BLOCK CALLED");
+  console.log(blocked);
+  console.log("BLOCK DONE");
+
+  const csrfToken = await getCsrfToken();
+
+  fetch("/block_user", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+      },
+      body: JSON.stringify({ blocker, blocked }),
+      credentials: "include",
+  })
+  .then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+    }
+    else return response.json();
+  })
+  .then((json) => {
+    targetElement.setAttribute('onclick', 'unblock(event)');
+    targetElement.innerText = "UNBLOCK";
+  })
+  .catch((error) => handleError(error));
 }
 
-// async
+
+async function unblock(event) {
+  const targetElement = event.target;
+  const unblocker = (document.getElementById("user").innerHTML).split(" ").pop();
+  const unblocked = event.target.id;
+
+  console.log("BLOCK CALLED");
+  console.log(unblocked);
+  console.log("BLOCK DONE");
+
+  const csrfToken = await getCsrfToken();
+
+  fetch("/unblock_user", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+      },
+      body: JSON.stringify({ unblocker, unblocked }),
+      credentials: "include",
+  })
+  .then(async (response) => {
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+    }
+    else return response.json();
+  })
+  .then((json) => {
+    targetElement.setAttribute('onclick', 'block(event)');
+    targetElement.innerText = "BLOCK";
+  })
+  .catch((error) => handleError(error));
+}
