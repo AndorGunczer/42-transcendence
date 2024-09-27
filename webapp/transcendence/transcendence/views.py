@@ -17,7 +17,7 @@ import copy
 from django.middleware.csrf import get_token
 import json
 import random
-from transcendence.web3_utils import add_tournament, add_participant, increment_score, set_winner, get_tournament_count, get_tournament, get_participant_score, get_participant_list, get_tournament_index_by_name  
+from transcendence.web3_utils import add_tournament, add_participant, increment_score, set_winner, get_tournament_count, get_tournament, get_participant_score, get_participant_list, get_tournament_index_by_name
 from .menus import MENU_DATA
 from django.db.models import Q
 
@@ -131,7 +131,7 @@ def modify_json_menu(menu_type, token):
                 'text': 'MATCH HISTORY',
                 'onclick': 'loadHistory()'
             })
-        
+
     # Add Friendlist
     menu['menuItems'].append({
         'id': len(menu['menuItems']),
@@ -267,12 +267,13 @@ def modify_json_menu(menu_type, token):
                 'type': 'p',
                 'class': 'text-white m-3',
                 'text': friend_name,
+                'translate': 'no'  # Prevent translation
             },
             {
                 'type': 'p',
                 'class': 'text-white m-1 is_online',
-                # 'identifier': 'is_online',
                 'text': is_online,
+                'translate': 'no'  # Prevent translation if needed
             },
             {
                 'type': 'div',
@@ -283,7 +284,8 @@ def modify_json_menu(menu_type, token):
                         'class': 'rounded bg-secondary bg-gradient text-white',
                         'onclick': f"chat(this.id)",
                         'identifier': friend_name,
-                        'text': 'CHAT'
+                        'text': 'CHAT',
+                        'translate': 'no'  # Prevent translation if needed
                     },
                 ]
             }
@@ -296,7 +298,8 @@ def modify_json_menu(menu_type, token):
                 'class': 'rounded bg-secondary bg-gradient text-white',
                 'onclick': f"validateAndAddToTournament(this.id)",
                 'identifier': friend_name,
-                'text': 'INVITE'
+                'text': 'INVITE',
+                'translate': 'no'  # Prevent translation if needed
             })
 
         friends_div.append({
@@ -314,7 +317,7 @@ def modify_json_menu(menu_type, token):
 
         ]
     })
-    
+
 
     return menu
 
@@ -373,7 +376,7 @@ def tournament_select_page_fill(menu, participants, tournament_name):
                         'type': 'td',
                         'class': 'text-white',
                         'text': f'Points'
-                    }                    
+                    }
                 ]
             }
         ]
@@ -580,7 +583,7 @@ def match_history_fill(menu, user):
                         'type': 'td',
                         'class': 'text-white',
                         'text': f'Winner'
-                    }                    
+                    }
                 ]
             }
         ]
@@ -1029,7 +1032,7 @@ def tournament_game_check(request, menu_type="local_game"):
         player2 = players[1].player.username
     else:
         player2 = players[1].guest_name
-        
+
     # print(players[0].player.username)
     print(players)
 
@@ -1100,11 +1103,11 @@ def close_tournament_game(request, menu_type='main'):
                     # Update Participants.points for the winner on the Blockchain
                     receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.player.username, 1)
                     print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
-            
+
             except Users2.DoesNotExist:
                 # If the user doesn't exist, try to find the participant by guest name
                 participant = Participants.objects.get(guest_name=player1.get('name'), tournament=tournament)
-                
+
                 if participant:
                     participant.points += 1
                     participant.save()
@@ -1154,11 +1157,11 @@ def close_tournament_game(request, menu_type='main'):
                     # Update Participants.points for the winner on the Blockchain
                     receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.player.username, 1)
                     print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
-            
+
             except Users2.DoesNotExist:
                 # If the user doesn't exist, try to find the participant by guest name
                 participant = Participants.objects.get(guest_name=player2.get('name'), tournament=tournament)
-                
+
                 if participant:
                     participant.points += 1
                     participant.save()
@@ -1190,7 +1193,7 @@ def close_tournament_game(request, menu_type='main'):
             for player in registered_players:
                 notify_user(player.player_id, "Next Tournament Game is Yours!")
 
-            
+
 
 
         # Determine the menu based on the token
@@ -1301,7 +1304,7 @@ from .serializers import RegistrationSerializer, LoginSerializer, UserUpdateSeri
 def registration_check(request):
     serializer = RegistrationSerializer(data=request.data)
     if serializer.is_valid():
-        try: 
+        try:
             # Process the validated data
             data = serializer.validated_data
             # Create the user or any other processing
@@ -1430,7 +1433,7 @@ from rest_framework import status
 def login_check(request):
     # Use the LoginSerializer to validate the incoming data
     serializer = LoginSerializer(data=request.data)
-    
+
     if serializer.is_valid():
         # Extract validated data
         username = serializer.validated_data.get('username')
@@ -1709,7 +1712,7 @@ def save_changes(request, menu_type='main'):
 
     # Use the serializer for validating incoming data
     serializer = UserUpdateSerializer(data=request.data)
-    
+
     if serializer.is_valid():
         # Extract validated data
         username = serializer.validated_data.get('username')
@@ -1731,7 +1734,7 @@ def save_changes(request, menu_type='main'):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
         # Check token validation
         if token is None or not validate_token(token):
             menu = copy.deepcopy(MENU_DATA.get(menu_type))
@@ -1742,7 +1745,7 @@ def save_changes(request, menu_type='main'):
             return Response(menu, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Menu type not found'}, status=status.HTTP_404_NOT_FOUND)
-    
+
     # If validation fails
     else:
         return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -1785,7 +1788,7 @@ def fill_profile_with_user_data(menu, user):
                         'type': 'td',
                         'class': 'text-white',
                         'text': f'Winner'
-                    }                    
+                    }
                 ]
             }
         ]
@@ -1875,7 +1878,7 @@ def open_chat(request):
     data = json.loads(request.body)
     target_friend_username = data.get('target_friend')
     source_friend_username = data.get('source_friend')
-    
+
     try:
         target_friend = Users2.objects.get(username=target_friend_username)
         source_friend = Users2.objects.get(username=source_friend_username)
@@ -1940,7 +1943,7 @@ def block_user(request):
             friendship.is_blocked = True
             friendship.save()
     return JsonResponse({})
-        
+
 
 def unblock_user(request):
     token = get_token_from_header(request)

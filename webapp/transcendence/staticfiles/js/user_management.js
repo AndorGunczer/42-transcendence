@@ -629,6 +629,7 @@ async function chat(target_friend) {
     let navParagraph = document.createElement("p");
     navParagraph.setAttribute("id", target_friend);
     navParagraph.setAttribute("onclick", "checkProfile(this.id)");
+    navParagraph.setAttribute("translate", "no");
     navParagraph.innerText = target_friend;
     navParagraph.classList.add("text-warning");
     navParagraph.style.cursor = "pointer";
@@ -683,9 +684,9 @@ async function chat(target_friend) {
         messageDiv.setAttribute("class", "align-self-start w-25 p-1 m-1 bg-chat-message border-primary rounded");
       else
         messageDiv.setAttribute("class", "align-self-end w-25 p-1 m-1 bg-chat-message border-primary rounded");
-
       let messageParagraph = document.createElement("p");
       messageParagraph.setAttribute("class", "text-white");
+      messageParagraph.setAttribute("translate", "no");
       messageParagraph.innerHTML = message.message;
       messageDiv.appendChild(messageParagraph);
       chatBody.appendChild(messageDiv);

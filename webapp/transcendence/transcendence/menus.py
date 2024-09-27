@@ -16,6 +16,7 @@ MENU_DATA = {
                 'id': 1,
                 'type': 'div',
                 'class': 'player-info',
+                'translate': 'no',
                 'content': [
                     {
                         'type': 'div',
@@ -212,7 +213,7 @@ MENU_DATA = {
                 'type': 'div',
                 'identifier': 'table-container',
                 'content': [
-                    
+
                 ]
             },
         ]
@@ -287,7 +288,7 @@ MENU_DATA = {
                 'type': 'div',
                 'identifier': 'table-container',
                 'content': [
-                    
+
                 ]
             },
         ]
@@ -470,7 +471,7 @@ MENU_DATA = {
                         'identifier': 'tournament_ul',
                         'class': 'text-white',
                         'content': [
-                            
+
                         ],
                     },
                     {

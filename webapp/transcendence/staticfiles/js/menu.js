@@ -272,6 +272,8 @@ function elementCustomize(element, item) {
   if (item.onsubmit && item.onsubmit != "") element.setAttribute("onsubmit", item.onsubmit);
   if (item.selected && item.selected != "") element.setAttribute("selected", item.selected);
   if (item.placeholder && item.placeholder != "") element.setAttribute("placeholder", item.placeholder)
+
+  if (item.translate == "no") element.setAttribute("translate", "no");
   // if ()
   // if (item.text && item.text != "") element.textContent = item.text;
 }
