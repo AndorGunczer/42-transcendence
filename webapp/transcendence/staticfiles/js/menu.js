@@ -3,6 +3,8 @@
 // HELPER FUNCTIONS
 
 let gameId;
+let tournament_name = "";
+let player_list = [];
 
 function sanitizeInput(input) {
   return input.replace(/&/g, "&amp;")
@@ -337,213 +339,36 @@ function LOAD_DATA(json, shouldPush, state_json = null) {
 
   // CREATE CONTAINER
 
+  json.menuItems.forEach((item) => {
+    let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
+    let element = document.createElement(item.type);
+    if (item.type == "div" || item.type == "form" || item.type == "table" || item.type == "select")
+      divLoader(element, item.content);
+    elementCustomize(element, item);
+    parent.appendChild(element);
+  });
+
   switch (json.id) {
-    case "main":
-      {
-        json.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-          let element = document.createElement(item.type);
-          if (item.type == "div" || item.type == "form")
-            divLoader(element, item.content);
-          elementCustomize(element, item);
-          parent.appendChild(element);
-        });
-      }
-      break;
-    case "play_menu":
-      {
-        json.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-          let element = document.createElement(item.type);
-          if (item.type == "div" || item.type == "form")
-            divLoader(element, item.content);
-          elementCustomize(element, item);
-          parent.appendChild(element);
-        });
-      }
-      break;
-    case 'match_history':
-      {
-        json.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-          let element = document.createElement(item.type);
-          if (item.type == "div" || item.type == "form" || item.type == "table")
-            divLoader(element, item.content);
-
-          elementCustomize(element, item);
-          parent.appendChild(element);
-        });
-      }
-      break;
-    case "profile":
-      {
-        json.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-          let element = document.createElement(item.type);
-          if (item.type == "div" || item.type == "form" || item.type == "table")
-            divLoader(element, item.content);
-
-          elementCustomize(element, item);
-          parent.appendChild(element);
-        });
-      }
-      break;
-    case "tournament_main":
-      {
-        json.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-          let element = document.createElement(item.type);
-          if (item.type == "div" || item.type == "form")
-            divLoader(element, item.content);
-
-          elementCustomize(element, item);
-          parent.appendChild(element);
-        });
-      }
-      break;
-    case "tournament_create":
-      {
-        json.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-          let element = document.createElement(item.type);
-          if (item.type == "div" || item.type == "form")
-            divLoader(element, item.content);
-
-          elementCustomize(element, item);
-          parent.appendChild(element);
-        });
-      }
-      break;
-    case "tournament_select":
-      {
-        console.log(json.menuItems);
-        json.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-          let element = document.createElement(item.type);
-          if (item.type == "div" || item.type == "form" || item.type == "table")
-            divLoader(element, item.content);
-
-          elementCustomize(element, item);
-          parent.appendChild(element);
-        });
-      }
-      break;
-    case "singleplayer_menu":
-      {
-        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-        json.menuItems.forEach((item) => {
-          let element = document.createElement("div");
-          elementCustomize(element, item);
-          divLoader(element, item.content);
-          parent.appendChild(element);
-        });
-      }
-      break;
-    case "online_menu":
-      {
-        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-        json.menuItems.forEach((item) => {
-          let element = document.createElement("div");
-          elementCustomize(element, item);
-          divLoader(element, item.content);
-          parent.appendChild(element);
-        });
-      }
-      break;
-    case "local_menu":
-      {
-        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-        json.menuItems.forEach((item) => {
-          let element = document.createElement("div");
-          elementCustomize(element, item);
-          divLoader(element, item.content);
-          parent.appendChild(element);
-        });
-      }
-      break;
     case "register":
       {
-        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-        json.menuItems.forEach((item) => {
-          let element;
-          if (item.type == "div")
-            element = document.createElement("div");
-          else if (item.type == "select")
-            element = document.createElement("select")
-          elementCustomize(element, item);
-          divLoader(element, item.content);
-          parent.appendChild(element);
-        });
         document
           .getElementById("registration_form")
           .addEventListener("submit", submit_registration_form, { once: true });
         document.getElementById("Avatar").addEventListener("change", changeSelect);
-
-      }
-      break;
-    case "login":
-      {
-        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-        json.menuItems.forEach((item) => {
-          let element = document.createElement("div");
-          elementCustomize(element, item);
-          divLoader(element, item.content);
-          parent.appendChild(element);
-        });
-        document.getElementById("login_form");
-      }
-      break;
-    case "settings":
-      {
-        json.menuItems.forEach((item) => {
-          let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-          console.log(parent);
-          let element = document.createElement(item.type);
-          if (item.type == "div" || item.type == "form" || item.type == "select")
-            divLoader(element, item.content);
-
-          elementCustomize(element, item);
-          parent.appendChild(element);
-
-        });
-      }
-      break;
+      } break;
     case "singleplayer_game":
       {
-        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-        json.menuItems.forEach((item) => {
-          let element = document.createElement(item.type);
-          elementCustomize(element, item);
-          parent.appendChild(element);
-        });
         startSingleGame();
-      }
-      break;
+      } break;
     case "local_game":
       {
-        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-        json.menuItems.forEach((item) => {
-          let element = document.createElement(item.type);
-          elementCustomize(element, item);
-          parent.appendChild(element);
-        });
         startLocalGame(state_json);
-      }
-      break;
+      } break;
     case "online_game":
       {
-
-        let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-        json.menuItems.forEach((item) => {
-          let element = document.createElement(item.type);
-          elementCustomize(element, item);
-          parent.appendChild(element);
-        });
         startOnlineGame();
-      }
-      break;
+      } break;
   }
-
 }
 
 
@@ -572,25 +397,6 @@ async function load_main() {
     })
     .then((json) => {
       LOAD_DATA(json, true);
-      // history.pushState(json, null);
-      // deleteHeader();
-      // deleteMain();
-
-      // // CREATE HEADER
-
-      // headerLoad(json);
-
-      // // CREATE CONTAINER
-
-      // json.menuItems.forEach((item) => {
-      //   let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      //   let element = document.createElement(item.type);
-      //   if (item.type == "div" || item.type == "form")
-      //     divLoader(element, item.content);
-
-      //   elementCustomize(element, item);
-      //   parent.appendChild(element);
-      // });
     })
     .catch((error) => {
       handleError(error);
@@ -648,27 +454,6 @@ function load_playMenu() {
     })
     .then((json) => {
       LOAD_DATA(json, true);
-      // history.pushState(json, null);
-      // deleteHeader();
-      // deleteMain();
-
-      // // CREATE HEADER
-
-      // headerLoad(json);
-
-      // // CREATE CONTAINER
-
-      // json.menuItems.forEach((item) => {
-      //   let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      //   let element = document.createElement(item.type);
-      //   if (item.type == "div" || item.type == "form")
-      //     divLoader(element, item.content);
-
-      //   elementCustomize(element, item);
-      //   parent.appendChild(element);
-
-      //   // div.appendChild(element);
-      // });
     })
     .catch((error) => {
       handleError(error);
@@ -687,9 +472,6 @@ async function loadHistory() {
       "content-type": "application/json",
       "X-CSRFToken": csrfToken,
     },
-    // body: JSON.stringify({
-    //   tournament_name: document.getElementById('Avatar').value
-    // }),
     credentials: "include",
   })
     .then(async (response) => {
@@ -701,26 +483,6 @@ async function loadHistory() {
     })
     .then((json) => {
       LOAD_DATA(json, true);
-      // history.pushState(json, null);
-      // deleteHeader();
-      // deleteMain();
-
-      // // CREATE HEADER
-      // // console.log(json)
-
-      // headerLoad(json);
-
-      // // CREATE CONTAINER
-
-      // json.menuItems.forEach((item) => {
-      //   let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      //   let element = document.createElement(item.type);
-      //   if (item.type == "div" || item.type == "form" || item.type == "table")
-      //     divLoader(element, item.content);
-
-      //   elementCustomize(element, item);
-      //   parent.appendChild(element);
-      // });
     })
     .catch((error) => {
       handleError(error);
@@ -739,15 +501,6 @@ function single_pregame() {
     })
     .then((json) => {
       LOAD_DATA(json, true);
-
-
-      // let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
-      // json.menuItems.forEach((item) => {
-      //   let element = document.createElement("div");
-      //   elementCustomize(element, item);
-      //   divLoader(element, item.content);
-      //   parent.appendChild(element);
-      // });
     });
 
   console.log("single pregame called");
@@ -770,7 +523,7 @@ function local_pregame() {
 
 
 async function submit_local_pregame_invite(player1, player2) {
-  
+
   let validation = validate_local_pregame_invite();
 
   if (!validation)
@@ -814,6 +567,11 @@ async function submit_local_pregame(event) {
 
   player1 = sanitizeInput(document.getElementById('player1').value);
   player2 = sanitizeInput(document.getElementById('player2').value);
+
+  if (player1 == player2) {
+    handleError("A player cannot play against itself");
+    return;
+  }
 
   console.log(player1);
 
@@ -1029,7 +787,6 @@ function load_tournament_create() {
       else return response.json();
     })
     .then((json) => {
-
       LOAD_DATA(json, true);
     })
     .catch((error) => {
@@ -1037,31 +794,20 @@ function load_tournament_create() {
     });
 }
 
-let player_list = [];
-
-function tournament_player_add(event) {
+function invokeAddPlayerToTournament(event) {
   event.preventDefault();
-  console.log("tournament_player_add called");
-  let player_list_dom = document.getElementById("tournament_ul");
+
   let player_input = document.getElementById('player');
-  let player_input_value = sanitizeInput(player_input.value);
+  let playerInputValue = sanitizeInput(player_input.value);
 
-  let new_li = document.createElement('li');
-  new_li.textContent = player_input_value; // Make sure to set the text content of the new list item
-
-  if (!player_input_value) {
-    alert("Wrong Input");
+  if (!playerInputValue) {
+    handleError("Wrong Input");
     return;
   }
+  if (validateAndAddToTournament(playerInputValue) == false)
+    return false;
 
-  if (player_list.includes(player_input_value)) {
-    alert("Player already in the tournament");
-    return;
-  }
-
-  player_list.push(sanitizeInput(player_input_value));
   player_input.value = "";
-  player_list_dom.appendChild(new_li);
 
   console.log(player_list);
 
@@ -1113,12 +859,12 @@ function validate_tournament_create() {
   let tournament_name = document.getElementById('tournament_name').value;
 
   if (!tournament_name) {
-    alert("Please give tournament name");
+    handleError("Please give tournament name");
     return false;
   }
 
   if (player_list.length < 3) {
-    alert("Please add at least 3 players to your tournament");
+    handleError("Please add at least 3 players to your tournament");
     return false;
   }
 
@@ -1203,13 +949,18 @@ async function load_tournament_localGame() {
     });
 }
 
-function inviteToTournament(playerName) {
+function validateAndAddToTournament(playerName) {
+  if (player_list.includes(playerName)) {
+    handleError("Player already in tournament");
+    return false;
+  }
+
   let listElement = document.getElementById("tournament_ul");
 
   const newParticipant = document.createElement("li");
-  newParticipant.innerHTML = playerName;
-  player_list.push(playerName);
+  newParticipant.innerText = playerName;
+  player_list.push(sanitizeInput(playerName));
 
   listElement.append(newParticipant);
-
+  return true;
 }

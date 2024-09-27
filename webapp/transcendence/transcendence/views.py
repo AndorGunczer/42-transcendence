@@ -40,8 +40,8 @@ class CustomTokenRefreshView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
         refresh_token = request.COOKIES.get('refresh_token')
         if not refresh_token:
-            # return JsonResponse({"error": "Refresh token missing"}, status=401)
-            return JsonResponse({"message": "Refresh token missing"}, status=200)
+            return JsonResponse({"error": "Refresh token missing"}, status=401)
+            # return JsonResponse({"message": "Refresh token missing"}, status=200)
 
         request.data['refresh'] = refresh_token
         response = super().post(request, *args, **kwargs)
@@ -285,20 +285,6 @@ def modify_json_menu(menu_type, token):
                         'identifier': friend_name,
                         'text': 'CHAT'
                     },
-                    {
-                        'type': 'button',
-                        'class': 'rounded bg-secondary bg-gradient text-white',
-                        'onclick': f"checkProfile(this.id)",
-                        'identifier': friend_name,
-                        'text': 'PROFILE'
-                    },
-                    {
-                        'type': 'button',
-                        'class': 'rounded bg-secondary bg-gradient text-white',
-                        'onclick': f"inviteToGame(this.id)",
-                        'identifier': friend_name,
-                        'text': "GAME"
-                    }
                 ]
             }
         ]
@@ -308,7 +294,7 @@ def modify_json_menu(menu_type, token):
             content[2]['content'].append({
                 'type': 'button',
                 'class': 'rounded bg-secondary bg-gradient text-white',
-                'onclick': f"inviteToTournament(this.id)",
+                'onclick': f"validateAndAddToTournament(this.id)",
                 'identifier': friend_name,
                 'text': 'INVITE'
             })

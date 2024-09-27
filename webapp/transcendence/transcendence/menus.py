@@ -461,7 +461,7 @@ MENU_DATA = {
                                 'type': 'input',
                                 'inputType': 'button',
                                 'value': 'Add Player',
-                                'onclick': 'tournament_player_add(event)'
+                                'onclick': 'invokeAddPlayerToTournament(event)'
                             },
                         ]
                     },
