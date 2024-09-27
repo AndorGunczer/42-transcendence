@@ -1602,6 +1602,9 @@ def upload_file(request):
         file_type = data.get('fileType')
         file_data = data.get('fileData')
 
+        if Avatar.objects.filter(name=file_name).exists():
+            return JsonResponse({'error': 'Avatar with this name exists.'}, status=400)
+
         if not file_name or not file_data:
             return JsonResponse({'error': 'Invalid file data'}, status=400)
 
