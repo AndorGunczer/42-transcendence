@@ -1,5 +1,7 @@
 // document.addEventListener("DOMContentLoaded", () => {
 
+
+
 function startSingleGame() {
   const canvas = document.getElementById("pongCanvas");
   const ctx = canvas.getContext("2d");
@@ -25,6 +27,7 @@ function startSingleGame() {
     aiScore = 0;
   const winningScore = 5;
   let gameRunning = false;
+  let gamePaused = false;
   let countdown = 3;
   let playerMoveUp = false,
     playerMoveDown = false;
@@ -164,7 +167,8 @@ function startSingleGame() {
   function countdownAnimation() {
     if (countdown > 0) {
       setTimeout(() => {
-        countdown--;
+        if (gamePaused === false)
+          countdown--;
         draw();
         countdownAnimation();
       }, 1000);
@@ -172,6 +176,9 @@ function startSingleGame() {
       gameRunning = true;
     }
   }
+  document.addEventListener('keypress', (event) => {
+    if (event.key === "p") gamePaused = !gamePaused;
+  });
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "w") playerMoveUp = true;
@@ -184,21 +191,32 @@ function startSingleGame() {
   });
 
   function gameLoop() {
-    if (playerScore >= winningScore || aiScore >= winningScore) {
+    if (gamePaused === false) {
+      if (playerScore >= winningScore || aiScore >= winningScore) {
+        drawText(
+          "Game Over",
+          canvas.width / 2 - 100,
+          canvas.height / 2,
+          "white",
+          50
+        );
+        return;
+      }
+      moveBall();
+      moveAI();
+      movePlayer();
+      draw();
+      lastAiY = aiY;
+    }
+    else {
       drawText(
-        "Game Over",
-        canvas.width / 2 - 100,
+        "Game Paused",
+        canvas.width / 2 - 150,
         canvas.height / 2,
         "white",
         50
       );
-      return;
     }
-    moveBall();
-    moveAI();
-    movePlayer();
-    draw();
-    lastAiY = aiY;
     requestAnimationFrame(gameLoop);
   }
 
@@ -239,6 +257,7 @@ function startLocalGame(state_json) {
     aiScore = 0;
   const winningScore = 1;
   let gameRunning = false;
+  let gamePaused = false;
   let countdown = 3;
   let playerMoveUp = false,
     playerMoveDown = false,
@@ -380,7 +399,8 @@ function startLocalGame(state_json) {
   function countdownAnimation() {
     if (countdown > 0) {
       setTimeout(() => {
-        countdown--;
+        if (gamePaused === false)
+          countdown--;
         draw();
         countdownAnimation();
       }, 1000);
@@ -388,6 +408,10 @@ function startLocalGame(state_json) {
       gameRunning = true;
     }
   }
+
+  document.addEventListener('keypress', (event) => {
+    if (event.key === "p") gamePaused = !gamePaused;
+  });
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "w") playerMoveUp = true;
@@ -404,23 +428,34 @@ function startLocalGame(state_json) {
   });
 
   function gameLoop() {
-    if (playerScore >= winningScore || aiScore >= winningScore) {
+    if (gamePaused === false) {
+      if (playerScore >= winningScore || aiScore >= winningScore) {
+        drawText(
+          "Game Over",
+          canvas.width / 2 - 100,
+          canvas.height / 2,
+          "white",
+          50
+        );
+        runGame(state_json, playerScore, aiScore);
+
+        return;
+      }
+      moveBall();
+      moveAI();
+      movePlayer();
+      draw();
+      lastAiY = aiY;
+    }
+    else {
       drawText(
-        "Game Over",
-        canvas.width / 2 - 100,
+        "Game Paused",
+        canvas.width / 2 - 150,
         canvas.height / 2,
         "white",
         50
       );
-      runGame(state_json, playerScore, aiScore);
-
-      return;
     }
-    moveBall();
-    moveAI();
-    movePlayer();
-    draw();
-    lastAiY = aiY;
     requestAnimationFrame(gameLoop);
   }
 
@@ -430,43 +465,43 @@ function startLocalGame(state_json) {
 }
 
 function runGame(state_json, playerScore, aiScore) {
-    console.log("RUN GAME CALLED");
-    let player1;
-    let player2;
-    console.log(state_json);
-    let state_json_string = JSON.stringify(state_json);
-    console.log(state_json_string);
+  console.log("RUN GAME CALLED");
+  let player1;
+  let player2;
+  console.log(state_json);
+  let state_json_string = JSON.stringify(state_json);
+  console.log(state_json_string);
 
-    let jsonObject = JSON.parse(state_json_string);
+  let jsonObject = JSON.parse(state_json_string);
 
-    if (playerScore > aiScore) {
-      player1 = {
-        name: jsonObject.player1,
-        id: jsonObject.player1_id,
-        status: 'winner'
-      }
-      player2 = {
-        name: jsonObject.player2,
-        id: jsonObject.player2_id,
-        status: 'loser'
-      }
-    } else {
-      player1 = {
-        name: jsonObject.player1,
-        id: jsonObject.player1_id,
-        status: 'loser'
-      }
-      player2 = {
-        name: jsonObject.player2,
-        id: jsonObject.player2_id,
-        status: 'winner'
-      }
+  if (playerScore > aiScore) {
+    player1 = {
+      name: jsonObject.player1,
+      id: jsonObject.player1_id,
+      status: 'winner'
     }
-
-    close_local_game(player1, player2);
+    player2 = {
+      name: jsonObject.player2,
+      id: jsonObject.player2_id,
+      status: 'loser'
+    }
+  } else {
+    player1 = {
+      name: jsonObject.player1,
+      id: jsonObject.player1_id,
+      status: 'loser'
+    }
+    player2 = {
+      name: jsonObject.player2,
+      id: jsonObject.player2_id,
+      status: 'winner'
+    }
   }
 
-  // runGame();
+  close_local_game(player1, player2);
+}
+
+// runGame();
 
 async function close_local_game(player1, player2) {
   let url = "/close_local";
@@ -488,7 +523,7 @@ async function close_local_game(player1, player2) {
     return response.json()
   }).then((json) => {
     if (chatSocket)
-      chatSocket.socket.send(JSON.stringify({type: "update"}));
+      chatSocket.socket.send(JSON.stringify({ type: "update" }));
     load_next_step(json);
   });
 }
@@ -709,47 +744,47 @@ function startTournamentGame(state_json) {
 }
 
 function runTournamentGame(state_json, playerScore, aiScore) {
-    let player1;
-    let player2;
-    console.log(state_json);
-    let state_json_string = JSON.stringify(state_json);
+  let player1;
+  let player2;
+  console.log(state_json);
+  let state_json_string = JSON.stringify(state_json);
 
-    let jsonObject = JSON.parse(state_json_string);
+  let jsonObject = JSON.parse(state_json_string);
 
-    console.log('jsonObject contains: ' + jsonObject);
-    console.log('Game ID is: ' + jsonObject.game_id);
-    if (playerScore > aiScore) {
-      game = {
-        game_id: jsonObject.game_id,
-      }
-      player1 = {
-        name: jsonObject.player1,
-        id: jsonObject.player1_id,
-        status: 'winner'
-      }
-      player2 = {
-        name: jsonObject.player2,
-        id: jsonObject.player2_id,
-        status: 'loser'
-      }
-    } else {
-      game = {
-        game_id: jsonObject.game_id,
-      }
-      player1 = {
-        name: jsonObject.player1,
-        id: jsonObject.player1_id,
-        status: 'loser'
-      }
-      player2 = {
-        name: jsonObject.player2,
-        id: jsonObject.player2_id,
-        status: 'winner'
-      }
+  console.log('jsonObject contains: ' + jsonObject);
+  console.log('Game ID is: ' + jsonObject.game_id);
+  if (playerScore > aiScore) {
+    game = {
+      game_id: jsonObject.game_id,
     }
-
-    close_tournament_game(game, player1, player2);
+    player1 = {
+      name: jsonObject.player1,
+      id: jsonObject.player1_id,
+      status: 'winner'
+    }
+    player2 = {
+      name: jsonObject.player2,
+      id: jsonObject.player2_id,
+      status: 'loser'
+    }
+  } else {
+    game = {
+      game_id: jsonObject.game_id,
+    }
+    player1 = {
+      name: jsonObject.player1,
+      id: jsonObject.player1_id,
+      status: 'loser'
+    }
+    player2 = {
+      name: jsonObject.player2,
+      id: jsonObject.player2_id,
+      status: 'winner'
+    }
   }
+
+  close_tournament_game(game, player1, player2);
+}
 
 async function close_tournament_game(gameId, player1, player2) {
   let url = "/close_tournament_game";
@@ -774,7 +809,7 @@ async function close_tournament_game(gameId, player1, player2) {
     console.log('menu returned after game: ');
     console.log(json);
     if (chatSocket)
-      chatSocket.socket.send(JSON.stringify({type: "update"}));
+      chatSocket.socket.send(JSON.stringify({ type: "update" }));
     load_next_step(json);
   });
 }
