@@ -115,6 +115,12 @@ def modify_json_menu(menu_type, token):
                 'onclick': 'logout()'
     })
 
+    menu['headerItems'].append({
+                'id': 999,
+                'type': 'googletrans',
+                'text': f'{user.language}',
+    })
+
     menu['headerItems'][0]['content'].append({
                 'type': 'img',
                 'src': f'{user.avatarDirect}',

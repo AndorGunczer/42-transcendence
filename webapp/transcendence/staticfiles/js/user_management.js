@@ -124,19 +124,36 @@ async function submit_login_form(event) {
       else return response.json();
     })
     .then((json) => {
-      console.log(json.status);
+      console.log("LOGIN IS CALLED");
+      console.log(json);
+
       if (json.status === 'otp_sent') {
         // Show OTP popup
         document.getElementById("otpPopup").style.display = "block";
       } else {
         chatSocket = new ChatSocket();
         load_main();
+        onLoginSuccess();
       }
 
     })
     .catch((error) => handleError(error));
 }
 
+
+
+function onLoginSuccess() {
+
+  var oldTrans = document.getElementById("googletrans")
+  if (oldTrans)
+    oldTrans.remove();
+
+  var script = document.createElement("script");
+  script.id = "googletrans";
+  script.type = "text/javascript";
+  script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+  document.body.appendChild(script);
+}
 function validate_login_form() {
   const username = sanitizeInput(document.getElementById("username").value);
 

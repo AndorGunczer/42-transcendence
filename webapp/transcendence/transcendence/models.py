@@ -54,6 +54,7 @@ class Users2(AbstractBaseUser, PermissionsMixin):
     avatarDirect = models.CharField(max_length=200, null=True)
     allow_otp = models.BooleanField(default=False)
     is_online = models.BooleanField(default=False)
+    language = models.CharField(max_length=128, default="en")
 
     objects = CustomUserManager()
 

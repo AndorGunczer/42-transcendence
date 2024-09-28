@@ -294,9 +294,33 @@ function divLoader(parent, itemList) {
   });
 }
 
+var last_language = null;
+function deleteCookie(name) {
+  document.cookie = `${name}=; Max-Age=-99999999;`;
+}
+
+
 function headerLoad(json) {
   json.headerItems.forEach((item) => {
-    console.log(item.type);
+
+    if (item.type == "googletrans") {
+
+      const googtransValue = getCookie('googtrans');
+      if (googtransValue) {
+        console.log("EXISTING COOKIE");
+        deleteCookie('googtrans');
+        setCookie('googtrans', `/${last_language}/${item.text}`, 1);
+      }
+      else
+      {
+        console.log("DONT EXISTING COOKIE");
+        setCookie('googtrans', `/en/${item.text}`, 1);
+      }
+
+      console.log("BEFORE last_lang: " + last_language);
+      last_language = item.text;
+      console.log("AFTER last_lang: " + last_language);
+    }
     let parent = document.getElementsByClassName("header")[0];
     let element = document.createElement(item.type);
     if (item.type == "div" || item.type == "form")
