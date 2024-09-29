@@ -303,7 +303,6 @@ async function deleteUserStats(event) {
   const csrfToken = await getCsrfToken();
 
   let url = '/delete_user_stats';
-
   fetch(url, {
     method: 'POST',
     headers: {
@@ -339,6 +338,8 @@ async function deleteUserStats(event) {
 
         // div.appendChild(element);
       });
+	  if (chatSocket)
+		chatSocket.socket.send(JSON.stringify({ type: "update" }));
     })
     .catch(error => handleError(error));
 }
