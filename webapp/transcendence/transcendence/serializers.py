@@ -19,6 +19,7 @@ class LoginSerializer(BaseUserSerializer):
 class UserUpdateSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150)
     avatar = serializers.CharField(max_length=255)  # Assuming avatar is a URL, adjust if it's not
+    language = serializers.CharField(max_length=255)
 
 from transcendence.models import Players, Games, Users2
 

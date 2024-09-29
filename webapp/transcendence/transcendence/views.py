@@ -96,28 +96,31 @@ def modify_json_menu(menu_type, token):
 
     menu['headerItems'][0]['content'][1]['text'] = f'LOGGED IN AS {user}'
     menu['headerItems'][0]['content'][1]['identifier'] = 'user'
+    menu['headerItems'][0]['content'][1]['key'] = 'nothing'
     menu['headerItems'][0]['content'][2]['text'] = f'wins: {user.wins}'
     menu['headerItems'][0]['content'][3]['text'] = f'losses: {user.losses}'
 
     menu['headerItems'].append({
         'id': 2,
         'type': 'button',
-        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
         'text': 'SETTINGS',
         'onclick': 'settings()',
+        'key': "settings"
     })
 
     menu['headerItems'].append({
                 'id': 3,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'LOGOUT',
-                'onclick': 'logout()'
+                'onclick': 'logout()',
+                'key': 'logout'
     })
 
     menu['headerItems'].append({
                 'id': 999,
-                'type': 'googletrans',
+                'type': 'pongtrans',
                 'text': f'{user.language}',
     })
 
@@ -133,9 +136,10 @@ def modify_json_menu(menu_type, token):
         menu['menuItems'].append({
                 'id': 4,
                 'type': 'button',
-                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
+                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'MATCH HISTORY',
-                'onclick': 'loadHistory()'
+                'onclick': 'loadHistory()',
+                'key': 'match history'
             })
 
     # Add Friendlist
@@ -152,16 +156,18 @@ def modify_json_menu(menu_type, token):
                     {
                         'type': 'input',
                         'inputType': 'text',
-                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
+                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white translate',
                         'placeholder': 'add a friend...',
+                        'key': 'add a friend...',
                         'identifier': 'friend-name',
                         'name': 'friend',
                     },
                     {
                         'type': 'button',
-                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                         'text': 'ADD FRIEND',
                         'onclick': 'chatSocket.sendFriendRequest(event)',
+                        'key': 'add friend'
                     }
                 ]
             },
@@ -177,8 +183,9 @@ def modify_json_menu(menu_type, token):
                         'content': [
                             {
                                 'type': 'h3',
-                                'class': 'text-white',
-                                'text': 'Friend Requests'
+                                'class': 'text-white translate',
+                                'text': 'Friend Requests',
+                                'key': 'friend requests'
                             },
                         ]
                     },
@@ -196,8 +203,9 @@ def modify_json_menu(menu_type, token):
                         'content': [
                             {
                                 'type': 'h3',
-                                'class': 'text-white',
-                                'text': 'Friends'
+                                'class': 'text-white translate',
+                                'text': 'Friends',
+                                'key': 'friends'
                             },
                         ]
                     },
@@ -236,17 +244,19 @@ def modify_json_menu(menu_type, token):
                         'content': [
                             {
                                 'type': 'button',
-                                'class': 'rounded bg-secondary bg-gradient text-white',
+                                'class': 'rounded bg-secondary bg-gradient text-white translate',
                                 'onclick': f"chatSocket.acceptFriendRequest(this.id)",
                                 'identifier': f"{request.friend1.username if user.username == request.friend2.username else request.friend2.username}",
-                                'text': 'ACCEPT'
+                                'text': 'ACCEPT',
+                                'key': 'accept'
                             },
                             {
                                 'type': 'button',
-                                'class': 'rounded bg-secondary bg-gradient text-white',
+                                'class': 'rounded bg-secondary bg-gradient text-white translate',
                                 'onclick': f"chatSocket.declineFriendRequest(this.id)",
                                 'identifier': f"{request.friend1.username if user.username == request.friend2.username else request.friend2.username}",
-                                'text': 'DECLINE'
+                                'text': 'DECLINE',
+                                'key': 'decline'
                             }
                         ]
                     }
@@ -273,13 +283,11 @@ def modify_json_menu(menu_type, token):
                 'type': 'p',
                 'class': 'text-white m-3',
                 'text': friend_name,
-                'translate': 'no'  # Prevent translation
             },
             {
                 'type': 'p',
                 'class': 'text-white m-1 is_online',
                 'text': is_online,
-                'translate': 'no'  # Prevent translation if needed
             },
             {
                 'type': 'div',
@@ -287,11 +295,11 @@ def modify_json_menu(menu_type, token):
                 'content': [
                     {
                         'type': 'button',
-                        'class': 'rounded bg-secondary bg-gradient text-white',
+                        'class': 'rounded bg-secondary bg-gradient text-white translate',
                         'onclick': f"chat(this.id)",
                         'identifier': friend_name,
                         'text': 'CHAT',
-                        'translate': 'no'  # Prevent translation if needed
+                        'key': 'chat'
                     },
                 ]
             }
@@ -301,11 +309,11 @@ def modify_json_menu(menu_type, token):
         if menu_type == "tournament_create":
             content[2]['content'].append({
                 'type': 'button',
-                'class': 'rounded bg-secondary bg-gradient text-white',
+                'class': 'rounded bg-secondary bg-gradient text-white translate',
                 'onclick': f"validateAndAddToTournament(this.id)",
                 'identifier': friend_name,
                 'text': 'INVITE',
-                'translate': 'no'  # Prevent translation if needed
+                'key': 'invite'
             })
 
         friends_div.append({
@@ -375,8 +383,9 @@ def tournament_select_page_fill(menu, participants, tournament_name):
                     },
                     {
                         'type': 'td',
-                        'class': 'text-white',
-                        'text': 'Player'
+                        'class': 'text-white translate',
+                        'text': 'Player',
+                        'key': 'player'
                     },
                     {
                         'type': 'td',
@@ -577,18 +586,21 @@ def match_history_fill(menu, user):
                 'content': [
                     {
                         'type': 'td',
-                        'class': 'text-white',
-                        'text': 'Date'
+                        'class': 'text-white translate',
+                        'text': 'Date',
+                        'key': 'date'
                     },
                     {
                         'type': 'td',
-                        'class': 'text-white',
-                        'text': 'Opponent'
+                        'class': 'text-white translate',
+                        'text': 'Opponent',
+                        'key': 'opponent'
                     },
                     {
                         'type': 'td',
-                        'class': 'text-white',
-                        'text': f'Winner'
+                        'class': 'text-white translate',
+                        'text': 'Winner',
+                        'key': 'winner'
                     }
                 ]
             }
@@ -1723,7 +1735,9 @@ def save_changes(request, menu_type='main'):
         # Extract validated data
         username = serializer.validated_data.get('username')
         avatar = serializer.validated_data.get('avatar')
-
+        language = serializer.validated_data.get('language')
+        print("----------LANGUAGE-----------")
+        print(language)
         # Update user information
         try:
             user.username = username
@@ -1732,7 +1746,7 @@ def save_changes(request, menu_type='main'):
             pre = "https://localhost/static/images/" #ENV
             avatar_url = pre + avatar
             user.avatarDirect = avatar_url
-
+            user.language = language
             user.save()
 
             print("DATABASE MODIFICATIONS HAVE BEEN SAVED")
@@ -1782,18 +1796,21 @@ def fill_profile_with_user_data(menu, user):
                 'content': [
                     {
                         'type': 'td',
-                        'class': 'text-white',
-                        'text': 'Date'
+                        'class': 'text-white translate',
+                        'text': 'Date',
+                        'key': 'date'
                     },
                     {
                         'type': 'td',
-                        'class': 'text-white',
-                        'text': 'Opponent'
+                        'class': 'text-white translate',
+                        'text': 'Opponent',
+                        'key': 'opponent'
                     },
                     {
                         'type': 'td',
-                        'class': 'text-white',
-                        'text': f'Winner'
+                        'class': 'text-white translate',
+                        'text': f'Winner',
+                        'key': 'winner'
                     }
                 ]
             }
@@ -1860,18 +1877,20 @@ def profile(request, menu_type='profile'):
             if friendship.blocker == user_of_query.username:
                 menu['menuItems'][0]['content'].append({
                     'type': 'button',
-                    'class': 'col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                    'class': 'col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                     'identifier': user_of_profile.username,
                     'onclick': 'unblock(event)',
                     'text': 'UNBLOCK',
+                    'key': 'unblock'
                 },)
         else:
             menu['menuItems'][0]['content'].append({
                 'type': 'button',
-                'class': 'col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'identifier': user_of_profile.username,
                 'onclick': 'block(event)',
                 'text': 'BLOCK',
+                'key': 'block'
             },)
     if menu is not None:
         return JsonResponse(menu)

@@ -5,10 +5,11 @@
 
 html {
     height: 100vh;
-  }
-  body {
+}
+
+body {
     min-height: 100vh;
-  }
+}
 
 body {
     background-color: #180161 !important;
@@ -23,7 +24,7 @@ ul {
 }
 
 /* div {
-    background-color: #180161 !important;
+    background-color: #180161  !important;
 } */
 
 /* div {
@@ -88,6 +89,7 @@ img {
     /* Adjust the logo's size with width and padding as needed */
     padding: 10px;
     padding-bottom: 100px;
+    color: ghostwhite;
 }
 
 .menu-button {

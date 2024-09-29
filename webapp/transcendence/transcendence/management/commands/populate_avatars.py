@@ -16,8 +16,8 @@ class Command(BaseCommand):
         # Create users with hashed passwords
         users = [
             {"username": "test1", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/anolis_avatar.jpg", "twofa": "True", "language": "en"},
-            {"username": "test2", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/cat_avatar.jpg", "twofa": "False", "language": "es"},
-            {"username": "test3", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/dog_avatar.jpg", "twofa": "False", "language": "de"},
+            {"username": "test2", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/cat_avatar.jpg", "twofa": "False", "language": "de"},
+            {"username": "test3", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/dog_avatar.jpg", "twofa": "False", "language": "hu"},
             {"username": "test4", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/birb.jpeg", "twofa": "true", "language": "de"},
         ]
 
