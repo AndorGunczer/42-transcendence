@@ -1621,10 +1621,10 @@ def upload_file(request):
 
 def load_settings(request, menu_type='settings'):
     token = get_token_from_header(request)
-    user = get_user_from_token(token)
     if (token == None) or (not validate_token(token)):
-        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+        menu = copy.deepcopy(MENU_DATA.get("main"))
     else:
+        user = get_user_from_token(token)
         menu = modify_json_menu(menu_type, token)
         avatars = Avatar.objects.all()
         print(avatars)
@@ -1657,15 +1657,14 @@ def load_settings(request, menu_type='settings'):
 
 def delete_user_stats(request, menu_type='main'):
     token = get_token_from_header(request)
-    user = get_user_from_token(token)
-
-    user.wins = 0
-    user.losses = 0
-    user.save()
 
     if (token == None) or (not validate_token(token)):
-        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+        menu = copy.deepcopy(MENU_DATA.get("main"))
     else:
+        user = get_user_from_token(token)
+        user.wins = 0
+        user.losses = 0
+        user.save()
         menu = modify_json_menu(menu_type, token)
 
     if menu is not None:
@@ -1708,11 +1707,17 @@ def delete_user_stats(request, menu_type='main'):
 def save_changes(request, menu_type='main'):
     # Get token and user
     token = get_token_from_header(request)
+
+    #if the user is not authenticated go to the main menu
+    if token is None or not validate_token(token):
+        menu = copy.deepcopy(MENU_DATA.get("main"))
+        return JsonResponse(menu)
+
     user = get_user_from_token(token)
 
     # Use the serializer for validating incoming data
     serializer = UserUpdateSerializer(data=request.data)
-    
+
     if serializer.is_valid():
         # Extract validated data
         username = serializer.validated_data.get('username')
@@ -1734,7 +1739,7 @@ def save_changes(request, menu_type='main'):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
         # Check token validation
         if token is None or not validate_token(token):
             menu = copy.deepcopy(MENU_DATA.get(menu_type))
@@ -1745,7 +1750,7 @@ def save_changes(request, menu_type='main'):
             return Response(menu, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Menu type not found'}, status=status.HTTP_404_NOT_FOUND)
-    
+
     # If validation fails
     else:
         return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
