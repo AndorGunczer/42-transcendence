@@ -85,6 +85,11 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
 
     async def set_user_offline(self, user):
         user.is_online = False
+        #edit scores if updated in the database
+        user_db = await sync_to_async(Users2.objects.get)(username=user.username)
+        if (user_db.wins > user.wins or user_db.losses > user.losses):
+            user.wins = user_db.wins
+            user.losses = user_db.losses
         await database_sync_to_async(user.save)()
 
         # Notify other connected users
