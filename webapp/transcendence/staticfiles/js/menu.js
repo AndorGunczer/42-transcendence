@@ -412,6 +412,7 @@ async function load_main(shouldPush = true) {
 }
 
 window.onload = function () {
+
   let url = "/indexPost";
 
   console.log("ONLOAD FUNCTION CALLED");

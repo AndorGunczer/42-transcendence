@@ -132,7 +132,16 @@ def modify_json_menu(menu_type, token):
     })
 
     if token and menu['menuTitle'] == 'Main Menu Buttons':
-        del menu['menuItems'][3]
+        del menu['menuItems'][2]
+
+        menu['menuItems'].append({
+                'id': 3,
+                'type': 'button',
+                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white translate',
+                'text': 'TOURNAMENT',
+                'onclick': 'load_tournament_main()',
+                'key': 'tournament'
+        })
 
         menu['menuItems'].append({
                 'id': 4,
@@ -1614,7 +1623,7 @@ def upload_file(request):
         if not file_name or not file_data:
             return JsonResponse({'error': 'Invalid file data'}, status=400)
 
-        try: 
+        try:
 
             # Decode the base64 file data
             file_content = base64.b64decode(file_data)

@@ -83,14 +83,6 @@ MENU_DATA = {
                 'key': 'play'
             },
             {
-                'id': 3,
-                'type': 'button',
-                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white translate',
-                'text': 'TOURNAMENT',
-                'onclick': 'load_tournament_main()',
-                'key': 'tournament'
-            },
-            {
                 'id': 4,
                 'type': 'div',
                 'identifier': '',

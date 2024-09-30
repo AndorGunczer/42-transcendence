@@ -294,6 +294,7 @@ async function logout(event) {
             load_main(false);
             for(let i = 0; i < 100; i++)
                 history.pushState(null, null, window.location.href);
+
         })
         .catch((error) => handleError(error));
 }
@@ -339,7 +340,8 @@ async function uploadAvatar(event) {
     .then(response => response.json())
     .then(data => {
             if (data['error'] == "Avatar with this name exists.")
-            {console.error('Error:', "Avatar with this name exists.");
+            {
+                console.error('Error:', "Avatar with this name exists.");
                 handleError("Avatar with this name exists.");}
             else
                 console.log('Success:', data);
@@ -413,12 +415,6 @@ async function deleteUserStats(event) {
         throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
       } else return response.json();
     })
-        .then(async (response) => {
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-            } else return response.json();
-        })
         .then(json => {
             deleteHeader();
             deleteMain();
@@ -441,6 +437,9 @@ async function deleteUserStats(event) {
       });
 	  if (chatSocket)
 		chatSocket.socket.send(JSON.stringify({ type: "update" }));
+
+      var lang = get_Language_From_Cookie();
+      update_Language_Content(lang);
     })
     .catch(error => handleError(error));
 }
