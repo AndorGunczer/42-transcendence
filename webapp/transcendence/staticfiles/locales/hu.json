@@ -1,0 +1,59 @@
+{
+	"play": "JÁTSZÁS",
+	"login": "BEJELENTKEZÉS",
+	"register": "REGISZTRÁCIÓ",
+	"tournament": "TORNA",
+	"username ": "felhasználónév ",
+	"username": "felhasználónév",
+	"password ": "jelszó ",
+	"password": "jelszó",
+
+	"email ": "E-mail",
+	"avatar ": "Avatar",
+	"uploadAvatar ": "Avatar feltöltése",
+	"upload": "Feltöltés",
+	"Two-Factor Authentication ": "Kétfaktoros hitelesítés",
+
+	"logout": "KIJELENTKEZÉS",
+	"settings": "BEÁLLÍTÁSOK",
+	"match history": "MÉRKŐZÉS TÖRTÉNETE",
+
+	"add friend": "BARÁT HOZZÁADÁSA",
+	"friend requests": "Baráti kérelmek",
+	"friends": "barátok",
+	"accept": "ELFOGADÁS",
+	"decline": "ELUTASÍTÁS",
+	"chat": "CSEVEGÉS",
+	"invite": "MEGHÍVÁS",
+	"send": "ELKÜLD",
+	"player": "játékos",
+	"date": "Dátum",
+	"opponent": "Ellenfél",
+	"winner": "Győztes",
+	"unblock": "FELOLDÁS",
+	"block": "BLOKKOLÁS",
+
+	"submit": "ELKÜLDÉS",
+
+	"back": "VISSZA",
+
+	"wins": "győzelmek",
+	"losses": "vereségek",
+	"loggedGuest": "Bejelentkezve mint",
+
+	"delete user statistics": "JÁTÉKOS STATISZTIKA TÖRLÉSE",
+	"save": "MENTÉS",
+	"select new avatar": "Új avatar kiválasztása",
+	"select language": "Válassza a Nyelv lehetőséget",
+	"singleplayer": "EGYJÁTÉKOS",
+	"local": "HELYI JÁTÉK",
+
+	"create tournament": "TORNA LÉTREHOZÁSA",
+	"select": "KIVÁLASZTÁS",
+
+	"tournament name": "Torna neve",
+	"playername": "Játékos neve",
+	"addPlayer": "Játékos hozzáadása",
+	"add a friend...": "adj hozzá egy barátot..."
+
+}

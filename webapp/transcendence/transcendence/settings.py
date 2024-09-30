@@ -22,6 +22,16 @@ from django.urls import path
 
 
 import os
+from dotenv import load_dotenv
+
+# Importing .ENV
+
+load_dotenv()
+
+# Access environment variables
+DJANGO_SECRET = os.getenv('DJANGO_SECRET')
+DATABASE_PW = os.getenv('DATABASE_PW')
+
 SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -32,7 +42,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7=+@a=(_uc8xlcv%alpcb@6&oc655ca*l)zepqx2i0arrs!zh4'
+SECRET_KEY = DJANGO_SECRET
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -137,7 +147,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'transcendence',
         'USER': 'project',
-        'PASSWORD': '12345',
+        'PASSWORD': DATABASE_PW,
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -217,13 +227,6 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=30),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'testercoder09@gmail.com'
-EMAIL_HOST_PASSWORD = 'testerCoder123'
 
 # LOGGING = {
 #     'version': 1,

@@ -1,0 +1,65 @@
+{
+	"play": "PLAY",
+	"login": "LOGIN",
+	"register": "REGISTER",
+	"tournament": "TOURNAMENT",
+
+	"username ": "username ",
+	"username": "username",
+	"password ": "password ",
+	"password": "password",
+	"email ": "Email ",
+	"avatar ": "Avatar ",
+	"uploadAvatar ": "Upload Avatar ",
+	"upload": "Upload",
+	"Two-Factor Authentication ": "Two-Factor Authentication",
+
+	"logout": "LOGOUT",
+	"settings": "SETTINGS",
+	"match history": "MATCH HISTORY",
+
+	"add friend": "ADD FRIEND",
+	"friend requests": "Friend Requests",
+	"friends": "friends",
+	"accept": "ACCEPT",
+	"decline": "DECLINE",
+	"chat": "CHAT",
+	"invite": "INVITE",
+	"send": "SEND",
+	"player": "player",
+	"date": "Date",
+	"opponent": "Opponent",
+	"winner": "Winner",
+	"unblock": "UNBLOCK",
+	"block": "BLOCK",
+
+
+
+	"submit": "SUBMIT",
+
+	"back": "BACK",
+
+	"wins": "wins",
+	"losses": "losses",
+	"loggedGuest": "logged in as GUEST",
+
+
+	"delete user statistics": "DELETE USER STATISTICS",
+	"save": "SAVE",
+	"select new avatar": "Select New Avatar",
+	"select language": "Select Language",
+	"singleplayer": "SINGLEPLAYER",
+	"local": "LOCAL",
+
+	"create tournament": "CREATE TOURNAMENT",
+	"select": "SELECT",
+
+
+	"tournament name": "Tournament Name",
+	"playername": "Player Name",
+	"addPlayer": "Add Player",
+	"add a friend...": "add a friend..."
+
+}
+
+

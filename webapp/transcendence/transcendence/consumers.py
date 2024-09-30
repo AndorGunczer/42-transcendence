@@ -228,43 +228,60 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
                 }
             )
 
-
-
     async def handle_chat_message(self, data):
+        from .serializers import MessageSerializer
         print("handle_chat_message is called")
+
         sender = await sync_to_async(Users2.objects.get)(username=data.get("sender"))
         receiver = await sync_to_async(Users2.objects.get)(username=data.get("receiver"))
         friendship_id = data.get("friendship_id")
         friendship = await sync_to_async(Friends.objects.get)(id=friendship_id)
-        message = data.get("message")
+        message_text = data.get("message")
 
         if friendship.is_blocked:
             return None
 
-        new_message = await sync_to_async(Messages)(friendship=friendship, sender=sender.username, receiver=receiver.username, message=message)
-        await sync_to_async(new_message.save)()
+        # Prepare the message data to be serialized
+        message_data = {
+            'friendship_id': f'{friendship.id}',
+            'sender': sender.username,
+            'receiver': receiver.username,
+            'message': message_text
+        }
+
+        # Serialize the data
+        serializer = MessageSerializer(data=message_data)
+
+        if serializer.is_valid():
+            # Save the serialized data asynchronously
+            await sync_to_async(serializer.save)()
+        else:
+            print(serializer.errors)
+            return None
+
+        # Send the message to the sender and receiver groups
+        await self.channel_layer.group_send(
+            f"user_{sender.id}",
+            {
+                'type': 'send_chat_message',
+                'sender': sender.username,
+                'receiver': receiver.username,
+                'friendship_id': friendship_id,
+                'message': message_text,
+            }
+        )
 
         await self.channel_layer.group_send(
-                f"user_{sender.id}",
-                {
-                    'type': 'send_chat_message',
-                    'sender': sender.username,
-                    'receiver': receiver.username,
-                    'friendship_id': friendship_id,
-                    'message': message,
-                }
-            )
+            f"user_{receiver.id}",
+            {
+                'type': 'send_chat_message',
+                'sender': sender.username,
+                'receiver': receiver.username,
+                'friendship_id': friendship_id,
+                'message': message_text,
+            }
+        )
 
-        await self.channel_layer.group_send(
-                f"user_{receiver.id}",
-                {
-                    'type': 'send_chat_message',
-                    'sender': sender.username,
-                    'receiver': receiver.username,
-                    'friendship_id': friendship_id,
-                    'message': message,
-                }
-            )
 
 
 
@@ -368,7 +385,19 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
                 f"user_{declined.id}",
                 {
                     'type': 'send_friend_declination_notification',
+                    'decliner': decliner.username,
+                    'declined': declined.username,
                     'message': f"Your friend request to {decliner} has been declined.",
+                }
+            )
+
+        await self.channel_layer.group_send(
+                f"user_{decliner.id}",
+                {
+                    'type': 'send_friend_declination_notification',
+                    'decliner': decliner.username,
+                    'declined': declined.username,
+                    'message': f"You declined the friend request to {decliner}.",
                 }
             )
 
@@ -490,6 +519,8 @@ class CommunicationConsumer(AsyncWebsocketConsumer):
     async def send_friend_declination_notification(self, event):
         await self.send(text_data=json.dumps({
             'type': 'friend_declination_notification',
+            'decliner': event['decliner'],
+            'declined': event['declined'],
             'message': event['message'],
         }))
 

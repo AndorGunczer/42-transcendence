@@ -15,10 +15,10 @@ class Command(BaseCommand):
 
         # Create users with hashed passwords
         users = [
-            {"username": "test1", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/anolis_avatar.jpg", "twofa": "True"},
-            {"username": "test2", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/cat_avatar.jpg", "twofa": "False"},
-            {"username": "test3", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/dog_avatar.jpg", "twofa": "False"},
-            {"username": "test4", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/birb.jpeg", "twofa": "true"},
+            {"username": "test1", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/anolis_avatar.jpg", "twofa": "True", "language": "en"},
+            {"username": "test2", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/cat_avatar.jpg", "twofa": "False", "language": "de"},
+            {"username": "test3", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/dog_avatar.jpg", "twofa": "False", "language": "hu"},
+            {"username": "test4", "password": "12345", "email": "andor.gunczer@gmail.com", "avatarDirect": "https://localhost/static/images/birb.jpeg", "twofa": "true", "language": "de"},
         ]
 
         users_db = []
@@ -26,6 +26,7 @@ class Command(BaseCommand):
         for user_data in users:
             user, created = Users2.objects.get_or_create(username=user_data["username"])
             if created:
+                user.language = user_data["language"]
                 user.set_password(user_data["password"])
                 user.email = user_data["email"]
                 user.avatarDirect = user_data["avatarDirect"]
@@ -40,7 +41,7 @@ class Command(BaseCommand):
             other_users = Users2.objects.all().exclude(Q(username=user.username) | Q(username="test4"))
 
             for other_user in other_users:
-                try: 
+                try:
                     friendship = Friends.objects.get(
                         Q(friend1=other_user, friend2=user) |
                         Q(friend1=user, friend2=other_user)

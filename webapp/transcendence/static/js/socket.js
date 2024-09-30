@@ -100,6 +100,7 @@ function new_friend(friend) {
 
     let p = document.createElement('p');
     p.setAttribute('class', 'text-white');
+    p.setAttribute('translate', 'no');
     p.innerHTML = `${friend}`;
     newNode.appendChild(p);
 
@@ -110,6 +111,7 @@ function new_friend(friend) {
     let accept = document.createElement('button');
     accept.setAttribute('onclick', `chat(this.id)`);
     accept.setAttribute('id', `${friend}`);
+
     accept.innerHTML = 'CHAT';
     buttonDiv.appendChild(accept);
 

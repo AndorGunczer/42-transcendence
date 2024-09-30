@@ -6,12 +6,17 @@ let gameId;
 let tournament_name = "";
 let player_list = [];
 
-function sanitizeInput(input) {
-  return input.replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+// function sanitizeInput(input) {
+//   return input.replace(/&/g, "&amp;")
+//     .replace(/</g, "&lt;")
+//     .replace(/>/g, "&gt;")
+//     .replace(/"/g, "&quot;")
+//     .replace(/'/g, "&#039;");
+// }
+
+function sanitizeInput(inputText) {
+  // return inputText.replace(/<\/?[^>]+(>|$)/g, "");
+  return inputText;
 }
 
 function changeSelectFunction(callback, dependencies) {
@@ -251,20 +256,15 @@ function deleteMain() {
 
 function elementCustomize(element, item) {
   if (item.class && item.class != "") element.setAttribute("class", item.class);
-  if (item.identifier && item.identifier != "")
-    element.setAttribute("id", item.identifier);
+  if (item.identifier && item.identifier != "") element.setAttribute("id", item.identifier);
   if (item.text && item.text != "") element.innerHTML = item.text;
   if (item.for && item.for != "") element.setAttribute("for", item.for);
-  if (item.inputType && item.inputType != "")
-    element.setAttribute("type", item.inputType);
-  if (item.action && item.action != "")
-    element.setAttribute("action", item.action);
-  if (item.onclick && item.onclick != "")
-    element.setAttribute("onclick", item.onclick);
+  if (item.inputType && item.inputType != "") element.setAttribute("type", item.inputType);
+  if (item.action && item.action != "") element.setAttribute("action", item.action);
+  if (item.onclick && item.onclick != "") element.setAttribute("onclick", item.onclick);
   if (item.width) element.setAttribute("width", item.width);
   if (item.height) element.setAttribute("height", item.height);
-  if (item.method && item.method != "")
-    element.setAttribute("method", item.method);
+  if (item.method && item.method != "") element.setAttribute("method", item.method);
   if (item.name && item.name != "") element.setAttribute("name", item.name);
   if (item.form && item.form != "") element.setAttribute("form", item.form);
   if (item.src && item.src != "") element.setAttribute("src", item.src);
@@ -272,8 +272,7 @@ function elementCustomize(element, item) {
   if (item.onsubmit && item.onsubmit != "") element.setAttribute("onsubmit", item.onsubmit);
   if (item.selected && item.selected != "") element.setAttribute("selected", item.selected);
   if (item.placeholder && item.placeholder != "") element.setAttribute("placeholder", item.placeholder)
-  // if ()
-  // if (item.text && item.text != "") element.textContent = item.text;
+  if (item.key != "") element.setAttribute("data-key", item.key);
 }
 
 function divLoader(parent, itemList) {
@@ -292,9 +291,15 @@ function divLoader(parent, itemList) {
   });
 }
 
+
+
+var last_language = null;
 function headerLoad(json) {
   json.headerItems.forEach((item) => {
-    console.log(item.type);
+
+    if (item.type == "pongtrans")
+      setCookie('pongtrans', `${item.text}`, 1);
+
     let parent = document.getElementsByClassName("header")[0];
     let element = document.createElement(item.type);
     if (item.type == "div" || item.type == "form")
@@ -369,10 +374,13 @@ function LOAD_DATA(json, shouldPush, state_json = null) {
         startOnlineGame();
       } break;
   }
+
+  var lang = get_Language_From_Cookie();
+  update_Language_Content(lang);
 }
 
 
-async function load_main() {
+async function load_main(shouldPush = true) {
   let url = "/indexPost";
 
   const csrfToken = await getCsrfToken();
@@ -396,7 +404,7 @@ async function load_main() {
       else return response.json();
     })
     .then((json) => {
-      LOAD_DATA(json, true);
+      LOAD_DATA(json, shouldPush);
     })
     .catch((error) => {
       handleError(error);
@@ -405,6 +413,7 @@ async function load_main() {
 
 window.onload = function () {
   let url = "/indexPost";
+
   console.log("ONLOAD FUNCTION CALLED");
   console.log(url);
   fetch(url)
@@ -433,7 +442,7 @@ window.onload = function () {
         elementCustomize(element, item);
         parent.appendChild(element);
       });
-
+      loadTranslations();
       // function to replace top of the History stack
     })
     .catch((error) => {
