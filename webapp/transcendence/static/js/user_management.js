@@ -227,7 +227,11 @@ async function uploadAvatar(event) {
   })
     .then(response => response.json())
     .then(data => {
-      console.log('Success:', data);
+        if (data['error'] == "Avatar with this name exists.")
+        {console.error('Error:', "Avatar with this name exists.");
+            handleError("Avatar with this name exists.");}
+        else
+            console.log('Success:', data);
     })
     .catch(error => {
       console.error('Error:', error);
