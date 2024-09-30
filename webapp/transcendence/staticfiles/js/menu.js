@@ -6,12 +6,17 @@ let gameId;
 let tournament_name = "";
 let player_list = [];
 
-function sanitizeInput(input) {
-  return input.replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+// function sanitizeInput(input) {
+//   return input.replace(/&/g, "&amp;")
+//     .replace(/</g, "&lt;")
+//     .replace(/>/g, "&gt;")
+//     .replace(/"/g, "&quot;")
+//     .replace(/'/g, "&#039;");
+// }
+
+function sanitizeInput(inputText) {
+  // return inputText.replace(/<\/?[^>]+(>|$)/g, "");
+  return inputText;
 }
 
 function changeSelectFunction(callback, dependencies) {

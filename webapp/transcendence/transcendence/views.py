@@ -1333,6 +1333,7 @@ def registration_check(request):
                 losses=0,
                 avatarDirect="https://localhost/static/images/" + data['avatar'], #ENV
                 allow_otp=data['twofa'],
+                language="en",
             )
             new_user.set_password(data['password'])
             new_user.save()
@@ -1447,7 +1448,6 @@ from rest_framework import status
 
 
 @api_view(['POST'])
-@csrf_exempt  # If needed, you can remove this if you're not using it for API
 def login_check(request):
     # Use the LoginSerializer to validate the incoming data
     serializer = LoginSerializer(data=request.data)
@@ -1526,7 +1526,6 @@ def login_check(request):
 
 # Load OTP View if Two-Factor is enabled for user.
 
-@csrf_exempt
 def verify_otp_view(request):
     if request.method == "POST":
         try:
@@ -1601,7 +1600,6 @@ import json
 
 # Upload File to server in the registration form
 
-@csrf_exempt
 def upload_file(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
@@ -1612,28 +1610,35 @@ def upload_file(request):
         if not file_name or not file_data:
             return JsonResponse({'error': 'Invalid file data'}, status=400)
 
-        # Decode the base64 file data
-        file_content = base64.b64decode(file_data)
+        try: 
 
-        # Construct the file path
-        static_images_dir = 'staticfiles/images' #ENV
-        file_path = f'{static_images_dir}/{file_name}'
+            # Decode the base64 file data
+            file_content = base64.b64decode(file_data)
 
-        # Ensure the directory exists
-        os.makedirs(static_images_dir, exist_ok=True)
+            # Construct the file path
+            static_images_dir = 'staticfiles/images' #ENV
+            file_path = f'{static_images_dir}/{file_name}'
 
-        # Write the file
-        with open(file_path, 'wb') as f:
-            f.write(file_content)
+            # Ensure the directory exists
+            os.makedirs(static_images_dir, exist_ok=True)
 
-        Avatar.objects.create(
-                    name=file_name,
-                    path=file_path
-                )
+            Avatar.objects.create(
+                name=file_name,
+                path=file_path
+            )
 
-        return JsonResponse({'message': 'File uploaded successfully', 'file_path': str(file_path)})
+            # Write the file
+            with open(file_path, 'wb') as f:
+                f.write(file_content)
 
-    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+            return JsonResponse({'message': 'File uploaded successfully', 'file_path': str(file_path)})
+        except Exception as e:
+            return JsonResponse({'error': 'Avatar already exists'}, status=400)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=404)
+
+
 
 # Load User Settings
 

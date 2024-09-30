@@ -324,22 +324,29 @@ async function uploadAvatar(event) {
     fetch(url, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken,
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
         },
         body: JSON.stringify({
-            fileName: file.name,
-            fileType: file.type,
-            fileData: base64File
+          fileName: file.name,
+          fileType: file.type,
+          fileData: base64File
         }),
         credentials: "include"
-    })
-        .then(response => response.json())
+      })
+        .then((response) => {
+          console.log(response);
+          if (response.status == 400)
+            greenNotification("Avatar already uploaded");
+          if (!response.status == 404)
+            handleError("404 Error");
+          return response.json();
+        })
         .then(data => {
-            console.log('Success:', data);
+          console.log('Success:', data);
         })
         .catch(error => {
-            console.error('Error:', error);
+          console.error('Error:', error);
         });
 }
 
