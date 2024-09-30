@@ -292,7 +292,7 @@ async function logout(event) {
             chatSocket.closeWebSocket();
             chatSocket = null;
             load_main(false);
-            for(let i = 0; i < 100; i++)
+            for (let i = 0; i < 100; i++)
                 history.pushState(null, null, window.location.href);
         })
         .catch((error) => handleError(error));
@@ -308,45 +308,46 @@ async function getCsrfToken() {
 }
 
 async function uploadAvatar(event) {
-  event.preventDefault();
-  const csrfToken = await getCsrfToken();
+    event.preventDefault();
+    const csrfToken = await getCsrfToken();
 
-  const fileInput = document.getElementById('fileUpload');
-  const file = fileInput.files[0];
+    const fileInput = document.getElementById('fileUpload');
+    const file = fileInput.files[0];
 
-  if (!file) {
-    handleError("Please Select a File to Upload");
-    return;
-  }
+    if (!file) {
+        handleError("Please Select a File to Upload");
+        return;
+    }
 
-  const base64File = await convertToBase64(file);
+    const base64File = await convertToBase64(file);
 
-  let url = '/upload_file';
+    let url = '/upload_file';
 
-  fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": csrfToken,
-    },
-    body: JSON.stringify({
-      fileName: file.name,
-      fileType: file.type,
-      fileData: base64File
-    }),
-    credentials: "include"
-  })
-    .then(response => response.json())
-    .then(data => {
-            if (data['error'] == "Avatar with this name exists.")
-            {console.error('Error:', "Avatar with this name exists.");
-                handleError("Avatar with this name exists.");}
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken,
+        },
+        body: JSON.stringify({
+            fileName: file.name,
+            fileType: file.type,
+            fileData: base64File
+        }),
+        credentials: "include"
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data['error'] == "Avatar with this name exists.") {
+                console.error('Error:', "Avatar with this name exists.");
+                handleError("Avatar with this name exists.");
+            }
             else
                 console.log('Success:', data);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 
@@ -394,24 +395,18 @@ async function settings() {
 }
 
 async function deleteUserStats(event) {
-  event.preventDefault();
+    event.preventDefault();
 
-  const csrfToken = await getCsrfToken();
+    const csrfToken = await getCsrfToken();
 
-  let url = '/delete_user_stats';
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      "Content-Type": "application/json",
-      "X-CSRFToken": csrfToken,
-    },
-    credentials: 'include'
-  })
-    .then(async (response) => {
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
-      } else return response.json();
+    let url = '/delete_user_stats';
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken,
+        },
+        credentials: 'include'
     })
         .then(async (response) => {
             if (!response.ok) {
@@ -437,12 +432,15 @@ async function deleteUserStats(event) {
 
                 elementCustomize(element, item);
                 parent.appendChild(element);
-        // div.appendChild(element);
-      });
-	  if (chatSocket)
-		chatSocket.socket.send(JSON.stringify({ type: "update" }));
-    })
-    .catch(error => handleError(error));
+                // div.appendChild(element);
+            });
+            if (chatSocket)
+                chatSocket.socket.send(JSON.stringify({ type: "update" }));
+        })
+        .catch(error => {
+            console.log(error);
+            handleError(error);
+        });
 }
 
 function applyMatchInvitation(event) {
