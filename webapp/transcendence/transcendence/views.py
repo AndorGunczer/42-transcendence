@@ -94,11 +94,12 @@ def modify_json_menu(menu_type, token):
 
     print(menu['headerItems'][0]['content'][1]['text'] )
 
-    menu['headerItems'][0]['content'][1]['text'] = f'LOGGED IN AS {user}'
-    menu['headerItems'][0]['content'][1]['identifier'] = 'user'
-    menu['headerItems'][0]['content'][1]['key'] = 'nothing'
-    menu['headerItems'][0]['content'][2]['text'] = f'wins: {user.wins}'
-    menu['headerItems'][0]['content'][3]['text'] = f'losses: {user.losses}'
+    menu['headerItems'][0]['content'][1]['text'] = f'LOGGED IN AS'
+    menu['headerItems'][0]['content'][2]['text'] = f'{user}'
+    menu['headerItems'][0]['content'][2]['identifier'] = 'user'
+    menu['headerItems'][0]['content'][2]['key'] = 'nothing'
+    menu['headerItems'][0]['content'][4]['text'] = f'{user.wins}'
+    menu['headerItems'][0]['content'][6]['text'] = f'{user.losses}'
 
     menu['headerItems'].append({
         'id': 2,

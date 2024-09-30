@@ -375,7 +375,7 @@ function LOAD_DATA(json, shouldPush, state_json = null) {
 }
 
 
-async function load_main() {
+async function load_main(shouldPush = true) {
   let url = "/indexPost";
 
   const csrfToken = await getCsrfToken();
@@ -399,7 +399,7 @@ async function load_main() {
       else return response.json();
     })
     .then((json) => {
-      LOAD_DATA(json, true);
+      LOAD_DATA(json, shouldPush);
     })
     .catch((error) => {
       handleError(error);

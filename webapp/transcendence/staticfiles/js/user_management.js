@@ -263,7 +263,7 @@ async function verify_otp(event) {
         })
         .then((json) => {
             chatSocket = new ChatSocket();
-            load_main()
+            load_main();
         })
         .catch((error) => handleError(error));
 }
@@ -291,7 +291,9 @@ async function logout(event) {
             console.log("Token Cookies Deleted Successfully.");
             chatSocket.closeWebSocket();
             chatSocket = null;
-            load_main();
+            load_main(false);
+            for(let i = 0; i < 100; i++)
+                history.pushState(null, null, window.location.href);
         })
         .catch((error) => handleError(error));
 }
@@ -375,7 +377,13 @@ async function settings() {
             } else return response.json();
         })
         .then(json => {
-            LOAD_DATA(json)
+            LOAD_DATA(json, true);
+            var languageSelect = document.getElementById("language");
+            if (languageSelect)
+                languageSelect.value = get_Language_From_Cookie();
+            var username = document.getElementById("username");
+            if (username)
+                username.value = (document.getElementById("user").innerHTML).split(" ").pop();
         })
         .catch(error => handleError(error));
 }
