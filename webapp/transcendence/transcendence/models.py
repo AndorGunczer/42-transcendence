@@ -44,7 +44,7 @@ class CustomUserManager(BaseUserManager):
 
 class Users2(AbstractBaseUser, PermissionsMixin):
     id = models.BigAutoField(primary_key=True)
-    username = models.CharField(max_length=20, unique=True)
+    username = models.CharField(max_length=128, unique=True)
     password = models.CharField(max_length=128)
     email = models.CharField(max_length=128, null=True)
     wins = models.IntegerField(default=0)

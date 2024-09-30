@@ -194,6 +194,15 @@ class ChatSocket {
     }
 
     handleFriendDeclinationNotification(data) {
+        try {
+            // if fails then its the sender
+            console.log('Looking for element with ID:', data.declined);
+            const elementToRemove = (document.getElementById(data.declined).parentElement).parentElement;
+            if (elementToRemove)
+                elementToRemove.remove();
+        } catch (error) {
+            console.log(error);
+        }
         console.log('New notification:', data.message);
         alert(data.message);
     }
@@ -267,7 +276,7 @@ class ChatSocket {
         event.preventDefault();
         console.log("SEND FRIEND REQUEST CLIENT SIDE CALL");
 
-        const receiver = document.getElementById("friend-name").value;
+        const receiver = sanitizeInput(document.getElementById("friend-name").value);
         const sender = (document.getElementById("user").innerHTML).split(" ").pop();
 
         const message = JSON.stringify({
@@ -321,7 +330,7 @@ class ChatSocket {
 
         // Get the message from the input field in the chat window
         const inputField = chatWindow.querySelector('input[type="text"]');
-        const message = inputField.value;
+        const message = sanitizeInput(inputField.value);
 
         if (message.trim() === "") {
             console.log("Message cannot be empty!");
