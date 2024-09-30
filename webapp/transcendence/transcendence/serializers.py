@@ -31,6 +31,7 @@ class LoginSerializer(BaseUserSerializer):
 class UserUpdateSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=150)
     avatar = serializers.CharField(max_length=255)
+    language = serializers.CharField(max_length=255)
 
     def validate_username(self, value):
         return sanitize_input(value)
@@ -72,7 +73,7 @@ class TournamentCreateSerializer(serializers.Serializer):
         # Check for duplicates
         if len(sanitized_players) != len(set(sanitized_players)):
             raise serializers.ValidationError("Players list cannot contain duplicates.")
-        
+
         return sanitized_players
 
 class FriendRequestSerializer(serializers.Serializer):

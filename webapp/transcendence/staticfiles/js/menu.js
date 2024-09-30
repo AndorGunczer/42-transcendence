@@ -15,8 +15,8 @@ let player_list = [];
 // }
 
 function sanitizeInput(inputText) {
-  // return inputText.replace(/<\/?[^>]+(>|$)/g, "");
-  return inputText;
+  return inputText.replace(/<\/?[^>]+(>|$)/g, "");
+  // return inputText;
 }
 
 function changeSelectFunction(callback, dependencies) {
