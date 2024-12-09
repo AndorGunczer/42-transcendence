@@ -17,7 +17,7 @@ import copy
 from django.middleware.csrf import get_token
 import json
 import random
-from transcendence.web3_utils import add_tournament, add_participant, increment_score, set_winner, get_tournament_count, get_tournament, get_participant_score, get_participant_list, get_tournament_index_by_name  
+from transcendence.web3_utils import add_tournament, add_participant, increment_score, set_winner, get_tournament_count, get_tournament, get_participant_score, get_participant_list, get_tournament_index_by_name
 from .menus import MENU_DATA
 from django.db.models import Q
 
@@ -92,27 +92,35 @@ def modify_json_menu(menu_type, token):
     menu = copy.deepcopy(MENU_DATA.get(menu_type))
     user = get_user_from_token(token)
 
-    print(menu['headerItems'][0]['content'][1]['text'] )
-
-    menu['headerItems'][0]['content'][1]['text'] = f'LOGGED IN AS {user}'
-    menu['headerItems'][0]['content'][1]['identifier'] = 'user'
-    menu['headerItems'][0]['content'][2]['text'] = f'wins: {user.wins}'
-    menu['headerItems'][0]['content'][3]['text'] = f'losses: {user.losses}'
+    menu['headerItems'][0]['content'][1]['text'] = f'LOGGED IN AS'
+    menu['headerItems'][0]['content'][2]['text'] = f'{user}'
+    menu['headerItems'][0]['content'][2]['identifier'] = 'user'
+    menu['headerItems'][0]['content'][2]['key'] = 'nothing'
+    menu['headerItems'][0]['content'][4]['text'] = f'{user.wins}'
+    menu['headerItems'][0]['content'][6]['text'] = f'{user.losses}'
 
     menu['headerItems'].append({
         'id': 2,
         'type': 'button',
-        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+        'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
         'text': 'SETTINGS',
         'onclick': 'settings()',
+        'key': "settings"
     })
 
     menu['headerItems'].append({
                 'id': 3,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'LOGOUT',
-                'onclick': 'logout()'
+                'onclick': 'logout()',
+                'key': 'logout'
+    })
+
+    menu['headerItems'].append({
+                'id': 999,
+                'type': 'pongtrans',
+                'text': f'{user.language}',
     })
 
     menu['headerItems'][0]['content'].append({
@@ -122,16 +130,26 @@ def modify_json_menu(menu_type, token):
     })
 
     if token and menu['menuTitle'] == 'Main Menu Buttons':
-        del menu['menuItems'][3]
+        del menu['menuItems'][2]
+
+        menu['menuItems'].append({
+                'id': 3,
+                'type': 'button',
+                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white translate',
+                'text': 'TOURNAMENT',
+                'onclick': 'load_tournament_main()',
+                'key': 'tournament'
+        })
 
         menu['menuItems'].append({
                 'id': 4,
                 'type': 'button',
-                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
+                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'MATCH HISTORY',
-                'onclick': 'loadHistory()'
+                'onclick': 'loadHistory()',
+                'key': 'match history'
             })
-        
+
     # Add Friendlist
     menu['menuItems'].append({
         'id': len(menu['menuItems']),
@@ -146,16 +164,18 @@ def modify_json_menu(menu_type, token):
                     {
                         'type': 'input',
                         'inputType': 'text',
-                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
+                        'class': 'form-control mb-3 bg-secondary bg-gradient text-white translate',
                         'placeholder': 'add a friend...',
+                        'key': 'add a friend...',
                         'identifier': 'friend-name',
                         'name': 'friend',
                     },
                     {
                         'type': 'button',
-                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                         'text': 'ADD FRIEND',
                         'onclick': 'chatSocket.sendFriendRequest(event)',
+                        'key': 'add friend'
                     }
                 ]
             },
@@ -171,8 +191,9 @@ def modify_json_menu(menu_type, token):
                         'content': [
                             {
                                 'type': 'h3',
-                                'class': 'text-white',
-                                'text': 'Friend Requests'
+                                'class': 'text-white translate',
+                                'text': 'Friend Requests',
+                                'key': 'friend requests'
                             },
                         ]
                     },
@@ -190,8 +211,9 @@ def modify_json_menu(menu_type, token):
                         'content': [
                             {
                                 'type': 'h3',
-                                'class': 'text-white',
-                                'text': 'Friends'
+                                'class': 'text-white translate',
+                                'text': 'Friends',
+                                'key': 'friends'
                             },
                         ]
                     },
@@ -230,17 +252,19 @@ def modify_json_menu(menu_type, token):
                         'content': [
                             {
                                 'type': 'button',
-                                'class': 'rounded bg-secondary bg-gradient text-white',
+                                'class': 'rounded bg-secondary bg-gradient text-white translate',
                                 'onclick': f"chatSocket.acceptFriendRequest(this.id)",
                                 'identifier': f"{request.friend1.username if user.username == request.friend2.username else request.friend2.username}",
-                                'text': 'ACCEPT'
+                                'text': 'ACCEPT',
+                                'key': 'accept'
                             },
                             {
                                 'type': 'button',
-                                'class': 'rounded bg-secondary bg-gradient text-white',
+                                'class': 'rounded bg-secondary bg-gradient text-white translate',
                                 'onclick': f"chatSocket.declineFriendRequest(this.id)",
                                 'identifier': f"{request.friend1.username if user.username == request.friend2.username else request.friend2.username}",
-                                'text': 'DECLINE'
+                                'text': 'DECLINE',
+                                'key': 'decline'
                             }
                         ]
                     }
@@ -254,13 +278,6 @@ def modify_json_menu(menu_type, token):
         friend_name = this_friend.username
         is_online = "Online" if this_friend.is_online else "Offline"
 
-
-        print(f'''???????????????????????????????
-        friend_name: {friend_name}
-        friend.friend1.username: {friend.friend1.username}
-        friend.friend2.username: {friend.friend2.username}
-        is_online: {is_online}''')
-
         # Base content for each friend
         content = [
             {
@@ -271,7 +288,6 @@ def modify_json_menu(menu_type, token):
             {
                 'type': 'p',
                 'class': 'text-white m-1 is_online',
-                # 'identifier': 'is_online',
                 'text': is_online,
             },
             {
@@ -280,10 +296,11 @@ def modify_json_menu(menu_type, token):
                 'content': [
                     {
                         'type': 'button',
-                        'class': 'rounded bg-secondary bg-gradient text-white',
+                        'class': 'rounded bg-secondary bg-gradient text-white translate',
                         'onclick': f"chat(this.id)",
                         'identifier': friend_name,
-                        'text': 'CHAT'
+                        'text': 'CHAT',
+                        'key': 'chat'
                     },
                 ]
             }
@@ -293,10 +310,11 @@ def modify_json_menu(menu_type, token):
         if menu_type == "tournament_create":
             content[2]['content'].append({
                 'type': 'button',
-                'class': 'rounded bg-secondary bg-gradient text-white',
+                'class': 'rounded bg-secondary bg-gradient text-white translate',
                 'onclick': f"validateAndAddToTournament(this.id)",
                 'identifier': friend_name,
-                'text': 'INVITE'
+                'text': 'INVITE',
+                'key': 'invite'
             })
 
         friends_div.append({
@@ -314,7 +332,7 @@ def modify_json_menu(menu_type, token):
 
         ]
     })
-    
+
 
     return menu
 
@@ -366,14 +384,15 @@ def tournament_select_page_fill(menu, participants, tournament_name):
                     },
                     {
                         'type': 'td',
-                        'class': 'text-white',
-                        'text': 'Player'
+                        'class': 'text-white translate',
+                        'text': 'Player',
+                        'key': 'player'
                     },
                     {
                         'type': 'td',
                         'class': 'text-white',
                         'text': f'Points'
-                    }                    
+                    }
                 ]
             }
         ]
@@ -496,7 +515,6 @@ def index(request):
                 'losses': user.losses,
                 'authenticated': 'True'
             }
-            print(obj)
             return render(request, 'menu_general/index.html', obj)
         except Users2.DoesNotExist:
             response = render(request, 'menu_general/index.html', {
@@ -515,10 +533,8 @@ def indexPost(request, menu_type='main'):
     token = get_token_from_header(request)
     if (token == None) or (not validate_token(token)):
         menu = copy.deepcopy(MENU_DATA.get(menu_type))
-        print(menu)
     else:
         menu = modify_json_menu(menu_type, token)
-        print(menu)
 
     # # Validate the token
     # if not validate_token(token):
@@ -568,19 +584,22 @@ def match_history_fill(menu, user):
                 'content': [
                     {
                         'type': 'td',
-                        'class': 'text-white',
-                        'text': 'Date'
+                        'class': 'text-white translate',
+                        'text': 'Date',
+                        'key': 'date'
                     },
                     {
                         'type': 'td',
-                        'class': 'text-white',
-                        'text': 'Opponent'
+                        'class': 'text-white translate',
+                        'text': 'Opponent',
+                        'key': 'opponent'
                     },
                     {
                         'type': 'td',
-                        'class': 'text-white',
-                        'text': f'Winner'
-                    }                    
+                        'class': 'text-white translate',
+                        'text': 'Winner',
+                        'key': 'winner'
+                    }
                 ]
             }
         ]
@@ -1029,7 +1048,7 @@ def tournament_game_check(request, menu_type="local_game"):
         player2 = players[1].player.username
     else:
         player2 = players[1].guest_name
-        
+
     # print(players[0].player.username)
     print(players)
 
@@ -1100,11 +1119,11 @@ def close_tournament_game(request, menu_type='main'):
                     # Update Participants.points for the winner on the Blockchain
                     receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.player.username, 1)
                     print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
-            
+
             except Users2.DoesNotExist:
                 # If the user doesn't exist, try to find the participant by guest name
                 participant = Participants.objects.get(guest_name=player1.get('name'), tournament=tournament)
-                
+
                 if participant:
                     participant.points += 1
                     participant.save()
@@ -1154,11 +1173,11 @@ def close_tournament_game(request, menu_type='main'):
                     # Update Participants.points for the winner on the Blockchain
                     receipt = increment_score(get_tournament_index_by_name(game_db.tournament.name), participant.player.username, 1)
                     print(f"incrementScore transaction successful with hash: {receipt.transactionHash.hex()}")
-            
+
             except Users2.DoesNotExist:
                 # If the user doesn't exist, try to find the participant by guest name
                 participant = Participants.objects.get(guest_name=player2.get('name'), tournament=tournament)
-                
+
                 if participant:
                     participant.points += 1
                     participant.save()
@@ -1190,7 +1209,7 @@ def close_tournament_game(request, menu_type='main'):
             for player in registered_players:
                 notify_user(player.player_id, "Next Tournament Game is Yours!")
 
-            
+
 
 
         # Determine the menu based on the token
@@ -1301,7 +1320,7 @@ from .serializers import RegistrationSerializer, LoginSerializer, UserUpdateSeri
 def registration_check(request):
     serializer = RegistrationSerializer(data=request.data)
     if serializer.is_valid():
-        try: 
+        try:
             # Process the validated data
             data = serializer.validated_data
             # Create the user or any other processing
@@ -1312,6 +1331,7 @@ def registration_check(request):
                 losses=0,
                 avatarDirect="https://localhost/static/images/" + data['avatar'], #ENV
                 allow_otp=data['twofa'],
+                language="en",
             )
             new_user.set_password(data['password'])
             new_user.save()
@@ -1426,11 +1446,10 @@ from rest_framework import status
 
 
 @api_view(['POST'])
-@csrf_exempt  # If needed, you can remove this if you're not using it for API
 def login_check(request):
     # Use the LoginSerializer to validate the incoming data
     serializer = LoginSerializer(data=request.data)
-    
+
     if serializer.is_valid():
         # Extract validated data
         username = serializer.validated_data.get('username')
@@ -1505,7 +1524,6 @@ def login_check(request):
 
 # Load OTP View if Two-Factor is enabled for user.
 
-@csrf_exempt
 def verify_otp_view(request):
     if request.method == "POST":
         try:
@@ -1580,7 +1598,6 @@ import json
 
 # Upload File to server in the registration form
 
-@csrf_exempt
 def upload_file(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
@@ -1588,40 +1605,50 @@ def upload_file(request):
         file_type = data.get('fileType')
         file_data = data.get('fileData')
 
+        if Avatar.objects.filter(name=file_name).exists():
+            return JsonResponse({'error': 'Avatar with this name exists.'}, status=400)
+
         if not file_name or not file_data:
             return JsonResponse({'error': 'Invalid file data'}, status=400)
 
-        # Decode the base64 file data
-        file_content = base64.b64decode(file_data)
+        try:
 
-        # Construct the file path
-        static_images_dir = 'staticfiles/images' #ENV
-        file_path = f'{static_images_dir}/{file_name}'
+            # Decode the base64 file data
+            file_content = base64.b64decode(file_data)
 
-        # Ensure the directory exists
-        os.makedirs(static_images_dir, exist_ok=True)
+            # Construct the file path
+            static_images_dir = 'staticfiles/images' #ENV
+            file_path = f'{static_images_dir}/{file_name}'
 
-        # Write the file
-        with open(file_path, 'wb') as f:
-            f.write(file_content)
+            # Ensure the directory exists
+            os.makedirs(static_images_dir, exist_ok=True)
 
-        Avatar.objects.create(
-                    name=file_name,
-                    path=file_path
-                )
+            Avatar.objects.create(
+                name=file_name,
+                path=file_path
+            )
 
-        return JsonResponse({'message': 'File uploaded successfully', 'file_path': str(file_path)})
+            # Write the file
+            with open(file_path, 'wb') as f:
+                f.write(file_content)
 
-    return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+            return JsonResponse({'message': 'File uploaded successfully', 'file_path': str(file_path)})
+        except Exception as e:
+            return JsonResponse({'error': 'Avatar already exists'}, status=400)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=404)
+
+
 
 # Load User Settings
 
 def load_settings(request, menu_type='settings'):
     token = get_token_from_header(request)
-    user = get_user_from_token(token)
     if (token == None) or (not validate_token(token)):
-        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+        menu = copy.deepcopy(MENU_DATA.get("main"))
     else:
+        user = get_user_from_token(token)
         menu = modify_json_menu(menu_type, token)
         avatars = Avatar.objects.all()
         print(avatars)
@@ -1642,7 +1669,7 @@ def load_settings(request, menu_type='settings'):
         menu['menuItems'][0]['content'][0]['value'] = user.username
 
         # menu['menuItems'][0]['content'][0]['content'][1]['selected'] = user.avatarDirect.rsplit('/', 1)[1]
-        print(menu)
+
         # menu['menuItems'][0]['content'][0]['content'][1]['content']
 
     if menu is not None:
@@ -1654,15 +1681,14 @@ def load_settings(request, menu_type='settings'):
 
 def delete_user_stats(request, menu_type='main'):
     token = get_token_from_header(request)
-    user = get_user_from_token(token)
-
-    user.wins = 0
-    user.losses = 0
-    user.save()
 
     if (token == None) or (not validate_token(token)):
-        menu = copy.deepcopy(MENU_DATA.get(menu_type))
+        menu = copy.deepcopy(MENU_DATA.get("main"))
     else:
+        user = get_user_from_token(token)
+        user.wins = 0
+        user.losses = 0
+        user.save()
         menu = modify_json_menu(menu_type, token)
 
     if menu is not None:
@@ -1705,25 +1731,43 @@ def delete_user_stats(request, menu_type='main'):
 def save_changes(request, menu_type='main'):
     # Get token and user
     token = get_token_from_header(request)
+
+    #if the user is not authenticated go to the main menu
+    if token is None or not validate_token(token):
+        menu = copy.deepcopy(MENU_DATA.get("main"))
+        return JsonResponse(menu)
+
     user = get_user_from_token(token)
 
     # Use the serializer for validating incoming data
     serializer = UserUpdateSerializer(data=request.data)
-    
+
     if serializer.is_valid():
         # Extract validated data
         username = serializer.validated_data.get('username')
         avatar = serializer.validated_data.get('avatar')
-
+        language = serializer.validated_data.get('language')
+        print("----------LANGUAGE-----------")
+        print(language)
         # Update user information
         try:
+
+            user2 = Users2.objects.filter(username=username).first()
+            if user2:
+                if user.username == user2.username:
+                    pass
+                else:
+                    return Response({"error": "Username is taken"}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                pass
+
             user.username = username
 
             # Prepend your custom URL prefix
             pre = "https://localhost/static/images/" #ENV
             avatar_url = pre + avatar
             user.avatarDirect = avatar_url
-
+            user.language = language
             user.save()
 
             print("DATABASE MODIFICATIONS HAVE BEEN SAVED")
@@ -1731,7 +1775,7 @@ def save_changes(request, menu_type='main'):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
         # Check token validation
         if token is None or not validate_token(token):
             menu = copy.deepcopy(MENU_DATA.get(menu_type))
@@ -1742,7 +1786,7 @@ def save_changes(request, menu_type='main'):
             return Response(menu, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Menu type not found'}, status=status.HTTP_404_NOT_FOUND)
-    
+
     # If validation fails
     else:
         return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -1773,19 +1817,22 @@ def fill_profile_with_user_data(menu, user):
                 'content': [
                     {
                         'type': 'td',
-                        'class': 'text-white',
-                        'text': 'Date'
+                        'class': 'text-white translate',
+                        'text': 'Date',
+                        'key': 'date'
                     },
                     {
                         'type': 'td',
-                        'class': 'text-white',
-                        'text': 'Opponent'
+                        'class': 'text-white translate',
+                        'text': 'Opponent',
+                        'key': 'opponent'
                     },
                     {
                         'type': 'td',
-                        'class': 'text-white',
-                        'text': f'Winner'
-                    }                    
+                        'class': 'text-white translate',
+                        'text': f'Winner',
+                        'key': 'winner'
+                    }
                 ]
             }
         ]
@@ -1851,18 +1898,20 @@ def profile(request, menu_type='profile'):
             if friendship.blocker == user_of_query.username:
                 menu['menuItems'][0]['content'].append({
                     'type': 'button',
-                    'class': 'col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                    'class': 'col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                     'identifier': user_of_profile.username,
                     'onclick': 'unblock(event)',
                     'text': 'UNBLOCK',
+                    'key': 'unblock'
                 },)
         else:
             menu['menuItems'][0]['content'].append({
                 'type': 'button',
-                'class': 'col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'identifier': user_of_profile.username,
                 'onclick': 'block(event)',
                 'text': 'BLOCK',
+                'key': 'block'
             },)
     if menu is not None:
         return JsonResponse(menu)
@@ -1875,7 +1924,7 @@ def open_chat(request):
     data = json.loads(request.body)
     target_friend_username = data.get('target_friend')
     source_friend_username = data.get('source_friend')
-    
+
     try:
         target_friend = Users2.objects.get(username=target_friend_username)
         source_friend = Users2.objects.get(username=source_friend_username)
@@ -1940,7 +1989,7 @@ def block_user(request):
             friendship.is_blocked = True
             friendship.save()
     return JsonResponse({})
-        
+
 
 def unblock_user(request):
     token = get_token_from_header(request)

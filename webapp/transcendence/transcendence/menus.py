@@ -19,23 +19,41 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'div',
-                        'class': 'placeholder_player_image'
+                        'class': 'a placeholder_player_image'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'logged in as PLACEHOLDER'
+                        'class': 'u text-white translate',
+                        'text': 'logged in as',
+                        'key': 'loggedGuest'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'wins'
+                        'class': 'us text-white',
+                        'text': 'GUEST',
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'losses'
-                    }
+                        'class': 'w text-white translate',
+                        'text': 'wins',
+                        'key': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'wp text-white',
+                        'text': '0',
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'l text-white translate',
+                        'text': 'losses',
+                        'key': 'losses'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'lp text-white',
+                        'text': '0',
+                    },
                 ]
             },
             {
@@ -59,16 +77,10 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
+                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'PLAY',
-                'onclick': 'load_playMenu()'
-            },
-            {
-                'id': 3,
-                'type': 'button',
-                'class': 'col-md-12 mt-2 p-3 h-50 w-25 mb-4 rounded bg-secondary bg-gradient text-white',
-                'text': 'TOURNAMENT',
-                'onclick': 'load_tournament_main()'
+                'onclick': 'load_playMenu()',
+                'key': 'play'
             },
             {
                 'id': 4,
@@ -79,16 +91,18 @@ MENU_DATA = {
                     {
                         'type': 'button',
                         'text': 'LOGIN',
-                        'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded bg-secondary bg-gradient text-white',
+                        'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded bg-secondary bg-gradient text-white translate',
                         'identifier': 'button-login',
-                        'onclick': 'load_login()'
+                        'onclick': 'load_login()',
+                        'key': 'login'
                     },
                     {
                         'type': 'button',
                         'text': 'REGISTER',
-                        'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded bg-secondary bg-gradient text-white',
+                        'class': 'col-md-12 mt-2 h-25 w-50 p-3 rounded bg-secondary bg-gradient text-white translate',
                         'identifier': 'button-register',
-                        'onclick': 'load_register()'
+                        'onclick': 'load_register()',
+                        'key': 'register'
                     }
                 ]
             }
@@ -105,31 +119,55 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'div',
-                        'class': 'placeholder_player_image'
+                        'class': 'a placeholder_player_image'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'logged in as PLACEHOLDER'
+                        'class': 'u text-white translate',
+                        'text': 'logged in as',
+                        'key': 'loggedGuest'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'wins'
+                        'class': 'us text-white',
+                        'text': 'GUEST',
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'losses'
-                    }
+                        'class': 'w text-white translate',
+                        'text': 'wins',
+                        'key': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'wp text-white',
+                        'text': '0',
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'l text-white translate',
+                        'text': 'losses',
+                        'key': 'losses'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'lp text-white',
+                        'text': '0',
+                    },
                 ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'BACK',
-                'onclick': 'load_main()'
+                'onclick': 'load_main()',
+                'key': 'back'
+            },
+            {
+                'id': 2,
+                'type': 'div',
+                'class': 'menu-button'
             }
         ],
         'menuItems': [
@@ -147,16 +185,18 @@ MENU_DATA = {
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'SINGLEPLAYER',
-                'onclick': 'single_pregame()'
+                'onclick': 'single_pregame()',
+                'key': 'singleplayer'
             },
             {
                 'id': 3,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'LOCAL',
-                'onclick': 'local_pregame()'
+                'onclick': 'local_pregame()',
+                'key': 'local'
 
             },
             # {
@@ -179,31 +219,55 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'div',
-                        'class': 'placeholder_player_image'
+                        'class': 'a placeholder_player_image'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'logged in as PLACEHOLDER'
+                        'class': 'u text-white translate',
+                        'text': 'logged in as',
+                        'key': 'loggedGuest'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'wins'
+                        'class': 'us text-white',
+                        'text': 'GUEST',
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'losses'
-                    }
+                        'class': 'w text-white translate',
+                        'text': 'wins',
+                        'key': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'wp text-white',
+                        'text': '0',
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'l text-white translate',
+                        'text': 'losses',
+                        'key': 'losses'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'lp text-white',
+                        'text': '0',
+                    },
                 ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'BACK',
-                'onclick': 'load_main()'
+                'onclick': 'load_main()',
+                'key': 'back'
+            },
+            {
+                'id': 2,
+                'type': 'div',
+                'class': 'menu-button'
             }
         ],
         'menuItems': [
@@ -212,7 +276,7 @@ MENU_DATA = {
                 'type': 'div',
                 'identifier': 'table-container',
                 'content': [
-                    
+
                 ]
             },
         ]
@@ -228,31 +292,55 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'div',
-                        'class': 'placeholder_player_image'
+                        'class': 'a placeholder_player_image'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'logged in as PLACEHOLDER'
+                        'class': 'u text-white translate',
+                        'text': 'logged in as',
+                        'key': 'loggedGuest'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'wins'
+                        'class': 'us text-white',
+                        'text': 'GUEST',
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'losses'
-                    }
+                        'class': 'w text-white translate',
+                        'text': 'wins',
+                        'key': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'wp text-white',
+                        'text': '0',
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'l text-white translate',
+                        'text': 'losses',
+                        'key': 'losses'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'lp text-white',
+                        'text': '0',
+                    },
                 ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'BACK',
-                'onclick': 'load_main()'
+                'onclick': 'load_main()',
+                'key': 'back'
+            },
+            {
+                'id': 2,
+                'type': 'div',
+                'class': 'menu-button'
             }
         ],
         'menuItems': [
@@ -287,7 +375,7 @@ MENU_DATA = {
                 'type': 'div',
                 'identifier': 'table-container',
                 'content': [
-                    
+
                 ]
             },
         ]
@@ -303,31 +391,55 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'div',
-                        'class': 'placeholder_player_image'
+                        'class': 'a placeholder_player_image'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'logged in as PLACEHOLDER'
+                        'class': 'u text-white translate',
+                        'text': 'logged in as',
+                        'key': 'loggedGuest'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'wins'
+                        'class': 'us text-white',
+                        'text': 'GUEST',
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'losses'
-                    }
+                        'class': 'w text-white translate',
+                        'text': 'wins',
+                        'key': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'wp text-white',
+                        'text': '0',
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'l text-white translate',
+                        'text': 'losses',
+                        'key': 'losses'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'lp text-white',
+                        'text': '0',
+                    },
                 ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'BACK',
-                'onclick': 'load_main()'
+                'onclick': 'load_main()',
+                'key': 'back'
+            },
+            {
+                'id': 2,
+                'type': 'div',
+                'class': 'menu-button'
             }
         ],
         'menuItems': [
@@ -365,15 +477,17 @@ MENU_DATA = {
                 'id': 2,
                 'type': 'button',
                 'text': 'CREATE TOURNAMENT',
-                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
-                'onclick': 'load_tournament_create()'
+                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
+                'onclick': 'load_tournament_create()',
+                'key': 'create tournament'
             },
             {
                 'id': 3,
                 'type': 'button',
                 'text': 'SELECT',
-                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
-                'onclick': 'load_tournament_select()'
+                'class': 'menu-button col-md-12 mt-2 mb-4 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
+                'onclick': 'load_tournament_select()',
+                'key': 'select'
             }
         ]
     },
@@ -388,31 +502,55 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'div',
-                        'class': 'placeholder_player_image'
+                        'class': 'a placeholder_player_image'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'logged in as PLACEHOLDER'
+                        'class': 'u text-white translate',
+                        'text': 'logged in as',
+                        'key': 'loggedGuest'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'wins'
+                        'class': 'us text-white',
+                        'text': 'GUEST',
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'losses'
-                    }
+                        'class': 'w text-white translate',
+                        'text': 'wins',
+                        'key': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'wp text-white',
+                        'text': '0',
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'l text-white translate',
+                        'text': 'losses',
+                        'key': 'losses'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'lp text-white',
+                        'text': '0',
+                    },
                 ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'BACK',
-                'onclick': 'load_main()'
+                'onclick': 'load_main()',
+                'key': 'back'
+            },
+            {
+                'id': 2,
+                'type': 'div',
+                'class': 'menu-button'
             }
         ],
         'menuItems': [
@@ -429,8 +567,9 @@ MENU_DATA = {
                             {
                                 'type': 'label',
                                 'for': 'tournament_name',
-                                'class': 'text-white',
-                                'text': 'Tournament Name: '
+                                'class': 'text-white translate',
+                                'text': 'Tournament Name',
+                                'key': 'tournament name'
                             },
                             {
                                 'type': 'input',
@@ -447,8 +586,9 @@ MENU_DATA = {
                             {
                                 'type': 'label',
                                 'for': 'player',
-                                'class': 'text-white',
-                                'text': 'Player Name: '
+                                'class': 'text-white translate',
+                                'text': 'Player Name',
+                                'key': 'playername'
                             },
                             {
                                 'type': 'input',
@@ -460,7 +600,9 @@ MENU_DATA = {
                             {
                                 'type': 'input',
                                 'inputType': 'button',
+                                'class': 'translate',
                                 'value': 'Add Player',
+                                'key': 'addPlayer',
                                 'onclick': 'invokeAddPlayerToTournament(event)'
                             },
                         ]
@@ -470,15 +612,16 @@ MENU_DATA = {
                         'identifier': 'tournament_ul',
                         'class': 'text-white',
                         'content': [
-                            
+
                         ],
                     },
                     {
                         'type': 'input',
                         'inputType': 'button',
                         'value': 'Submit',
-                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
-                        'onclick': 'submit_tournament_create(event)'
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
+                        'onclick': 'submit_tournament_create(event)',
+                        'key': 'submit'
                     }
                 ]
             },
@@ -495,31 +638,55 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'div',
-                        'class': 'placeholder_player_image'
+                        'class': 'a placeholder_player_image'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'logged in as PLACEHOLDER'
+                        'class': 'u text-white translate',
+                        'text': 'logged in as',
+                        'key': 'loggedGuest'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'wins'
+                        'class': 'us text-white',
+                        'text': 'GUEST',
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'losses'
-                    }
+                        'class': 'w text-white translate',
+                        'text': 'wins',
+                        'key': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'wp text-white',
+                        'text': '0',
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'l text-white translate',
+                        'text': 'losses',
+                        'key': 'losses'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'lp text-white',
+                        'text': '0',
+                    },
                 ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'BACK',
-                'onclick': 'load_main()'
+                'onclick': 'load_playMenu()',
+                'key': 'back'
+            },
+            {
+                'id': 2,
+                'type': 'div',
+                'class': 'menu-button'
             }
         ],
         'menuItems': [
@@ -562,31 +729,55 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'div',
-                        'class': 'placeholder_player_image'
+                        'class': 'a placeholder_player_image'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'logged in as PLACEHOLDER'
+                        'class': 'u text-white translate',
+                        'text': 'logged in as',
+                        'key': 'loggedGuest'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'wins'
+                        'class': 'us text-white',
+                        'text': 'GUEST',
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'losses'
-                    }
+                        'class': 'w text-white translate',
+                        'text': 'wins',
+                        'key': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'wp text-white',
+                        'text': '0',
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'l text-white translate',
+                        'text': 'losses',
+                        'key': 'losses'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'lp text-white',
+                        'text': '0',
+                    },
                 ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'BACK',
-                'onclick': 'load_playMenu()'
+                'onclick': 'load_playMenu()',
+                'key': 'back'
+            },
+            {
+                'id': 2,
+                'type': 'div',
+                'class': 'menu-button'
             }
         ],
         'menuItems': [
@@ -597,9 +788,10 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'button',
-                        'class': 'menu-button col-md-12 mt-2 w-100 h-75 p-3 mt-4 rounded bg-secondary bg-gradient text-white',
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-75 p-3 mt-4 rounded bg-secondary bg-gradient text-white translate',
                         'text': 'PLAY',
-                        'onclick': 'load_singleGame()'
+                        'onclick': 'load_singleGame()',
+                        'key': 'play'
                     }
                 ]
             },
@@ -616,31 +808,55 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'div',
-                        'class': 'placeholder_player_image'
+                        'class': 'a placeholder_player_image'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'logged in as PLACEHOLDER'
+                        'class': 'u text-white translate',
+                        'text': 'logged in as',
+                        'key': 'loggedGuest'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'wins'
+                        'class': 'us text-white',
+                        'text': 'GUEST',
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'losses'
-                    }
+                        'class': 'w text-white translate',
+                        'text': 'wins',
+                        'key': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'wp text-white',
+                        'text': '0',
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'l text-white translate',
+                        'text': 'losses',
+                        'key': 'losses'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'lp text-white',
+                        'text': '0',
+                    },
                 ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'BACK',
-                'onclick': 'load_playMenu()'
+                'onclick': 'load_playMenu()',
+                'key': 'back'
+            },
+            {
+                'id': 2,
+                'type': 'div',
+                'class': 'menu-button'
             }
         ],
         'menuItems': [
@@ -764,31 +980,55 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'div',
-                        'class': 'placeholder_player_image'
+                        'class': 'a placeholder_player_image'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'logged in as PLACEHOLDER'
+                        'class': 'u text-white translate',
+                        'text': 'logged in as',
+                        'key': 'loggedGuest'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'wins'
+                        'class': 'us text-white',
+                        'text': 'GUEST',
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'losses'
-                    }
+                        'class': 'w text-white translate',
+                        'text': 'wins',
+                        'key': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'wp text-white',
+                        'text': '0',
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'l text-white translate',
+                        'text': 'losses',
+                        'key': 'losses'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'lp text-white',
+                        'text': '0',
+                    },
                 ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'BACK',
-                'onclick': 'load_playMenu()'
+                'onclick': 'load_playMenu()',
+                'key': 'back'
+            },
+            {
+                'id': 2,
+                'type': 'div',
+                'class': 'menu-button'
             }
         ],
         'menuItems': [
@@ -899,8 +1139,9 @@ MENU_DATA = {
                     },
                     {
                         'type': 'button',
-                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                         'text': 'play',
+                        'key': 'play',
                         'onclick': 'submit_local_pregame(event)'
                     }
                 ]
@@ -918,31 +1159,55 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'div',
-                        'class': 'placeholder_player_image'
+                        'class': 'a placeholder_player_image'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'logged in as PLACEHOLDER'
+                        'class': 'u text-white translate',
+                        'text': 'logged in as',
+                        'key': 'loggedGuest'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'wins'
+                        'class': 'us text-white',
+                        'text': 'GUEST',
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'losses'
-                    }
+                        'class': 'w text-white translate',
+                        'text': 'wins',
+                        'key': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'wp text-white',
+                        'text': '0',
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'l text-white translate',
+                        'text': 'losses',
+                        'key': 'losses'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'lp text-white',
+                        'text': '0',
+                    },
                 ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'BACK',
-                'onclick': 'load_main()'
+                'onclick': 'load_main()',
+                'key': 'back'
+            },
+            {
+                'id': 2,
+                'type': 'div',
+                'class': 'menu-button'
             }
         ],
         'menuItems': [
@@ -963,8 +1228,9 @@ MENU_DATA = {
                                     {
                                         'type': 'label',
                                         'for': 'username',
-                                        'class': 'text-white',
-                                        'text': 'Username '
+                                        'class': 'text-white translate',
+                                        'text': 'Username ',
+                                        'key': 'username '
                                     },
                                     {
                                         'type': 'input',
@@ -982,8 +1248,9 @@ MENU_DATA = {
                                     {
                                         'type': 'label',
                                         'for': 'password',
-                                        'class': 'text-white',
-                                        'text': 'Password '
+                                        'class': 'text-white translate',
+                                        'text': 'Password ',
+                                        'key': 'password '
                                     },
                                     {
                                         'type': 'input',
@@ -1001,8 +1268,9 @@ MENU_DATA = {
                                     {
                                         'type': 'label',
                                         'for': 'email',
-                                        'class': 'text-white',
-                                        'text': 'Email '
+                                        'class': 'text-white translate',
+                                        'text': 'Email ',
+                                        'key': 'email '
                                     },
                                     {
                                         'type': 'input',
@@ -1020,8 +1288,9 @@ MENU_DATA = {
                                     {
                                         'type': 'label',
                                         'for': 'avatar',
-                                        'class': 'text-white',
-                                        'text': 'Avatar '
+                                        'class': 'text-white translate',
+                                        'text': 'Avatar ',
+                                        'key': 'avatar '
                                     },
                                     {
                                         'type': 'select',
@@ -1047,8 +1316,9 @@ MENU_DATA = {
                                     {
                                         'type': 'label',
                                         'for': 'fileUpload',
-                                        'class': 'text-white',
+                                        'class': 'text-white translate',
                                         'text': 'Upload Avatar ',
+                                        'key': "uploadAvatar "
                                     },
                                     {
                                         'type': 'input',
@@ -1058,9 +1328,10 @@ MENU_DATA = {
                                     },
                                     {
                                         'type': 'button',
-                                        'class': 'btn col-md-12 mt-2 w-100 h-10 p-3 m-10 rounded bg-secondary bg-gradient text-white',
+                                        'class': 'btn col-md-12 mt-2 w-100 h-10 p-3 m-10 rounded bg-secondary bg-gradient text-white translate',
                                         'text': 'Upload',
-                                        'onclick': 'uploadAvatar(event)'
+                                        'onclick': 'uploadAvatar(event)',
+                                        'key': 'upload',
                                     },
                                 ]
                             },
@@ -1071,25 +1342,27 @@ MENU_DATA = {
                                     {
                                         'type': 'label',
                                         'for': 'twofa',
-                                        'class': 'd-block mr-2 text-white',
-                                        'text': 'Two-Factor Authentication '
+                                        'class': 'd-block mr-2 text-white translate',
+                                        'text': 'Two-Factor Authentication ',
+                                        'key': 'Two-Factor Authentication '
                                     },
                                     {
                                         'type': 'input',
                                         'class': 'form-check',
                                         'inputType': 'checkbox',
                                         'identifier': 'twofa',
-                                        'name': 'twofa'
+                                        'name': 'twofa',
                                     }
                                 ]
                             },
                             {
                                 'type': 'input',
                                 'inputType': 'button',
-                                'class': 'btn btn-primary col-md-12 mt-2 w-100 h-10 p-3 m-10 rounded bg-secondary bg-gradient text-white',
+                                'class': 'btn btn-primary col-md-12 mt-2 w-100 h-10 p-3 m-10 rounded bg-secondary bg-gradient text-white translate',
                                 'form': 'registration_form',
                                 'value': 'SUBMIT',
-                                'onclick': 'submit_registration_form(event)'
+                                'onclick': 'submit_registration_form(event)',
+                                'key': 'submit'
                             }
                         ]
                     }
@@ -1108,31 +1381,55 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'div',
-                        'class': 'placeholder_player_image'
+                        'class': 'a placeholder_player_image'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'logged in as PLACEHOLDER'
+                        'class': 'u text-white translate',
+                        'text': 'logged in as',
+                        'key': 'loggedGuest'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'wins'
+                        'class': 'us text-white',
+                        'text': 'GUEST',
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'losses'
-                    }
+                        'class': 'w text-white translate',
+                        'text': 'wins',
+                        'key': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'wp text-white',
+                        'text': '0',
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'l text-white translate',
+                        'text': 'losses',
+                        'key': 'losses'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'lp text-white',
+                        'text': '0',
+                    },
                 ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'BACK',
-                'onclick': 'load_main()'
+                'onclick': 'load_main()',
+                'key': 'back'
+            },
+            {
+                'id': 2,
+                'type': 'div',
+                'class': 'menu-button'
             }
         ],
         'menuItems': [
@@ -1149,8 +1446,9 @@ MENU_DATA = {
                             {
                                 'type': 'label',
                                 'for': 'username',
-                                'class': 'text-white',
-                                'text': 'username'
+                                'class': 'text-white translate',
+                                'text': 'username',
+                                'key': 'username'
                             },
                             {
                                 'type': 'input',
@@ -1168,8 +1466,9 @@ MENU_DATA = {
                             {
                                 'type': 'label',
                                 'for': 'password',
-                                'class': 'text-white',
-                                'text': 'password '
+                                'class': 'text-white translate',
+                                'text': 'password ',
+                                'key': 'password'
                             },
                             {
                                 'type': 'input',
@@ -1183,10 +1482,11 @@ MENU_DATA = {
                     {
                         'type': 'input',
                         'inputType': 'button',
-                        'class': 'menu-button col-md-12 mt-2 w-100 p-3 rounded bg-secondary bg-gradient text-white',
+                        'class': 'menu-button col-md-12 mt-2 w-100 p-3 rounded bg-secondary bg-gradient text-white translate',
                         'value': 'SUBMIT',
                         'form': 'login_form',
-                        'onclick': 'submit_login_form(event)'
+                        'onclick': 'submit_login_form(event)',
+                        'key': 'submit'
                     }
                 ]
             },
@@ -1236,31 +1536,55 @@ MENU_DATA = {
                 'content': [
                     {
                         'type': 'div',
-                        'class': 'placeholder_player_image'
+                        'class': 'a placeholder_player_image'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'logged in as PLACEHOLDER'
+                        'class': 'u text-white translate',
+                        'text': 'logged in as',
+                        'key': 'loggedGuest'
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'wins'
+                        'class': 'us text-white',
+                        'text': 'GUEST',
                     },
                     {
                         'type': 'p',
-                        'class': 'text-white',
-                        'text': 'losses'
-                    }
+                        'class': 'w text-white translate',
+                        'text': 'wins',
+                        'key': 'wins'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'wp text-white',
+                        'text': '0',
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'l text-white translate',
+                        'text': 'losses',
+                        'key': 'losses'
+                    },
+                    {
+                        'type': 'p',
+                        'class': 'lp text-white',
+                        'text': '0',
+                    },
                 ]
             },
             {
                 'id': 2,
                 'type': 'button',
-                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white',
+                'class': 'menu-button col-md-12 mt-2 w-25 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
                 'text': 'BACK',
-                'onclick': 'load_main()'
+                'onclick': 'load_main()',
+                'key': 'back'
+            },
+            {
+                'id': 2,
+                'type': 'div',
+                'class': 'menu-button'
             }
         ],
         'menuItems': [
@@ -1278,15 +1602,16 @@ MENU_DATA = {
                             {
                                 'type': 'label',
                                 'for': 'username',
-                                'class': 'text-white',
-                                'text': 'Choose New Username '
+                                'class': 'text-white translate',
+                                'text': 'Choose New Username ',
+                                'key': 'username'
                             },
                             {
                                 'type': 'input',
                                 'inputType': 'text',
                                 'identifier': 'username',
                                 'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
-                                'value': 'placeholder'
+                                'value': ''
                             },
                         ]
                     },
@@ -1297,8 +1622,9 @@ MENU_DATA = {
                             {
                                 'type': 'label',
                                 'for': 'avatar',
-                                'class': 'text-white',
-                                'text': 'Select New Avatar'
+                                'class': 'text-white translate',
+                                'text': 'Select New Avatar',
+                                'key': 'select new avatar'
                             },
                             {
                                 'type': 'select',
@@ -1312,16 +1638,55 @@ MENU_DATA = {
                         ]
                     },
                     {
-                        'type': 'button',
-                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
-                        'text': 'Delete User Statistics',
-                        'onclick': 'deleteUserStats(event)',
+                        'type': 'div',
+                        'class': 'form-group',
+                        'content': [
+                            {
+                                'type': 'label',
+                                'for': 'language',
+                                'class': 'text-white translate',
+                                'text': 'Select Language',
+                                'key': 'select language'
+                            },
+                            {
+                                'type': 'select',
+                                'id': 'language',
+                                'name': 'language',
+                                'class': 'form-control mb-3 bg-secondary bg-gradient text-white',
+                                'identifier': 'language',
+                                'content': [
+                                    {
+                                        'type': 'option',
+                                        'value': 'en',
+                                        'text': 'English'
+                                    },
+                                    {
+                                        'type': 'option',
+                                        'value': 'de',
+                                        'text': 'Deutsch'
+                                    },
+                                    {
+                                        'type': 'option',
+                                        'value': 'hu',
+                                        'text': 'Hungarian'
+                                    },
+                                ]
+                            },
+                        ]
                     },
                     {
                         'type': 'button',
-                        'class': 'menu-button col-md-12 mt-4 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white',
-                        'text': 'Save',
-                        'onclick': 'saveChanges()'
+                        'class': 'menu-button col-md-12 mt-2 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
+                        'text': 'DELETE USER STATISTICS',
+                        'onclick': 'deleteUserStats(event)',
+                        'key': 'delete user statistics'
+                    },
+                    {
+                        'type': 'button',
+                        'class': 'menu-button col-md-12 mt-4 w-100 h-25 p-3 rounded bg-secondary bg-gradient text-white translate',
+                        'text': 'SAVE',
+                        'onclick': 'saveChanges()',
+                        'key': 'save'
                     }
                 ]
             }

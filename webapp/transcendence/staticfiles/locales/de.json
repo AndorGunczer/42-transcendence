@@ -1,0 +1,60 @@
+{
+	"play": "SPIELEN",
+	"login": "EINLOGGEN",
+	"register": "REGISTRIEREN",
+	"tournament": "TURNIER",
+	"username ": "Benutzername ",
+	"username": "Benutzername",
+	"password ": "Passwort ",
+	"password": "Passwort",
+	"email ": "Email ",
+	"avatar ": "Avatar ",
+	"uploadAvatar ": "Avatar hochladen ",
+	"upload": "Hochladen",
+	"Two-Factor Authentication ": "Zwei-Faktor-Authentifizierung",
+
+	"logout": "AUSLOGGEN",
+	"settings": "EINSTELLUNGEN",
+	"match history": "SPIEL VERLAUF",
+
+	"add friend": "FREUND HINZUFÜGEN",
+	"friend requests": "Freundschaftsanfragen",
+	"friends": "Freunde",
+	"accept": "AKZEPTIEREN",
+	"decline": "ABLEHNEN",
+	"chat": "CHAT",
+	"invite": "EINLADEN",
+	"send": "SENDEN",
+	"player": "Spieler",
+	"date": "Datum",
+	"opponent": "Gegner",
+	"winner": "Gewinner",
+	"unblock": "ENTBLOCKIEREN",
+	"block": "BLOCKIEREN",
+
+	"submit": "BESTÄTIGEN",
+
+	"back": "ZURÜCK",
+
+	"wins": "Siege",
+	"losses": "Niederlagen",
+	"loggedGuest": "Eingeloggt als",
+
+
+	"delete user statistics": "LÖSCHE SPIELER STATISTIK",
+	"save": "SPEICHERN",
+	"select new avatar": "Wähle neuen Avatar",
+	"select language": "Sprache auswählen",
+	"singleplayer": "EINZELSPIELER",
+	"local": "LOKALES SPIEL",
+
+	"create tournament": "TURNIER ERSTELLEN",
+	"select": "AUSWÄHLEN",
+
+	"tournament name": "Turnier Name",
+	"playername": "Spieler Name",
+	"addPlayer": "Spieler hinzufügen",
+	"add a friend...": "füge einen Freund hinzu..."
+}
+
+

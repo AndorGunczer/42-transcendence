@@ -2,7 +2,7 @@
 
 
 
-function startSingleGame() {
+function startSingleGame(playerName) {
   const canvas = document.getElementById("pongCanvas");
   const ctx = canvas.getContext("2d");
 
@@ -25,7 +25,7 @@ function startSingleGame() {
   const paddleSpeed = 9;
   let playerScore = 0,
     aiScore = 0;
-  const winningScore = 5;
+  const winningScore = 3;
   let gameRunning = false;
   let gamePaused = false;
   let countdown = 3;
@@ -191,6 +191,10 @@ function startSingleGame() {
   });
 
   function gameLoop() {
+    if (!document.getElementById("pongCanvas")) {
+      console.log("got deleted");
+      return;
+    }
     if (gamePaused === false) {
       if (playerScore >= winningScore || aiScore >= winningScore) {
         drawText(
@@ -200,6 +204,7 @@ function startSingleGame() {
           "white",
           50
         );
+        load_main();
         return;
       }
       moveBall();
@@ -218,6 +223,22 @@ function startSingleGame() {
       );
     }
     requestAnimationFrame(gameLoop);
+    drawText("W = UP, S = DOWN", 0, canvas.height - 10, "white", 20);
+    drawText("P = PAUSE", canvas.width / 2 - 50, canvas.height - 10, "white", 20);
+    drawText(
+      playerName,
+      0,
+      20,
+      "white",
+      20
+    );
+    drawText(
+      "BOT",
+      canvas.width - 50,
+      20,
+      "white",
+      20
+    );
   }
 
   resetBall();
@@ -232,7 +253,7 @@ function startSingleGame() {
 //   else return Math.floor(num / 2) * -1;
 // }
 
-function startLocalGame(state_json) {
+function startLocalGame(state_json, playerName1, playerName2) {
   const canvas = document.getElementById("pongCanvas");
   const ctx = canvas.getContext("2d");
 
@@ -255,7 +276,7 @@ function startLocalGame(state_json) {
   const paddleSpeed = 9;
   let playerScore = 0,
     aiScore = 0;
-  const winningScore = 1;
+  const winningScore = 3;
   let gameRunning = false;
   let gamePaused = false;
   let countdown = 3;
@@ -428,6 +449,10 @@ function startLocalGame(state_json) {
   });
 
   function gameLoop() {
+    if (!document.getElementById("pongCanvas")) {
+      console.log("got deleted");
+      return;
+    }
     if (gamePaused === false) {
       if (playerScore >= winningScore || aiScore >= winningScore) {
         drawText(
@@ -457,6 +482,24 @@ function startLocalGame(state_json) {
       );
     }
     requestAnimationFrame(gameLoop);
+    drawText("W = UP, S = DOWN", 0, canvas.height - 10, "white", 20);
+    drawText("P = PAUSE", canvas.width / 2 - 50, canvas.height - 10, "white", 20);
+    drawText("I = UP, K = DOWN", canvas.width - 170, canvas.height - 10, "white", 20);
+
+    drawText(
+      playerName1,
+      0,
+      20,
+      "white",
+      20
+    );
+    drawText(
+      playerName2,
+      canvas.width - 100,
+      20,
+      "white",
+      20
+    );
   }
 
   resetBall();
@@ -549,6 +592,7 @@ function startTournamentGame(state_json) {
     ballDirectionX = 1,
     ballDirectionY = 1;
   const paddleSpeed = 9;
+  let gamePaused = false;
   let playerScore = 0,
     aiScore = 0;
   const winningScore = 1;
@@ -694,7 +738,8 @@ function startTournamentGame(state_json) {
   function countdownAnimation() {
     if (countdown > 0) {
       setTimeout(() => {
-        countdown--;
+        if (gamePaused === false)
+          countdown--;
         draw();
         countdownAnimation();
       }, 1000);
@@ -702,7 +747,9 @@ function startTournamentGame(state_json) {
       gameRunning = true;
     }
   }
-
+  document.addEventListener('keypress', (event) => {
+    if (event.key === "p") gamePaused = !gamePaused;
+  });
   document.addEventListener("keydown", (event) => {
     if (event.key === "w") playerMoveUp = true;
     if (event.key === "s") playerMoveDown = true;
@@ -717,7 +764,7 @@ function startTournamentGame(state_json) {
     if (event.key === "k") player2MoveDown = false;
   });
 
-  function gameLoop() {
+  if (gamePaused === false) {
     if (playerScore >= winningScore || aiScore >= winningScore) {
       drawText(
         "Game Over",
@@ -726,8 +773,7 @@ function startTournamentGame(state_json) {
         "white",
         50
       );
-      runTournamentGame(state_json, playerScore, aiScore);
-
+      load_main();
       return;
     }
     moveBall();
@@ -735,7 +781,54 @@ function startTournamentGame(state_json) {
     movePlayer();
     draw();
     lastAiY = aiY;
+  }
+  else {
+    drawText(
+      "Game Paused",
+      canvas.width / 2 - 150,
+      canvas.height / 2,
+      "white",
+      50
+    );
+  }
+
+  function gameLoop() {
+    if (!document.getElementById("pongCanvas")) {
+      console.log("got deleted");
+      return;
+    }
+    if (gamePaused === false) {
+      if (playerScore >= winningScore || aiScore >= winningScore) {
+        drawText(
+          "Game Over",
+          canvas.width / 2 - 100,
+          canvas.height / 2,
+          "white",
+          50
+        );
+        runTournamentGame(state_json, playerScore, aiScore);
+
+        return;
+      }
+      moveBall();
+      moveAI();
+      movePlayer();
+      draw();
+      lastAiY = aiY;
+      
+    } else {
+      drawText(
+        "Game Paused",
+        canvas.width / 2 - 150,
+        canvas.height / 2,
+        "white",
+        50
+      );
+    }
     requestAnimationFrame(gameLoop);
+    drawText("W = UP, S = DOWN", 0, canvas.height - 10, "white", 20);
+    drawText("P = PAUSE", canvas.width / 2 - 50, canvas.height - 10, "white", 20);
+    drawText("I = UP, K = DOWN", canvas.width - 170, canvas.height - 10, "white", 20);
   }
 
   resetBall();

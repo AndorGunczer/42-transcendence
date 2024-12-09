@@ -5,17 +5,18 @@
 
 html {
     height: 100vh;
-  }
-  body {
-    min-height: 100vh;
-  }
+}
 
 body {
-    background-color: #180161 !important;
+    min-height: 100vh;
+}
+
+body {
+    background-color: #2d2d2d !important;
 }
 
 ul {
-    background-color: #180161 !important;
+    background-color: #2d2d2d !important;
 }
 
 .top-25 {
@@ -23,7 +24,7 @@ ul {
 }
 
 /* div {
-    background-color: #180161 !important;
+    background-color: #2d2d2d  !important;
 } */
 
 /* div {
@@ -88,6 +89,7 @@ img {
     /* Adjust the logo's size with width and padding as needed */
     padding: 10px;
     padding-bottom: 100px;
+    color: ghostwhite;
 }
 
 .menu-button {
@@ -128,3 +130,23 @@ img {
 .chat-window {
     margin-right: 5px;
 }
+
+.player-info {
+    display: grid;
+    gap: 10px;
+    grid-template-areas:
+        'u un'
+        'w wp'
+        'l lp'
+        'a a';
+    grid-template-rows: auto auto auto auto;
+    grid-template-columns: auto auto;
+}
+
+.u { grid-area: u; }
+.un { grid-area: un; }
+.w { grid-area: w; }
+.wp { grid-area: wp; }
+.l { grid-area: l; }
+.lp { grid-area: lp; }
+.a { grid-area: a; }

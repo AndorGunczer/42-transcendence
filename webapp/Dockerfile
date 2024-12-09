@@ -25,6 +25,9 @@ RUN pip3 install daphne channels
 # Install Dotenv
 RUN pip3 install python-dotenv
 
+# Install Bleach
+RUN pip3 install bleach
+
 # Install Solidity Web3 Module
 RUN pip3 install web3
 

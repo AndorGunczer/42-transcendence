@@ -44,20 +44,15 @@ function deleteMain() {
 
 function elementCustomize(element, item) {
   if (item.class && item.class != "") element.setAttribute("class", item.class);
-  if (item.identifier && item.identifier != "")
-    element.setAttribute("id", item.identifier);
+  if (item.identifier && item.identifier != "") element.setAttribute("id", item.identifier);
   if (item.text && item.text != "") element.innerHTML = item.text;
   if (item.for && item.for != "") element.setAttribute("for", item.for);
-  if (item.inputType && item.inputType != "")
-    element.setAttribute("type", item.inputType);
-  if (item.action && item.action != "")
-    element.setAttribute("action", item.action);
-  if (item.onclick && item.onclick != "")
-    element.setAttribute("onclick", item.onclick);
+  if (item.inputType && item.inputType != "") element.setAttribute("type", item.inputType);
+  if (item.action && item.action != "") element.setAttribute("action", item.action);
+  if (item.onclick && item.onclick != "") element.setAttribute("onclick", item.onclick);
   if (item.width) element.setAttribute("width", item.width);
   if (item.height) element.setAttribute("height", item.height);
-  if (item.method && item.method != "")
-    element.setAttribute("method", item.method);
+  if (item.method && item.method != "") element.setAttribute("method", item.method);
   if (item.name && item.name != "") element.setAttribute("name", item.name);
   if (item.form && item.form != "") element.setAttribute("form", item.form);
   if (item.src && item.src != "") element.setAttribute("src", item.src);
@@ -65,6 +60,7 @@ function elementCustomize(element, item) {
   if (item.onsubmit && item.onsubmit != "") element.setAttribute("onsubmit", item.onsubmit);
   if (item.selected && item.selected != "") element.setAttribute("selected", item.selected);
   if (item.placeholder && item.placeholder != "") element.setAttribute("placeholder", item.placeholder)
+
   // if ()
   // if (item.text && item.text != "") element.textContent = item.text;
 }
@@ -165,7 +161,7 @@ function load_playMenu() {
 
 async function loadHistory() {
   let url = "/match_history";
-  
+
   const csrfToken = await getCsrfToken();
 
 
@@ -187,20 +183,20 @@ async function loadHistory() {
       .then((json) => {
         deleteHeader();
         deleteMain();
-  
+
         // CREATE HEADER
         // console.log(json)
-  
+
         headerLoad(json);
-  
+
         // CREATE CONTAINER
-  
+
         json.menuItems.forEach((item) => {
           let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
           let element = document.createElement(item.type);
           if (item.type == "div" || item.type == "form" || item.type == "table")
             divLoader(element, item.content);
-  
+
           elementCustomize(element, item);
           parent.appendChild(element);
         });
@@ -457,7 +453,7 @@ function load_onlineGame() {
 
   function load_tournament_main() {
     let url = "/tournament_main";
-  
+
     fetch(url)
       .then((response) => {
         if (!response.ok) console.log("yeaah");
@@ -466,19 +462,19 @@ function load_onlineGame() {
       .then((json) => {
         deleteHeader();
         deleteMain();
-  
+
         // CREATE HEADER
-  
+
         headerLoad(json);
-  
+
         // CREATE CONTAINER
-  
+
         json.menuItems.forEach((item) => {
           let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
           let element = document.createElement(item.type);
           if (item.type == "div" || item.type == "form")
             divLoader(element, item.content);
-  
+
           elementCustomize(element, item);
           parent.appendChild(element);
         });
@@ -487,7 +483,7 @@ function load_onlineGame() {
 
   function load_tournament_create() {
     let url = "/tournament_create";
-  
+
     fetch(url)
       .then((response) => {
         if (!response.ok) console.log("yeaah");
@@ -496,19 +492,19 @@ function load_onlineGame() {
       .then((json) => {
         deleteHeader();
         deleteMain();
-  
+
         // CREATE HEADER
-  
+
         headerLoad(json);
-  
+
         // CREATE CONTAINER
-  
+
         json.menuItems.forEach((item) => {
           let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
           let element = document.createElement(item.type);
           if (item.type == "div" || item.type == "form")
             divLoader(element, item.content);
-  
+
           elementCustomize(element, item);
           parent.appendChild(element);
         });
@@ -599,7 +595,7 @@ let gameId;
 
 async function load_tournament_select() {
   let url = "/tournament_select";
-  
+
   const csrfToken = await getCsrfToken();
 
 
@@ -621,20 +617,20 @@ async function load_tournament_select() {
       .then((json) => {
         deleteHeader();
         deleteMain();
-  
+
         // CREATE HEADER
-  
+
         headerLoad(json.menu);
         gameId = json.game;
-  
+
         // CREATE CONTAINER
-  
+
         json.menu.menuItems.forEach((item) => {
           let parent = document.getElementsByClassName("container")[0] ? document.getElementsByClassName("container")[0] : document.getElementsByClassName("container-fluid")[0];
           let element = document.createElement(item.type);
           if (item.type == "div" || item.type == "form" || item.type == "table")
             divLoader(element, item.content);
-  
+
           elementCustomize(element, item);
           parent.appendChild(element);
         });
@@ -644,7 +640,7 @@ async function load_tournament_select() {
 async function load_tournament_localGame() {
   console.log("load_tournament_localGame() is called");
   console.log("Game_id = " + gameId);
-  
+
   let url = "/tournament_game_check";
 
   const csrfToken = await getCsrfToken();
